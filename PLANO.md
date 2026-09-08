@@ -1,9 +1,9 @@
-# ameno.studio — Plano do Site
+# ameno.info — Plano do Site
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
 > **Stack declarada no projeto:** Next.js 16.3.4 + React 19 + Tailwind 4 + GSAP + Lenis + Supabase + Stripe + Vercel
-> **Domínio:** ameno.studio (Porkbun)
+> **Domínio:** ameno.info
 > **Repo:** github.com/octaviomoliveira/ameno-studio
 > **Atualizado em:** 2026-09-08 — decisões do proprietário e estado reconciliado do projeto.
 

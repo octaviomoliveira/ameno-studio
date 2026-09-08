@@ -11,7 +11,7 @@ export default function Footer() {
 
       <div className="site-footer-bottom">
         <div>
-          <span>AMENO.STUDIO</span>
+          <span>AMENO.INFO</span>
           <small>© {new Date().getFullYear()} Octávio Oliveira</small>
         </div>
         <a href="mailto:contato@ameno.studio">contato@ameno.studio</a>

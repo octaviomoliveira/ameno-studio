@@ -2,7 +2,7 @@ import Link from 'next/link'
 import StudioMethod from '@/components/home/StudioMethod'
 
 export const metadata = {
-  title: 'Sobre — ameno.studio',
+  title: 'Sobre — ameno.info',
   description: 'Octávio Oliveira — arquitetura, visualização e ferramentas para profissionais.',
 }
 
@@ -13,7 +13,7 @@ export default function SobrePage() {
       <div className="page-grid" aria-hidden="true" />
       <div className="mx-auto max-w-[1440px]">
         <div className="page-topline">
-          <p>SOBRE / AMENO.STUDIO</p>
+          <p>SOBRE / AMENO.INFO</p>
           <p>003 — 001</p>
         </div>
 
@@ -46,7 +46,7 @@ export default function SobrePage() {
             <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.2em] text-[#E63B2E]">Disponível para colaborações</p>
           </div>
           <div className="max-w-2xl space-y-6 text-lg leading-relaxed text-[#e8e8e0]">
-            <p>O ameno.studio reúne prática profissional em arquitetura e visualização com ferramentas que tornam o trabalho mais claro, rápido e preciso.</p>
+            <p>O ameno.info reúne prática profissional em arquitetura e visualização com ferramentas que tornam o trabalho mais claro, rápido e preciso.</p>
             <p className="text-[#666666]">Texto de apresentação em revisão. A versão final e os projetos serão adicionados quando o conteúdo e os renders forem separados.</p>
             <div className="about-disciplines flex flex-wrap gap-x-6 gap-y-2 pt-4 text-sm uppercase tracking-[0.18em] text-[#666666]">
               <span>Arquitetura</span><span>ArchViz</span><span>Interiores</span><span>BIM</span><span>Produtos</span>

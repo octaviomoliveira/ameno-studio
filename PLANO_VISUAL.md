@@ -1,4 +1,4 @@
-# Plano visual e narrativo v3 — ameno.studio
+# Plano visual e narrativo v3 — ameno.info
 
 Status: execução iniciada em 2026-09-08.
 

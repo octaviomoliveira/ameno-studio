@@ -7,14 +7,14 @@ import LenisProvider from '@/components/layout/LenisProvider'
 import SiteIntro from '@/components/intro/SiteIntro'
 
 export const metadata: Metadata = {
-  title: 'ameno.studio — Arquitetura, Visualização e Ferramentas',
+  title: 'ameno.info — Arquitetura, Visualização e Ferramentas',
   description: 'Portfólio e loja de plugins para 3ds Max. Arquitetura, ArchViz e ferramentas para profissionais.',
-  metadataBase: new URL('https://ameno.studio'),
+  metadataBase: new URL('https://ameno.info'),
   openGraph: {
-    title: 'ameno.studio',
+    title: 'ameno.info',
     description: 'Arquitetura. Visualização. Ferramentas.',
-    url: 'https://ameno.studio',
-    siteName: 'ameno.studio',
+    url: 'https://ameno.info',
+    siteName: 'ameno.info',
     locale: 'pt_BR',
     type: 'website',
   },

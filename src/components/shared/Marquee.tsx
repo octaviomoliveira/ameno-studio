@@ -1,6 +1,6 @@
 'use client'
 
-const TEXT = 'ARQUITETURA · VISUALIZAÇÃO · PLUGINS · AMENO.STUDIO · RECIFE · BRASIL · '
+const TEXT = 'ARQUITETURA · VISUALIZAÇÃO · PLUGINS · AMENO.INFO · RECIFE · BRASIL · '
 
 export default function Marquee() {
   return (

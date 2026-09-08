@@ -80,9 +80,9 @@ export default function SiteIntro() {
         type="button"
         className="site-intro-action"
         onClick={dismiss}
-        aria-label="Entrar no ameno.studio"
+        aria-label="Entrar no ameno.info"
       >
-        <span className="site-intro-kicker">AMENO.STUDIO / CAPÍTULO 00</span>
+        <span className="site-intro-kicker">AMENO.INFO / CAPÍTULO 00</span>
         <span id="site-intro-title" className="site-intro-title">
           <span>DA IDEIA</span>
           <span>À <em>FORMA</em></span>
