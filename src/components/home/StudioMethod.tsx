@@ -73,7 +73,7 @@ export default function StudioMethod() {
             <h2 id="method-title" className="max-w-3xl text-display-sm">Menos ruído. Mais espaço para a imagem<span className="text-red">.</span></h2>
           </div>
           <div data-method-copy className="max-w-2xl lg:pt-4">
-          <p className="text-xl leading-relaxed text-[#e8e8e0]">O ameno.info transforma arquitetura, visualização e ferramentas em um mesmo campo de trabalho.</p>
+          <p className="text-xl leading-relaxed text-[#e8e8e0]">O ameno.studio transforma arquitetura, visualização e ferramentas em um mesmo campo de trabalho.</p>
             <p className="mt-6 text-base leading-relaxed text-[#666666]">Cada projeto começa organizando o problema. Depois, a imagem encontra a forma certa de comunicar o que precisa existir.</p>
           </div>
         </div>

@@ -45,7 +45,7 @@ export default function Navbar() {
       className="site-navbar"
     >
       {/* Logo */}
-      <Link href="/" className="block" aria-label="ameno.info">
+      <Link href="/" className="block" aria-label="ameno.studio">
         <Image
           src="/brand/logo.svg"
           alt="ameno"

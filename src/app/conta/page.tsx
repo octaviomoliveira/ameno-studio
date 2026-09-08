@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Compra — ameno.info',
+  title: 'Compra — ameno.studio',
   description: 'Retorno da compra do Ameno Cotas.',
 }
 

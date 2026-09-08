@@ -1,6 +1,6 @@
-# HANDOFF — ameno.info para o Codex
+# HANDOFF — ameno.studio para o Codex
 
-Este documento é o briefing completo para continuar a implementação do site `ameno.info`. Leia tudo antes de tocar em qualquer arquivo.
+Este documento é o briefing completo para continuar a implementação do site `ameno.studio`. Leia tudo antes de tocar em qualquer arquivo.
 
 > Para qualquer trabalho de direção de arte ou reorganização da home, seguir primeiro o `PLANO_VISUAL.md`, que contém a narrativa em oito capítulos e as referências visuais aprovadas.
 
@@ -74,10 +74,10 @@ HERO (100vh, fundo preto)
 
   [cotas SVG flutuando — reagem ao mouse]
 
-  [ameno.info] ← centro inferior, cinza
+  [ameno.studio] ← centro inferior, cinza
 
 MARQUEE
-  ─ ARQUITETURA · VISUALIZAÇÃO · PLUGINS · AMENO.INFO · RECIFE · ─
+  ─ ARQUITETURA · VISUALIZAÇÃO · PLUGINS · AMENO.STUDIO · RECIFE · ─
 
 PROJETOS (scroll cinemático)
   Imagem fullwidth cresce do centro → fica parada → texto sobe por baixo
@@ -89,7 +89,7 @@ TEASER PLUGINS
   Ameno Cotas — Plugin para 3ds Max     [Ver plugins →]
 
 FOOTER
-  ameno.info            contato@ameno.studio
+  ameno.studio          contato@ameno.studio
   © Octávio Oliveira    Instagram  LinkedIn
 ```
 
@@ -126,7 +126,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY      → ver .env.local
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY → ver .env.local (chave de TESTE)
 STRIPE_SECRET_KEY                  → ver .env.local (chave de TESTE)
 STRIPE_WEBHOOK_SECRET              → preencher após configurar webhook no Stripe Dashboard
-NEXT_PUBLIC_SITE_URL               → http://localhost:3000 (dev) / https://ameno.info (produção)
+NEXT_PUBLIC_SITE_URL               → http://localhost:3000 (dev) / https://ameno.studio (produção)
 NEXT_PUBLIC_MIN_AMOUNT             → 1000 (R$10,00 em centavos)
 ```
 
