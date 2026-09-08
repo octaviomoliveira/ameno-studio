@@ -2,6 +2,8 @@
 
 Este documento é o briefing completo para continuar a implementação do site `ameno.studio`. Leia tudo antes de tocar em qualquer arquivo.
 
+> Para qualquer trabalho de direção de arte ou reorganização da home, seguir primeiro o `PLANO_VISUAL.md`, que contém a narrativa em oito capítulos e as referências visuais aprovadas.
+
 ---
 
 ## Repositório e localização
@@ -26,6 +28,10 @@ Framer Motion 13
 stripe 22 (server)
 @stripe/stripe-js 9 (client)
 ```
+
+## Estado atual — 2026-09-08
+
+O checkout, o formulário de `/plugins`, a home editorial em cinco capítulos, `/sobre`, `/conta`, o schema de licenças, `POST /api/verify` e o webhook já foram implementados no checkout local. O hero combina grid, cotas e um campo abstrato de interferência; o portfólio tem índice e painéis fullbleed. `npm run build`, lint e os testes locais das rotas passam. A `SUPABASE_SERVICE_ROLE_KEY` já está no `.env.local` (não exibir, commitar ou enviar esta chave); a verificação local alcançou o banco e respondeu `not_found` para um token fictício.
 
 ---
 
@@ -121,7 +127,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY → ver .env.local (chave de TESTE)
 STRIPE_SECRET_KEY                  → ver .env.local (chave de TESTE)
 STRIPE_WEBHOOK_SECRET              → preencher após configurar webhook no Stripe Dashboard
 NEXT_PUBLIC_SITE_URL               → http://localhost:3000 (dev)
-NEXT_PUBLIC_MIN_AMOUNT             → 500 (R$5,00 em centavos)
+NEXT_PUBLIC_MIN_AMOUNT             → 1000 (R$10,00 em centavos)
 ```
 
 ---
@@ -133,10 +139,10 @@ src/
   app/
     globals.css               ✅ paleta CSS variables, tipografia, cursor
     layout.tsx                ✅ root layout com Lenis + Navbar + Footer + Cursor
-    page.tsx                  ← VAZIO (create-next-app padrão, precisa ser reescrito)
+    page.tsx                  ✅ home com hero, portfólio placeholder e teaser de plugins
     api/
       checkout/route.ts       ✅ CRIADO MAS COM BUGS (ver seção de bugs abaixo)
-      webhooks/stripe/        ← diretório criado, SEM route.ts
+      webhooks/stripe/route.ts ✅ webhook com assinatura Stripe e geração de token
   components/
     layout/
       Navbar.tsx              ✅
@@ -152,7 +158,7 @@ src/
       Marquee.tsx             ✅ texto correndo horizontalmente
   lib/
     supabase.ts               ✅
-    stripe.ts                 ✅ STRIPE_MIN_AMOUNT = 100 (ERRADO, ver bugs)
+    stripe.ts                 ✅ mínimo R$10 e sugestão R$29
 public/
   brand/
     logo.svg                  ✅
@@ -164,11 +170,13 @@ supabase/
 
 ---
 
-## BUGS CONFIRMADOS — corrigir antes de qualquer outra coisa
+## BUGS HISTÓRICOS — correções aplicadas localmente
 
-### Bug 1 — Backticks faltando em `src/app/api/checkout/route.ts` linhas 32–33
+Os quatro problemas abaixo foram identificados no estado inicial. Os itens 1–3 foram corrigidos no código; os placeholders foram despublicados no banco e no `supabase/schema.sql`.
 
-**Estado atual (ERRADO — não compila):**
+### Bug 1 — Backticks faltando em `src/app/api/checkout/route.ts` linhas 32–33 — resolvido
+
+**Estado inicial (ERRADO — não compilava):**
 ```ts
 success_url: ${process.env.NEXT_PUBLIC_SITE_URL}/conta?success=true,
 cancel_url:  ${process.env.NEXT_PUBLIC_SITE_URL}/plugins,
@@ -182,9 +190,9 @@ cancel_url:  `${process.env.NEXT_PUBLIC_SITE_URL}/plugins`,
 
 ---
 
-### Bug 2 — Valor mínimo errado em `src/lib/stripe.ts`
+### Bug 2 — Valor mínimo errado em `src/lib/stripe.ts` — resolvido
 
-**Estado atual:** `STRIPE_MIN_AMOUNT = 100` → R$1,00
+**Estado inicial:** `STRIPE_MIN_AMOUNT = 100` → R$1,00
 
 **Correto:**
 ```ts
@@ -199,12 +207,12 @@ Também corrigir a mensagem de erro no checkout:
 
 ---
 
-### Bug 3 — `tailwind.config.ts` está no formato v3 e será ignorado pelo Tailwind v4
+### Bug 3 — `tailwind.config.ts` está no formato v3 e será ignorado pelo Tailwind v4 — resolvido
 
 O projeto usa Tailwind v4 que configura temas via CSS, não via JS.
 O arquivo `tailwind.config.ts` com `gold: '#c8a96e'` (cor errada) não está sendo carregado.
 
-**Solução:** deletar `tailwind.config.ts` e adicionar ao `globals.css` logo após `@import "tailwindcss"`:
+**Solução aplicada:** `tailwind.config.ts` foi removido e os tokens foram adicionados ao `globals.css` após os imports:
 
 ```css
 @theme {
@@ -220,18 +228,18 @@ O arquivo `tailwind.config.ts` com `gold: '#c8a96e'` (cor errada) não está sen
 
 ---
 
-### Bug 4 — Placeholders do Supabase com `published = true`
+### Bug 4 — Placeholders do Supabase com `published = true` — resolvido
 
 Foram inseridos 5 projetos com fotos do Unsplash como se fossem portfólio real.
 
-Rodar no Supabase SQL Editor:
+Aplicado no projeto e refletido no `supabase/schema.sql`:
 ```sql
 UPDATE public.projects SET published = false;
 ```
 
 ---
 
-## Páginas a criar (em ordem de prioridade)
+## Páginas e próximas entregas (em ordem de prioridade)
 
 ### 1. `src/app/page.tsx` — Home
 
@@ -267,11 +275,11 @@ Formulário pay-what-you-want:
 
 ---
 
-### 3. `src/app/conta/page.tsx` — Área do cliente
+### 3. `src/app/conta/page.tsx` — Área do cliente (placeholder funcional com fluxo visual)
 
 Por enquanto: tela simples.
 - Se `?success=true` na URL: mostrar "Compra realizada! Obrigado pelo apoio."
-- Caso contrário: "Área do cliente — em breve."
+- A página informa que a entrega automática do token ainda está sendo conectada; não promete acesso inexistente.
 
 ---
 
@@ -285,14 +293,13 @@ Placeholder:
 
 ---
 
-### 5. `src/app/api/webhooks/stripe/route.ts` — Webhook
+### 5. `src/app/api/webhooks/stripe/route.ts` — Webhook (implementado)
 
 ```ts
-// Recebe eventos do Stripe e registra compras no Supabase
-// Evento principal: checkout.session.completed
-// Ação: INSERT na tabela purchases com status = 'completed'
-// Usar stripe.webhooks.constructEvent() para verificar assinatura
-// Retornar 200 mesmo em eventos ignorados (evita retry do Stripe)
+// Recebe checkout.session.completed e async_payment_succeeded.
+// Verifica assinatura, pagamento BRL pago e produto ameno-cotas.
+// Chama fulfill_plugin_purchase, que registra compra + licença de modo idempotente.
+// Falha no Supabase retorna 500 para permitir retry do Stripe.
 ```
 
 ---
@@ -311,7 +318,7 @@ Implementar com GSAP + ScrollTrigger (Lenis já está configurado):
 
 ---
 
-## Componente PluginsTeaser a criar
+## Componente PluginsTeaser implementado
 
 ```tsx
 // src/components/plugins/PluginsTeaser.tsx
@@ -386,26 +393,25 @@ ALTER TABLE public.licenses ENABLE ROW LEVEL SECURITY;
 
 ---
 
-## Endpoints de API a criar
+## Endpoints de API implementados localmente
 
 ### `POST /api/verify` — verifica licença (chamado pelo plugin)
 ```ts
 // Body: { token: string, machine_id: string }
 // Respostas:
 //   { valid: true }
-//   { valid: false, reason: "not_found" | "machine_mismatch" | "inactive" }
+//   { valid: false, reason: "not_found" | "machine_mismatch" | "inactive" | "rate_limited" }
 // Usar SUPABASE_SERVICE_ROLE_KEY (não a anon key) — acesso direto sem RLS
 // Rate limit: máx 10 req/min por token
 ```
 
-### Webhook atualizado — gerar token após pagamento
+### Webhook — gera token após pagamento
 ```ts
 // Em checkout.session.completed:
-// 1. INSERT em purchases (status = completed)
-// 2. Gerar token: crypto.randomUUID() ou nanoid(32)
-// 3. INSERT em licenses (token, purchase_id, machine_id = null)
-// 4. Enviar token por email ao comprador (via Stripe customer email)
-//    Por enquanto: apenas salvar — email manual ou via Resend depois
+// 1. Verifica checkout e pagamento.
+// 2. Gera UUID e chama a função atômica do Supabase.
+// 3. A função registra purchases e licenses de forma idempotente.
+// 4. E-mail/download ainda ficam para a próxima fase.
 ```
 
 ---
@@ -422,10 +428,13 @@ ALTER TABLE public.licenses ENABLE ROW LEVEL SECURITY;
 - `/sobre` e `/conta` têm conteúdo placeholder
 - Funciona em mobile (sem cursor, sem cotas no touch)
 
-**Fase 2 — Compra funciona:**
+**Fase 2 — Compra e licença (implementada localmente):**
 - Formulário → Stripe Checkout → sucesso → `/conta?success=true`
-- Webhook registra no Supabase
+- Webhook registra compra e licença no Supabase após pagamento confirmado
+- `/api/verify` alcança o Supabase em execução local e vincula a primeira máquina atomicamente
 - `npm run build` passa
+
+**Pendências da fase 2:** testar um evento real/teste do Stripe no webhook e entregar o token/arquivo ao comprador.
 
 ---
 

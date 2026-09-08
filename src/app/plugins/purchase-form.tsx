@@ -6,6 +6,7 @@ export default function PurchaseForm({ minimum, suggested }: { minimum: number; 
   const [value, setValue] = useState((suggested / 100).toFixed(2).replace('.', ','))
   const [error, setError] = useState('')
   const [pending, setPending] = useState(false)
+  const minimumLabel = `R$ ${(minimum / 100).toFixed(2).replace('.', ',')}`
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -13,7 +14,7 @@ export default function PurchaseForm({ minimum, suggested }: { minimum: number; 
     const normalized = value.trim().replace(',', '.')
     const amount = Math.round(Number(normalized) * 100)
     if (!/^\d+(\.\d{1,2})?$/.test(normalized) || !Number.isSafeInteger(amount) || amount < minimum) {
-      setError('Informe um valor de pelo menos R$ 10,00, com até duas casas decimais.')
+      setError(`Informe um valor de pelo menos ${minimumLabel}, com até duas casas decimais.`)
       return
     }
     setError('')
@@ -35,15 +36,15 @@ export default function PurchaseForm({ minimum, suggested }: { minimum: number; 
   }
 
   return (
-    <form onSubmit={submit} style={{ display: 'grid', gap: 16, maxWidth: 420 }}>
-      <label htmlFor="purchase-amount">Quanto deseja pagar? (R$)</label>
+    <form onSubmit={submit} className="purchase-form">
+      <label htmlFor="purchase-amount" className="purchase-label">Quanto deseja pagar? (R$)</label>
       <input id="purchase-amount" name="amount" type="text" inputMode="decimal" required
         value={value} onChange={(event) => { setValue(event.target.value); setError('') }}
         aria-describedby="amount-hint amount-error" aria-invalid={Boolean(error)} disabled={pending}
-        style={{ padding: 16, border: '1px solid #666', borderRadius: 4, background: '#161616', color: '#fff', fontSize: 24, cursor: 'text' }} />
-      <p id="amount-hint">mínimo R$ 10,00</p>
-      <p id="amount-error" role="alert">{error}</p>
-      <button type="submit" disabled={pending} style={{ padding: 16, background: '#E63B2E', color: '#fff', borderRadius: 4, cursor: pending ? 'wait' : 'pointer', opacity: pending ? 0.7 : 1 }}>
+        className="purchase-input" />
+      <p id="amount-hint" className="purchase-hint">mínimo {minimumLabel}</p>
+      <p id="amount-error" className="purchase-error" role="alert">{error}</p>
+      <button type="submit" disabled={pending} className="purchase-submit">
         {pending ? 'Abrindo pagamento…' : 'Comprar Ameno Cotas'}
       </button>
     </form>

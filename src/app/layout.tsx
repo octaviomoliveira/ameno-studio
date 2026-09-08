@@ -4,6 +4,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/layout/Cursor'
 import LenisProvider from '@/components/layout/LenisProvider'
+import SiteIntro from '@/components/intro/SiteIntro'
 
 export const metadata: Metadata = {
   title: 'ameno.studio — Arquitetura, Visualização e Ferramentas',
@@ -26,13 +27,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body style={{ background: '#0a0a0a', color: '#ffffff' }}>
-        <LenisProvider>
-          <Cursor />
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </LenisProvider>
+      <body>
+        <SiteIntro />
+        <div id="site-shell">
+          <LenisProvider>
+            <Cursor />
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </LenisProvider>
+        </div>
       </body>
     </html>
   )

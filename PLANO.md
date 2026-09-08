@@ -1,9 +1,11 @@
 # ameno.studio — Plano do Site
 
+> A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
+
 > **Stack declarada no projeto:** Next.js 16.3.4 + React 19 + Tailwind 4 + GSAP + Lenis + Supabase + Stripe + Vercel
 > **Domínio:** ameno.studio (Porkbun)
 > **Repo:** github.com/octaviomoliveira/ameno-studio
-> **Atualizado em:** 2026-09-08 — decisões do proprietário. Implementação pendente de conciliação com o trabalho do Antigravity.
+> **Atualizado em:** 2026-09-08 — decisões do proprietário e estado reconciliado do projeto.
 
 ---
 
@@ -57,11 +59,14 @@ Na implementação, adaptar os efeitos para celular/touch, navegação por tecla
 - Valor sugerido de **R$29,00**, preenchido no formulário e livremente editável.
 - **Pagamento único por versão**, sem assinatura mensal/anual nesta fase.
 - **Compra direta, sem login obrigatório**.
-- **Sem controle de máquinas, sessões ou tokens nesta fase**.
-- Assinatura será considerada apenas quando houver múltiplos plugins no catálogo (**Ameno Suite**).
+- **1 compra = 1 licença = 1 computador**.
+- O plugin verifica um token na API ao iniciar; a primeira verificação vincula a licença ao computador e verificações seguintes exigem o mesmo computador.
+- Outro computador exige uma nova compra. Trocas manuais poderão ser tratadas pelo suporte.
+- O plugin poderá tolerar **7 dias offline** usando o cache local; depois deve exigir nova verificação online.
+- Assinatura mensal/anual será considerada apenas quando houver múltiplos plugins no catálogo (**Ameno Suite**).
 - **Suporte completo**. Canal, horário e prazo de atendimento ainda precisam ser definidos; não prometer atendimento 24 horas.
 
-Esta decisão substitui o planejamento anterior de assinatura, login obrigatório e licença para dois computadores.
+Esta decisão substitui o planejamento anterior de assinatura, login obrigatório e licença para dois computadores. Nesta fase não haverá conta obrigatória no site.
 
 ### Requisitos de implementação a detalhar
 
@@ -73,7 +78,11 @@ Fluxo previsto: escolha do plugin e valor → Stripe Checkout de pagamento únic
 - Verificar o direito de acesso no servidor; o redirecionamento de sucesso do checkout não comprova pagamento.
 - Processar eventos de pagamento sem duplicar efeitos quando um webhook for reenviado.
 - Definir entrega e recuperação do download sem exigir cadastro para comprar.
-- Manter por solicitação do proprietário os retornos `/conta?success=true` e `/plugins`; a página de retorno e a entrega ainda precisam ser implementadas.
+- Gerar e guardar um token único após o pagamento confirmado pelo webhook.
+- Disponibilizar `POST /api/verify` para o plugin com `token` e `machine_id`, retornando `valid`, `not_found`, `machine_mismatch`, `inactive` ou `rate_limited`.
+- Vincular apenas a primeira máquina usando operação atômica no Supabase; não permitir que uma corrida vincule dois computadores.
+- Não expor token, fingerprint ou chave administrativa em logs e respostas desnecessárias.
+- Manter por solicitação do proprietário os retornos `/conta?success=true` e `/plugins`; a página de retorno já existe e a entrega ainda precisa ser implementada.
 
 **Ordem de execução:** corrigir plano, valores, formulário e checkout; executar `npm run build` com sucesso antes de iniciar qualquer funcionalidade adicional.
 
@@ -83,39 +92,58 @@ Fluxo previsto: escolha do plugin e valor → Stripe Checkout de pagamento únic
 
 - Home: apresentação profissional e entradas equilibradas para portfólio e loja.
 - Portfólio: projetos com imagens, contexto e caminho claro para contato.
-- Plugins: descrição, requisitos e compra direta com valor livre a partir de R$10,00.
+- Plugins: descrição, requisitos e compra direta com valor livre a partir de R$10,00; informar que a compra gera uma licença para um computador.
 - Sobre/contato: apresentação profissional e canais de atendimento.
 - Retorno da compra em `/conta`: fluxo de confirmação/entrega a implementar, sem login obrigatório para comprar.
 
-**Conteúdo inicial aprovado:** placeholders. Identificá-los como demonstrativos; não apresentar imagens de banco como trabalhos reais do estúdio.
+**Conteúdo inicial aprovado:** placeholders. Nesta versão foram usadas imagens conceituais geradas especificamente para a prévia, identificadas como provisórias; não apresentar imagens de banco como trabalhos reais do estúdio.
 
 O proprietário pretende fornecer os renders em **2026-09-09**. Após recebê-los, selecionar os projetos e substituir os placeholders.
 
+## Plano de execução por fases
+
+1. **Fundação navegável** — estrutura Next.js, identidade, navegação, páginas e integrações base.
+2. **Direção visual** — hero editorial, cotas, tipografia letra a letra, cortes, marquee e scroll cinematográfico com projetos fullbleed.
+3. **Conteúdo demonstrável** — imagens conceituais provisórias para validar a composição; substituir pelos renders oficiais quando recebidos.
+4. **Produto e venda** — checkout, webhook, licença por computador, entrega protegida do arquivo e integração do token no plugin.
+5. **Refino e lançamento** — revisão mobile/acessibilidade, conteúdo final, teste ponta a ponta, deploy, domínio e webhook de produção.
+
+**Estado atual:** fases 1, 2 e 3 concluídas para a prévia visual; a revisão visual de `/sobre`, `/conta`, portfólio e loja foi aplicada. Fases 4 e 5 seguem parcialmente implementadas e ainda dependem da entrega do plugin, decisão de distribuição e materiais finais.
+
 ---
 
-## Status de implementação — a reconciliar
+## Status de implementação — 2026-09-08
 
-O checklist anterior confundia arquivos criados com funcionalidades concluídas. Na revisão foram encontrados erros no checkout, divergências de paleta e preço e ausência do fluxo completo de compra. O Antigravity está trabalhando no projeto; o proprietário fornecerá seu relato antes da continuidade. Conferir o código recebido e preservar as alterações existentes.
+O checklist foi reconciliado com o código atual. A interface inicial e a infraestrutura de licenças estão implementadas; entrega do arquivo, integração no pacote do plugin, conteúdo final e publicação continuam pendentes.
 
 - [x] Estrutura inicial do Next.js criada
-- [x] Arquivos lib/supabase.ts e lib/stripe.ts criados — integração ainda precisa ser validada
+- [x] Arquivos de Supabase e Stripe criados e configuração base carregada
 - [x] Logos copiados — conforme registro anterior
-- [x] `npm run build` passou em 2026-09-08 após correções do checkout e do rodapé. Permanece aviso preexistente sobre ordem de `@import` no CSS; pagamento real e entrega ainda não foram validados.
-- [ ] Compilação e configuração base verificadas após conciliação
-- [ ] Paleta aprovada aplicada no Tailwind 4 e conferida visualmente
+- [x] `npm run build` passou em 2026-09-08 sem erros ou avisos do projeto
+- [x] Compilação e configuração base verificadas após conciliação
+- [x] Paleta aprovada aplicada no Tailwind 4 e conferida visualmente
 - [x] Sintaxe e validação do checkout corrigidas para pagamento único, mínimo R$10,00
-- [ ] Navbar + Footer + Cursor
-- [ ] Home page
-- [ ] GSAP + Lenis global
-- [ ] Hero + Cotas
-- [ ] Projetos scroll
+- [x] Navbar + Footer + Cursor
+- [x] Home page
+- [x] GSAP + Lenis global
+- [x] Hero + Cotas
+- [x] Projetos scroll
 - [x] /plugins com formulário editável, sugestão R$29,00 e mínimo R$10,00
+- [x] Home editorial em cinco capítulos: manifesto, método, portfólio, ferramentas e contato
+- [x] Campo de interferência no hero, índice navegável de projetos e scroll fullbleed
+- [x] Páginas visuais `/sobre` e `/conta` com estados e diagramas técnicos provisórios
+- [x] Imagens conceituais provisórias no portfólio e esquema do Ameno Cotas na home/loja
+- [x] Schema `licenses`, funções atômicas e RLS aplicados no Supabase
+- [x] `POST /api/verify` e webhook de geração de token implementados; testes locais das rotas passam
 - [ ] Retorno da compra e recuperação do download sem cadastro obrigatório
-- [ ] Webhook Stripe para confirmação de pagamento único
+- [x] Verificação integrada local com `SUPABASE_SERVICE_ROLE_KEY` (token fictício retorna `not_found` sem erro de serviço)
+- [ ] Teste integrado do webhook com evento real/teste do Stripe
 - [ ] Downloads protegidos
 - [ ] Fluxo de suporte completo definido
 - [ ] Compra e entrega testadas de ponta a ponta
-- [ ] Mobile, teclado e movimento reduzido verificados
+- [ ] Integração da verificação no código do plugin em `D:\Ameno\_tools`
+- [x] Revisão visual mobile e fallback de movimento reduzido implementados
+- [ ] Auditoria detalhada de teclado e teste ponta a ponta de acessibilidade
 - [ ] Renders reais e conteúdo final revisados
 - [ ] Deploy Vercel e domínio verificados
 
@@ -133,7 +161,8 @@ Preços e regras da futura Ameno Suite serão definidos quando houver múltiplos
 
 ### Materiais e continuidade
 
-- Receber o relato e as alterações do Antigravity; reconciliar com este plano antes de prosseguir com a implementação.
+- Receber o relato e as alterações do Antigravity; manter este plano como referência reconciliada.
+- `SUPABASE_SERVICE_ROLE_KEY` já está em `D:\Ameno\ameno-studio\.env.local`; não commitar nem compartilhar o valor.
 - Receber os renders previstos para 2026-09-09; placeholders estão autorizados inicialmente.
 - Preparar/revisar apresentação profissional, descrição dos plugins e requisitos de compatibilidade a partir de informações verificadas.
 - Verificar a configuração existente de Supabase e Stripe sem expor segredos; solicitar apenas o que estiver faltando pelo meio apropriado.

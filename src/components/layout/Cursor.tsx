@@ -8,13 +8,14 @@ export default function Cursor() {
 
   useEffect(() => {
     const cursor = cursorRef.current
-    if (!cursor) return
+    if (!cursor || window.matchMedia('(pointer: coarse), (prefers-reduced-motion: reduce)').matches) return
 
     let mouseX = 0, mouseY = 0
 
     const onMove = (e: MouseEvent) => {
       mouseX = e.clientX
       mouseY = e.clientY
+      cursor.classList.add('is-visible')
 
       gsap.to(cursor, {
         x: mouseX,
@@ -34,7 +35,7 @@ export default function Cursor() {
   }, [])
 
   return (
-    <div ref={cursorRef} className="cursor fixed top-0 left-0 pointer-events-none z-[9999]"
+    <div ref={cursorRef} aria-hidden="true" className="cursor fixed top-0 left-0 pointer-events-none z-[9999]"
       style={{ mixBlendMode: 'difference' }}>
       {/* Crosshair */}
       <div className="absolute -translate-x-1/2 -translate-y-1/2">

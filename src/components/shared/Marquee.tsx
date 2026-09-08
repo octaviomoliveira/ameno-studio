@@ -1,17 +1,16 @@
 'use client'
-import { useRef } from 'react'
 
 const TEXT = 'ARQUITETURA · VISUALIZAÇÃO · PLUGINS · AMENO.STUDIO · RECIFE · BRASIL · '
 
 export default function Marquee() {
   return (
     <div
+      aria-hidden="true"
       className="overflow-hidden py-5 select-none"
       style={{ borderTop: '1px solid #222222', borderBottom: '1px solid #222222' }}
     >
       <div
-        className="flex whitespace-nowrap"
-        style={{ animation: 'marquee 20s linear infinite' }}
+        className="marquee-track flex whitespace-nowrap"
       >
         {[...Array(3)].map((_, i) => (
           <span
@@ -24,12 +23,6 @@ export default function Marquee() {
         ))}
       </div>
 
-      <style jsx>{`
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-33.333%); }
-        }
-      `}</style>
     </div>
   )
 }

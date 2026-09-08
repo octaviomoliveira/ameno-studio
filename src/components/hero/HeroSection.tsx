@@ -1,76 +1,92 @@
 'use client'
+
+import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import CotasInterativas from './CotasInterativas'
+import InterferenceField from './InterferenceField'
 
-const WORDS = ['arquitetura.', 'visualização.', 'ferramentas.']
+gsap.registerPlugin(ScrollTrigger)
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const wordsRef = useRef<HTMLDivElement[]>([])
+  const sectionRef = useRef<HTMLElement>(null)
+  const mediaRef = useRef<HTMLDivElement>(null)
+  const copyRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(wordsRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.15,
-        ease: 'power3.out',
-        delay: 0.3,
-      })
-    }, containerRef)
+    const section = sectionRef.current
+    const media = mediaRef.current
+    const copy = copyRef.current
+    if (!section || !media || !copy || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    return () => ctx.revert()
+    const context = gsap.context(() => {
+      gsap.to(media, {
+        scale: 1.08,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      })
+
+      gsap.to(copy, {
+        yPercent: -12,
+        opacity: 0.18,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: 'bottom 20%',
+          scrub: true,
+        },
+      })
+    }, section)
+
+    return () => context.revert()
   }, [])
 
   return (
-    <section
-      ref={containerRef}
-      className="relative flex flex-col justify-center min-h-screen px-6 overflow-hidden"
-      style={{ background: '#0a0a0a' }}
-    >
-      {/* Cotas interativas */}
-      <CotasInterativas />
-
-      {/* Texto hero */}
-      <div className="relative z-10">
-        {WORDS.map((word, i) => (
-          <div
-            key={word}
-            ref={el => { if (el) wordsRef.current[i] = el }}
-            className="text-display overflow-hidden"
-          >
-            <span style={{ color: '#ffffff' }}>{word}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* ameno.studio centralizado embaixo */}
-      <div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 text-xs tracking-[0.4em] uppercase"
-        style={{ color: '#666666' }}
-      >
-        ameno.studio
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 right-6 z-10 flex flex-col items-center gap-2">
-        <div
-          className="w-px h-12 origin-top"
-          style={{
-            background: 'linear-gradient(to bottom, #E63B2E, transparent)',
-            animation: 'scrollPulse 2s ease-in-out infinite',
-          }}
+    <section ref={sectionRef} className="narrative-hero" aria-labelledby="hero-title">
+      <div ref={mediaRef} className="narrative-hero-media">
+        <Image
+          src="/hero/ameno-hero-concept-v1.png"
+          alt="Pavilhão monumental de concreto ao entardecer — imagem conceitual"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
       </div>
+      <div className="narrative-hero-wash" aria-hidden="true" />
+      <CotasInterativas />
+      <InterferenceField />
 
-      <style jsx>{`
-        @keyframes scrollPulse {
-          0%, 100% { opacity: 0.3; transform: scaleY(1); }
-          50% { opacity: 1; transform: scaleY(1.3); }
-        }
-      `}</style>
+      <div className="narrative-hero-meta" aria-hidden="true">
+        <span>STUDIO INDEPENDENTE / RECIFE</span>
+        <span>IMAGEM CONCEITUAL / PROVISÓRIA</span>
+      </div>
+
+      <div ref={copyRef} className="narrative-hero-copy">
+        <p>ARQUITETURA · VISUALIZAÇÃO · FERRAMENTAS</p>
+        <h1 id="hero-title">
+          <span>IMAGINAMOS</span>
+          <span>O QUE AINDA</span>
+          <span className="font-editorial">não existe.</span>
+        </h1>
+        <div className="narrative-hero-actions">
+          <Link href="#portfolio">Ver projetos <span aria-hidden="true">→</span></Link>
+          <Link href="/plugins">Conhecer ferramentas <span aria-hidden="true">→</span></Link>
+        </div>
+      </div>
+
+      <div className="narrative-hero-scroll" aria-hidden="true">
+        <span>SCROLL</span>
+        <i />
+      </div>
     </section>
   )
 }
