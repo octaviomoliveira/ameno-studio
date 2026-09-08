@@ -1,7 +1,8 @@
 ﻿import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
-})
+import 'server-only'
 
-export const STRIPE_MIN_AMOUNT = 100 // R,00 em centavos
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+
+export const STRIPE_MIN_AMOUNT = 1000 // R$10,00
+export const STRIPE_SUGGESTED_AMOUNT = 2900 // R$29,00

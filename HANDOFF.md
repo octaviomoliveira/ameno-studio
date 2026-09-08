@@ -186,11 +186,15 @@ cancel_url:  `${process.env.NEXT_PUBLIC_SITE_URL}/plugins`,
 
 **Estado atual:** `STRIPE_MIN_AMOUNT = 100` → R$1,00
 
-**Correto:** `STRIPE_MIN_AMOUNT = 500` → R$5,00 (decisão do usuário)
+**Correto:**
+```ts
+export const STRIPE_MIN_AMOUNT = 1000       // R$10,00
+export const STRIPE_SUGGESTED_AMOUNT = 2900 // R$29,00 (valor sugerido exibido no input)
+```
 
 Também corrigir a mensagem de erro no checkout:
 ```ts
-{ error: 'Valor mínimo é R$ 5,00' }
+{ error: 'Valor mínimo é R$ 10,00' }
 ```
 
 ---
@@ -253,10 +257,13 @@ const { data: projects } = await supabase
 ### 2. `src/app/plugins/page.tsx` — Loja
 
 Formulário pay-what-you-want:
-- Input de valor (mínimo R$5,00, máximo livre)
-- Descrição do Ameno Cotas (texto placeholder: "Plugin para 3ds Max — gera cotas automaticamente por layer com render integrado. Compatível com 3ds Max 2024–2026 e Corona 12+")
-- Botão → POST `/api/checkout` → redireciona para URL Stripe
-- Tratar erro de valor mínimo
+- Input de valor com **R$29,00 já preenchido** como valor sugerido (editável)
+- Mínimo aceito: **R$10,00** — validar no frontend antes de submeter e no backend em `/api/checkout`
+- Mensagem abaixo do input: `mínimo R$ 10,00`
+- Descrição do Ameno Cotas: "Plugin para 3ds Max — gera cotas automaticamente por layer com render integrado. Compatível com 3ds Max 2024–2026 e Corona 12+"
+- Requisitos: 3ds Max 2024–2026, Corona 12+, Windows
+- Botão vermelho → POST `/api/checkout` → redireciona para URL Stripe
+- Tratar erro de valor mínimo com mensagem inline (não alert)
 
 ---
 
@@ -327,17 +334,83 @@ Implementar com GSAP + ScrollTrigger (Lenis já está configurado):
 
 ---
 
-## Supabase — schema já no banco
+## Modelo de licenciamento — APROVADO
+
+**Regra:** 1 compra = 1 licença = 1 computador. Sem compartilhamento.
+
+**Fluxo completo:**
+```
+1. Compra → Stripe webhook → gera license_token único → salva no Supabase (machine_id vazio)
+
+2. Primeiro uso do plugin (3ds Max):
+   Plugin pede o token ao usuário → usuário digita
+   Plugin envia: { token, machine_id } → POST /api/verify
+   API: token existe e sem máquina vinculada? → vincula machine_id → retorna { valid: true }
+   Plugin salva token em arquivo local
+
+3. Usos seguintes:
+   Plugin envia: { token, machine_id } → POST /api/verify
+   API: token existe e machine_id bate? → { valid: true }
+   machine_id diferente? → { valid: false, reason: "machine_mismatch" }
+   Plugin exibe erro e não abre
+
+4. Offline: tolerar 7 dias sem verificar (plugin usa cache local)
+   Após 7 dias sem conexão: bloquear com aviso de "verificar conexão"
+```
+
+**Troca de computador:** usuário entra em contato → reset manual no Supabase (por enquanto sem automação).
+
+---
+
+## Supabase — schema atualizado
+
+Schema atual já rodado (tabelas `projects` e `purchases`). Adicionar no SQL Editor:
 
 ```sql
--- Tabelas existentes:
-public.projects    -- portfólio (RLS ativo, leitura pública para published=true)
-public.purchases   -- compras Stripe (RLS ativo)
+-- Licenças geradas após pagamento
+CREATE TABLE IF NOT EXISTS public.licenses (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    token TEXT UNIQUE NOT NULL,           -- chave que o usuário digita no plugin
+    purchase_id UUID REFERENCES public.purchases(id),
+    product TEXT DEFAULT 'ameno-cotas',
+    machine_id TEXT,                       -- fingerprint do PC — vazio até primeiro uso
+    machine_bound_at TIMESTAMPTZ,
+    last_verified_at TIMESTAMPTZ,
+    active BOOLEAN DEFAULT true,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE public.licenses ENABLE ROW LEVEL SECURITY;
+-- Sem leitura pública — só via service role (servidor)
 ```
 
 ---
 
-## Critérios para considerar cada fase concluída
+## Endpoints de API a criar
+
+### `POST /api/verify` — verifica licença (chamado pelo plugin)
+```ts
+// Body: { token: string, machine_id: string }
+// Respostas:
+//   { valid: true }
+//   { valid: false, reason: "not_found" | "machine_mismatch" | "inactive" }
+// Usar SUPABASE_SERVICE_ROLE_KEY (não a anon key) — acesso direto sem RLS
+// Rate limit: máx 10 req/min por token
+```
+
+### Webhook atualizado — gerar token após pagamento
+```ts
+// Em checkout.session.completed:
+// 1. INSERT em purchases (status = completed)
+// 2. Gerar token: crypto.randomUUID() ou nanoid(32)
+// 3. INSERT em licenses (token, purchase_id, machine_id = null)
+// 4. Enviar token por email ao comprador (via Stripe customer email)
+//    Por enquanto: apenas salvar — email manual ou via Resend depois
+```
+
+---
+
+## `src/app/conta/page.tsx` — atualizado
 
 **Fase 0 — Bugs corrigidos:**
 - `npm run build` passa sem erros

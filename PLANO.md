@@ -53,30 +53,29 @@ Na implementação, adaptar os efeitos para celular/touch, navegação por tecla
 
 ### Decisões aprovadas
 
-- Acesso pago: valor mínimo de **R$5,00**. Não é download gratuito com apoio opcional.
-- O acesso será por **assinatura mensal ou anual**. A oferta exata dos períodos e os respectivos preços ainda precisam ser definidos.
-- **Login obrigatório** para identificar o titular e garantir o acesso.
-- Licença/token para **dois computadores**, contemplando computador pessoal e de trabalho.
-- Controle de sessão ativa por token para reduzir compartilhamento e uso não autorizado.
+- **Pay-what-you-want**, com valor mínimo de **R$10,00**.
+- Valor sugerido de **R$29,00**, preenchido no formulário e livremente editável.
+- **Pagamento único por versão**, sem assinatura mensal/anual nesta fase.
+- **Compra direta, sem login obrigatório**.
+- **Sem controle de máquinas, sessões ou tokens nesta fase**.
+- Assinatura será considerada apenas quando houver múltiplos plugins no catálogo (**Ameno Suite**).
 - **Suporte completo**. Canal, horário e prazo de atendimento ainda precisam ser definidos; não prometer atendimento 24 horas.
 
-O modelo anterior de pagamento avulso “pay-what-you-want” não descreve mais integralmente o produto. Não assumir R$5 por mês ou por ano, nem preço livre recorrente, até definir a tabela comercial.
+Esta decisão substitui o planejamento anterior de assinatura, login obrigatório e licença para dois computadores.
 
 ### Requisitos de implementação a detalhar
 
-Fluxo previsto: login → escolha do plugin e plano → Stripe Checkout de assinatura → confirmação por webhook → registro do direito de acesso → download e ativação do plugin.
+Fluxo previsto: escolha do plugin e valor → Stripe Checkout de pagamento único → confirmação por webhook → registro da compra → entrega do download.
 
-- Área da conta para assinatura, downloads e computadores ativados.
+- Formulário em `/plugins`: valor inicial R$29,00, mínimo R$10,00 e mensagem `mínimo R$ 10,00` abaixo do input.
+- Validar o mínimo no frontend e no backend; enviar ao Stripe apenas valores inteiros em centavos.
+- Constantes em `src/lib/stripe.ts`: `STRIPE_MIN_AMOUNT = 1000` e `STRIPE_SUGGESTED_AMOUNT = 2900`.
 - Verificar o direito de acesso no servidor; o redirecionamento de sucesso do checkout não comprova pagamento.
-- Processar eventos de pagamento e assinatura sem duplicar efeitos quando um webhook for reenviado.
-- Definir o comportamento de renovação, falha de pagamento, cancelamento e expiração.
-- Distinguir login do site, licença, ativação de computador e sessão de uso do plugin.
-- Aplicar o controle de licença também no plugin: login no site e proteção do download, isoladamente, não controlam o uso do arquivo já baixado.
-- Especificar emissão, expiração, renovação e revogação dos tokens e recuperação/troca de computador.
-- Dois computadores autorizados não determina automaticamente duas sessões simultâneas: essa regra está pendente.
-- Definir necessidade de conexão e eventual tolerância para uso offline.
+- Processar eventos de pagamento sem duplicar efeitos quando um webhook for reenviado.
+- Definir entrega e recuperação do download sem exigir cadastro para comprar.
+- Manter por solicitação do proprietário os retornos `/conta?success=true` e `/plugins`; a página de retorno e a entrega ainda precisam ser implementadas.
 
-O objetivo é reduzir compartilhamento e uso não autorizado; não prometer proteção absoluta contra cópia. A integração de licenciamento no plugin exige trabalho próprio, a ser coordenado com sua implementação.
+**Ordem de execução:** corrigir plano, valores, formulário e checkout; executar `npm run build` com sucesso antes de iniciar qualquer funcionalidade adicional.
 
 ---
 
@@ -84,9 +83,9 @@ O objetivo é reduzir compartilhamento e uso não autorizado; não prometer prot
 
 - Home: apresentação profissional e entradas equilibradas para portfólio e loja.
 - Portfólio: projetos com imagens, contexto e caminho claro para contato.
-- Plugins: descrição, requisitos, planos e acesso à assinatura.
+- Plugins: descrição, requisitos e compra direta com valor livre a partir de R$10,00.
 - Sobre/contato: apresentação profissional e canais de atendimento.
-- Conta: login, assinatura, downloads e gestão das ativações.
+- Retorno da compra em `/conta`: fluxo de confirmação/entrega a implementar, sem login obrigatório para comprar.
 
 **Conteúdo inicial aprovado:** placeholders. Identificá-los como demonstrativos; não apresentar imagens de banco como trabalhos reais do estúdio.
 
@@ -101,21 +100,21 @@ O checklist anterior confundia arquivos criados com funcionalidades concluídas.
 - [x] Estrutura inicial do Next.js criada
 - [x] Arquivos lib/supabase.ts e lib/stripe.ts criados — integração ainda precisa ser validada
 - [x] Logos copiados — conforme registro anterior
+- [x] `npm run build` passou em 2026-09-08 após correções do checkout e do rodapé. Permanece aviso preexistente sobre ordem de `@import` no CSS; pagamento real e entrega ainda não foram validados.
 - [ ] Compilação e configuração base verificadas após conciliação
 - [ ] Paleta aprovada aplicada no Tailwind 4 e conferida visualmente
-- [ ] Checkout corrigido e adaptado ao modelo de assinatura
+- [x] Sintaxe e validação do checkout corrigidas para pagamento único, mínimo R$10,00
 - [ ] Navbar + Footer + Cursor
 - [ ] Home page
 - [ ] GSAP + Lenis global
 - [ ] Hero + Cotas
 - [ ] Projetos scroll
-- [ ] /plugins com planos e preços definidos
-- [ ] Login e área da conta
-- [ ] Webhook Stripe e ciclo de vida da assinatura
+- [x] /plugins com formulário editável, sugestão R$29,00 e mínimo R$10,00
+- [ ] Retorno da compra e recuperação do download sem cadastro obrigatório
+- [ ] Webhook Stripe para confirmação de pagamento único
 - [ ] Downloads protegidos
-- [ ] Licenciamento, dois computadores e controle de sessões integrados ao plugin
 - [ ] Fluxo de suporte completo definido
-- [ ] Compra, renovação, cancelamento e acesso testados de ponta a ponta
+- [ ] Compra e entrega testadas de ponta a ponta
 - [ ] Mobile, teclado e movimento reduzido verificados
 - [ ] Renders reais e conteúdo final revisados
 - [ ] Deploy Vercel e domínio verificados
@@ -126,12 +125,11 @@ O checklist anterior confundia arquivos criados com funcionalidades concluídas.
 
 ### Decisões ainda necessárias
 
-1. Oferecer mensal e anual juntos ou escolher uma modalidade? Qual o preço de cada período e a qual deles se aplica o mínimo de R$5?
-2. A assinatura cobre um plugin ou todo o catálogo? O usuário escolhe o valor acima do mínimo ou haverá preços fixos?
-3. Permitir apenas uma sessão de uso do plugin por vez entre os dois computadores, ou uso simultâneo nos dois?
-4. Qual política de uso offline, troca de computador e acesso após expiração/cancelamento?
-5. Quais atualizações estão incluídas na assinatura e quais são as condições de uso comercial?
-6. Qual canal, horário e prazo de resposta do suporte completo? Qual contato público do estúdio?
+1. Como entregar e recuperar o download após a compra: e-mail, link protegido ou ambos?
+2. Quais correções/atualizações pertencem à versão adquirida e quais constituem nova versão paga? Quais as condições de uso comercial?
+3. Qual canal, horário e prazo de resposta do suporte completo? Qual contato público do estúdio?
+
+Preços e regras da futura Ameno Suite serão definidos quando houver múltiplos plugins; não são pendências desta fase.
 
 ### Materiais e continuidade
 

@@ -16,10 +16,7 @@ export default function Footer() {
       <div className="flex items-center gap-6">
         <a
           href="mailto:contato@ameno.studio"
-          className="text-xs tracking-wider transition-colors duration-200"
-          style={{ color: '#666666' }}
-          onMouseEnter={e => (e.currentTarget.style.color = '#E63B2E')}
-          onMouseLeave={e => (e.currentTarget.style.color = '#666666')}
+          className="text-xs tracking-wider transition-colors duration-200 text-[#666666] hover:text-[#E63B2E] focus-visible:text-[#E63B2E]"
         >
           contato@ameno.studio
         </a>
@@ -33,10 +30,7 @@ export default function Footer() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs tracking-widest uppercase transition-colors duration-200"
-              style={{ color: '#666666' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#666666')}
+              className="text-xs tracking-widest uppercase transition-colors duration-200 text-[#666666] hover:text-white focus-visible:text-white"
             >
               {label}
             </a>
