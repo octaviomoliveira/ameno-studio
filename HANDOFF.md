@@ -31,7 +31,7 @@ stripe 22 (server)
 
 ## Estado atual — 2026-09-08
 
-O checkout, o formulário de `/plugins`, a home editorial em cinco capítulos, `/sobre`, `/conta`, o schema de licenças, `POST /api/verify` e o webhook já foram implementados no checkout local. O hero combina grid, cotas e um campo abstrato de interferência; o portfólio tem índice e painéis fullbleed. `npm run build`, lint e os testes locais das rotas passam. A `SUPABASE_SERVICE_ROLE_KEY` já está no `.env.local` (não exibir, commitar ou enviar esta chave); a verificação local alcançou o banco e respondeu `not_found` para um token fictício.
+O checkout, o formulário de `/plugins`, a home editorial em cinco capítulos, `/sobre`, `/conta`, o schema de licenças, `POST /api/verify` e o webhook já foram implementados. O hero combina grid, cotas e um campo abstrato de interferência; o portfólio tem índice e painéis fullbleed. `npm run build`, lint e os testes locais das rotas passam. O site está publicado em `https://ameno.studio` via Vercel, com as variáveis de produção configuradas. O webhook de teste para `checkout.session.completed` foi criado no Stripe e uma entrega de teste respondeu HTTP `200`. A `SUPABASE_SERVICE_ROLE_KEY` já está no `.env.local` (não exibir, commitar ou enviar esta chave); a verificação local alcançou o banco e respondeu `not_found` para um token fictício.
 
 ---
 
@@ -117,7 +117,7 @@ Cinza:    #666666
 
 ## Variáveis de ambiente (.env.local — NÃO commitar)
 
-As chaves reais já estão em `.env.local` na raiz do projeto (não versionado).
+As chaves de desenvolvimento estão em `.env.local` na raiz do projeto (não versionado). O segredo do webhook de produção está configurado apenas no Vercel; o valor local continua sendo necessário somente se for preciso receber webhooks durante desenvolvimento.
 
 Variáveis necessárias:
 ```
@@ -125,7 +125,7 @@ NEXT_PUBLIC_SUPABASE_URL           → ver .env.local
 NEXT_PUBLIC_SUPABASE_ANON_KEY      → ver .env.local
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY → ver .env.local (chave de TESTE)
 STRIPE_SECRET_KEY                  → ver .env.local (chave de TESTE)
-STRIPE_WEBHOOK_SECRET              → preencher após configurar webhook no Stripe Dashboard
+STRIPE_WEBHOOK_SECRET              → produção configurada no Vercel; local permanece pendente para uso com webhook local
 NEXT_PUBLIC_SITE_URL               → http://localhost:3000 (dev) / https://ameno.studio (produção)
 NEXT_PUBLIC_MIN_AMOUNT             → 1000 (R$10,00 em centavos)
 ```
@@ -141,7 +141,7 @@ src/
     layout.tsx                ✅ root layout com Lenis + Navbar + Footer + Cursor
     page.tsx                  ✅ home com hero, portfólio placeholder e teaser de plugins
     api/
-      checkout/route.ts       ✅ CRIADO MAS COM BUGS (ver seção de bugs abaixo)
+      checkout/route.ts       ✅ pagamento único, mínimo R$10 e metadata do produto
       webhooks/stripe/route.ts ✅ webhook com assinatura Stripe e geração de token
   components/
     layout/
@@ -434,7 +434,7 @@ ALTER TABLE public.licenses ENABLE ROW LEVEL SECURITY;
 - `/api/verify` alcança o Supabase em execução local e vincula a primeira máquina atomicamente
 - `npm run build` passa
 
-**Pendências da fase 2:** testar um evento real/teste do Stripe no webhook e entregar o token/arquivo ao comprador.
+**Pendências da fase 2:** entregar o token/arquivo ao comprador e testar a compra completa de ponta a ponta. O webhook já recebeu um evento de teste do Stripe e respondeu HTTP `200`; o teste completo foi deliberadamente adiado até o app/plugin estar pronto.
 
 ---
 

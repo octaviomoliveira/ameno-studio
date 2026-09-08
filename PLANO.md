@@ -112,9 +112,9 @@ O proprietário pretende fornecer os renders em **2026-09-09**. Após recebê-lo
 
 ---
 
-## Status de implementação — 2026-09-08
+## Status de implementação — 2026-09-08 (reconciliado após publicação)
 
-O checklist foi reconciliado com o código atual. A interface inicial e a infraestrutura de licenças estão implementadas; entrega do arquivo, integração no pacote do plugin, conteúdo final e publicação continuam pendentes.
+O checklist foi reconciliado com o código e com a publicação atual. A interface, a infraestrutura de licenças e a base de produção estão funcionando; a loja ainda não deve ser considerada pronta para venda porque a entrega do arquivo, a integração final no plugin, o conteúdo definitivo e o teste completo de compra continuam pendentes.
 
 - [x] Estrutura inicial do Next.js criada
 - [x] Arquivos de Supabase e Stripe criados e configuração base carregada
@@ -135,9 +135,9 @@ O checklist foi reconciliado com o código atual. A interface inicial e a infrae
 - [x] Imagens conceituais provisórias no portfólio e esquema do Ameno Cotas na home/loja
 - [x] Schema `licenses`, funções atômicas e RLS aplicados no Supabase
 - [x] `POST /api/verify` e webhook de geração de token implementados; testes locais das rotas passam
+- [x] Webhook de teste do Stripe configurado para `checkout.session.completed` e entregue ao site com HTTP `200`
 - [ ] Retorno da compra e recuperação do download sem cadastro obrigatório
 - [x] Verificação integrada local com `SUPABASE_SERVICE_ROLE_KEY` (token fictício retorna `not_found` sem erro de serviço)
-- [ ] Teste integrado do webhook com evento real/teste do Stripe
 - [ ] Downloads protegidos
 - [ ] Fluxo de suporte completo definido
 - [ ] Compra e entrega testadas de ponta a ponta
@@ -145,7 +145,8 @@ O checklist foi reconciliado com o código atual. A interface inicial e a infrae
 - [x] Revisão visual mobile e fallback de movimento reduzido implementados
 - [ ] Auditoria detalhada de teclado e teste ponta a ponta de acessibilidade
 - [ ] Renders reais e conteúdo final revisados
-- [ ] Deploy Vercel e domínio verificados
+- [x] Deploy Vercel, domínio `ameno.studio` e resposta pública verificados
+- [x] Variáveis de produção configuradas no Vercel; segredos não ficam no repositório
 
 ---
 
@@ -165,4 +166,4 @@ Preços e regras da futura Ameno Suite serão definidos quando houver múltiplos
 - `SUPABASE_SERVICE_ROLE_KEY` já está em `D:\Ameno\ameno-studio\.env.local`; não commitar nem compartilhar o valor.
 - Receber os renders previstos para 2026-09-09; placeholders estão autorizados inicialmente.
 - Preparar/revisar apresentação profissional, descrição dos plugins e requisitos de compatibilidade a partir de informações verificadas.
-- Verificar a configuração existente de Supabase e Stripe sem expor segredos; solicitar apenas o que estiver faltando pelo meio apropriado.
+- O Stripe permanece em modo de teste; deixar a compra ponta a ponta para quando o app/plugin estiver pronto e, no lançamento, trocar as chaves e criar o webhook live.
