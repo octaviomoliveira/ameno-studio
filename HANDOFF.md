@@ -29,6 +29,66 @@ stripe 22 (server)
 
 ---
 
+## Referências visuais — ler antes de montar qualquer página
+
+### Sites de referência de scroll e layout
+
+| Site | O que importa |
+|---|---|
+| [elephant-skin.com](https://www.elephant-skin.com) | **Referência principal.** Scroll cinemático, seções pinadas, fullbleed, texto que entra enquanto imagem fica parada. É o efeito mais próximo do que queremos. |
+| [brickvisual.com](https://brickvisual.com) | Dark, fullbleed, o trabalho como protagonista absoluto. Imagens ocupam a tela toda. Texto mínimo. |
+| [lircle.co](https://lircle.co) | Tipografia elegante, espaçamento generoso, ritmo de scroll cuidadoso. |
+| [jeffmilanes.com](https://www.jeffmilanes.com) | Scroll suave, transições entre projetos, identidade forte. |
+
+### Referências de universo de marca
+
+Não copiar — estudar como constroem sistemas simples, reconhecíveis e culturalmente carregados:
+
+**Urban Arts, Brain Dead, Patta, Stüssy, A24, Carhartt WIP, MUBI**
+
+O que interessa nessas marcas: sistema visual enxuto + carga cultural + tipografia como protagonista. Nada de decoração gratuita.
+
+### Como o conceito aparece visualmente
+
+- **Ordem** = tipografia grotesca pesada e limpa, grid racional, precisão
+- **Interferência** = o vermelho `#E63B2E` aparece como corte, ruptura, intervenção — não como decoração
+- O logo tem um slash horizontal cortando toda a palavra + "O" com textura de spray
+- O vermelho no site entra onde há ruptura: slash do logo, ano dos projetos, linha separadora, CTA
+
+### Layout da home (aprovado pelo proprietário)
+
+```
+NAVBAR
+  [logo com slash vermelho]         [plugins  sobre  conta]
+
+HERO (100vh, fundo preto)
+  arquitetura.
+  visualização.          ← texto display, letra por letra
+  ferramentas.
+
+  [cotas SVG flutuando — reagem ao mouse]
+
+  [ameno.studio] ← centro inferior, cinza
+
+MARQUEE
+  ─ ARQUITETURA · VISUALIZAÇÃO · PLUGINS · AMENO.STUDIO · RECIFE · ─
+
+PROJETOS (scroll cinemático)
+  Imagem fullwidth cresce do centro → fica parada → texto sobe por baixo
+  Nome do projeto (branco) + Ano (vermelho)
+
+TEASER PLUGINS
+  Ferramentas para arquitetos.
+  ─────────────── (linha vermelha animada)
+  Ameno Cotas — Plugin para 3ds Max     [Ver plugins →]
+
+FOOTER
+  ameno.studio          contato@ameno.studio
+  © Octávio Oliveira    Instagram  LinkedIn
+```
+
+---
+
 ## Identidade visual — APROVADA, não alterar
 
 ```
