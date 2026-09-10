@@ -187,5 +187,5 @@ Preços e regras da futura Ameno Suite serão definidos quando houver múltiplos
 - `SUPABASE_SERVICE_ROLE_KEY` já está em `D:\Ameno\ameno-studio\.env.local`; não commitar nem compartilhar o valor.
 - Revisar futuramente se a seleção atual de trabalhos reais permanece na home, portfólio e parede visual.
 - Links públicos confirmados: Instagram `@arq.octaviooliveira` e LinkedIn `octavio-m-oliveira`.
-- Preparar/revisar apresentação profissional, descrição dos plugins e requisitos de compatibilidade a partir de informações verificadas.
+- Revisar com o proprietário a primeira versão da apresentação profissional já publicada; preparar a descrição final dos plugins e requisitos de compatibilidade a partir de informações verificadas.
 - O Stripe permanece em modo de teste; deixar a compra ponta a ponta para quando o app/plugin estiver pronto e, no lançamento, trocar as chaves e criar o webhook live.

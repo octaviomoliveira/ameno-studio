@@ -126,7 +126,8 @@ O hero conceitual permanece identificado como provisório. As imagens de projeto
 - [x] Confirmar que os renders atuais são trabalhos reais e mantê-los como seleção oficial desta fase.
 - [ ] Revisar a curadoria, nomes, locais e anos definitivos.
 - [ ] Inserir captura e demonstração do Ameno Cotas.
-- [ ] Finalizar apresentação profissional e fotografia do estúdio.
+- [x] Escrever e publicar a primeira versão da apresentação profissional.
+- [ ] Revisar o texto final e inserir fotografia do estúdio.
 - [x] Confirmar Instagram e LinkedIn.
 - [ ] Confirmar canal e política de suporte.
 

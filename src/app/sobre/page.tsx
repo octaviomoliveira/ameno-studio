@@ -3,7 +3,7 @@ import StudioMethod from '@/components/home/StudioMethod'
 
 export const metadata = {
   title: 'Sobre — ameno.studio',
-  description: 'Octávio Oliveira — arquitetura, visualização e ferramentas para profissionais.',
+  description: 'Octávio Oliveira — arquitetura, visualização e ferramentas para tornar ideias claras e processos mais inteligentes.',
 }
 
 export default function SobrePage() {
@@ -42,12 +42,14 @@ export default function SobrePage() {
         <div className="about-copy-grid mt-20 grid gap-12 border-t border-[#222222] pt-8 sm:mt-28 lg:grid-cols-[1fr_2fr] lg:gap-24">
           <div className="about-identity">
             <p className="text-lg">Octávio Oliveira</p>
-            <p className="mt-2 text-sm text-[#666666]">Arquitetura · ArchViz · Ferramentas</p>
+            <p className="mt-2 text-sm text-[#666666]">Arquitetura · Visualização · Ferramentas</p>
             <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.2em] text-[#E63B2E]">Disponível para colaborações</p>
           </div>
           <div className="max-w-2xl space-y-6 text-lg leading-relaxed text-[#e8e8e0]">
-            <p>O ameno.studio reúne prática profissional em arquitetura e visualização com ferramentas que tornam o trabalho mais claro, rápido e preciso.</p>
-            <p className="text-[#666666]">Texto de apresentação em revisão. A versão final e os projetos serão adicionados quando o conteúdo e os renders forem separados.</p>
+            <p>Eu sou Octávio Oliveira. O ameno.studio é o ponto de encontro entre meu trabalho com arquitetura, visualização e criação de ferramentas. Nasceu da vontade de transformar ideias complexas em imagens claras — e processos repetitivos em soluções mais inteligentes.</p>
+            <p className="text-[#a0a09a]">Para mim, visualizar não é apenas apresentar um projeto pronto. É uma forma de pensar: testar atmosferas, perceber relações, antecipar decisões e comunicar com precisão aquilo que ainda não existe.</p>
+            <p className="text-[#666666]">A mesma inquietação que conduz os projetos também dá origem aos plugins. Quando uma tarefa consome tempo demais ou interrompe o raciocínio, procuro convertê-la em uma ferramenta simples, direta e útil para quem trabalha criando.</p>
+            <p className="text-[#666666]">A partir de Recife, colaboro com pessoas, escritórios e empresas que procuram unir intenção, técnica e uma imagem capaz de contar a história certa.</p>
             <div className="about-disciplines flex flex-wrap gap-x-6 gap-y-2 pt-4 text-sm uppercase tracking-[0.18em] text-[#666666]">
               <span>Arquitetura</span><span>ArchViz</span><span>Interiores</span><span>BIM</span><span>Produtos</span>
             </div>
