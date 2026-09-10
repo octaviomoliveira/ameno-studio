@@ -56,7 +56,7 @@ export default function PluginsTeaser() {
             <p className="plugins-teaser-product">Ameno Cotas</p>
             <p className="plugins-teaser-description">Cotas automáticas no 3ds Max para reduzir trabalho repetitivo e manter o foco na imagem.</p>
           </div>
-          <Link href="/plugins" className="plugins-teaser-cta">
+          <Link href="/plugins" className="plugins-teaser-cta ameno-button ameno-button--ink">
             Conhecer o Ameno Cotas <span aria-hidden="true">→</span>
           </Link>
         </div>

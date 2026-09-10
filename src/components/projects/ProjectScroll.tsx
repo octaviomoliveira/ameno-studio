@@ -41,6 +41,7 @@ export default function ProjectScroll({ projects }: { projects: Project[] }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
 
     const context = gsap.context(() => {
       const panels = gsap.utils.toArray<HTMLElement>('[data-project-panel]')
@@ -50,6 +51,20 @@ export default function ProjectScroll({ projects }: { projects: Project[] }) {
         const media = panel.querySelector('[data-project-media]')
         const info = panel.querySelector('[data-project-info]')
         if (!frame || !media || !info) return
+
+        if (isMobile) {
+          gsap.fromTo(panel,
+            { y: 28, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.72,
+              ease: 'power3.out',
+              scrollTrigger: { trigger: panel, start: 'top 88%', once: true },
+            },
+          )
+          return
+        }
 
         gsap.fromTo(frame,
           { clipPath: 'inset(7% 4% 7% 4%)' },
@@ -76,7 +91,12 @@ export default function ProjectScroll({ projects }: { projects: Project[] }) {
             y: 0,
             opacity: 1,
             ease: 'power3.out',
-            scrollTrigger: { trigger: panel, start: 'top 60%', end: 'top 34%', scrub: 1 },
+            scrollTrigger: {
+              trigger: panel,
+              start: 'top 60%',
+              end: 'top 34%',
+              scrub: 1,
+            },
           },
         )
       })

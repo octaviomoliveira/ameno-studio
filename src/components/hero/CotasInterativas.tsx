@@ -48,7 +48,10 @@ function geometry(cota: Cota, scale = 1) {
 
 function setLine(line: SVGLineElement | null, values: { x1: number; y1: number; x2: number; y2: number }) {
   if (!line) return
-  Object.entries(values).forEach(([key, value]) => line.setAttribute(key, String(value)))
+  line.setAttribute('x1', String(values.x1))
+  line.setAttribute('y1', String(values.y1))
+  line.setAttribute('x2', String(values.x2))
+  line.setAttribute('y2', String(values.y2))
 }
 
 export default function CotasInterativas() {
@@ -60,28 +63,35 @@ export default function CotasInterativas() {
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const coarsePointer = window.matchMedia('(pointer: coarse)').matches
-    let frame = 0
+    if (reducedMotion || coarsePointer) return
+
+    // Cache element lookups once on mount — eliminates 32 querySelector calls per frame
+    const elements = COTAS.map((_, index) => {
+      const group = svg.querySelector(`[data-cota="${index}"]`) as SVGGElement | null
+      return {
+        group,
+        line: group?.querySelector('.cota-line') as SVGLineElement | null,
+        arrow1: group?.querySelector('.arrow1') as SVGLineElement | null,
+        arrow2: group?.querySelector('.arrow2') as SVGLineElement | null,
+        text: group?.querySelector('.cota-text') as SVGTextElement | null,
+      }
+    })
+
+    let rafId: number | null = null
+    let isIntersecting = false
     const mouse = { x: 0.5, y: 0.5 }
 
-    const onMouse = (event: MouseEvent) => {
-      const bounds = svg.getBoundingClientRect()
-      mouse.x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width))
-      mouse.y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height))
-    }
-
-    const draw = () => {
-      COTAS.forEach((cota, index) => {
-        const group = svg.querySelector(`[data-cota="${index}"]`) as SVGGElement | null
+    const updateCotas = () => {
+      elements.forEach(({ group, line, arrow1, arrow2, text }, index) => {
         if (!group) return
-
+        const cota = COTAS[index]
         const distance = Math.hypot(mouse.x - cota.x, mouse.y - cota.y)
         const influence = Math.max(0, 1 - distance / 0.52)
         const values = geometry(cota, 1 + influence * 0.72)
 
-        setLine(group.querySelector('.cota-line'), values.line)
-        setLine(group.querySelector('.arrow1'), values.arrow1)
-        setLine(group.querySelector('.arrow2'), values.arrow2)
-        const text = group.querySelector('.cota-text') as SVGTextElement | null
+        setLine(line, values.line)
+        setLine(arrow1, values.arrow1)
+        setLine(arrow2, values.arrow2)
         if (text) {
           text.setAttribute('x', String(values.text.x))
           text.setAttribute('y', String(values.text.y))
@@ -89,28 +99,48 @@ export default function CotasInterativas() {
         }
         group.style.opacity = String(0.26 + influence * 0.54)
       })
+      rafId = null
+    }
 
-      frame = requestAnimationFrame(draw)
+    const scheduleUpdate = () => {
+      if (!isIntersecting || rafId !== null) return
+      if (document.documentElement.hasAttribute('data-intro-active')) return
+      rafId = requestAnimationFrame(updateCotas)
+    }
+
+    const onMouse = (event: MouseEvent) => {
+      if (!isIntersecting) return
+      const bounds = svg.getBoundingClientRect()
+      mouse.x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width))
+      mouse.y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height))
+      scheduleUpdate()
     }
 
     const onScroll = () => {
-      if (reducedMotion) return
+      if (!isIntersecting) return
       const progress = Math.min(1, window.scrollY / Math.max(1, window.innerHeight))
       svg.style.transform = `translate3d(0, ${progress * -72}px, 0)`
       svg.style.opacity = String(0.24 - progress * 0.1)
     }
 
-    if (!coarsePointer && !reducedMotion) {
-      window.addEventListener('mousemove', onMouse)
-      frame = requestAnimationFrame(draw)
-    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isIntersecting = entry.isIntersecting
+        if (isIntersecting) scheduleUpdate()
+      },
+      { threshold: 0.05 }
+    )
+    observer.observe(svg)
+
+    window.addEventListener('mousemove', onMouse, { passive: true })
     window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
+    scheduleUpdate()
 
     return () => {
+      observer.disconnect()
       window.removeEventListener('mousemove', onMouse)
       window.removeEventListener('scroll', onScroll)
-      cancelAnimationFrame(frame)
+      if (rafId) cancelAnimationFrame(rafId)
     }
   }, [])
 

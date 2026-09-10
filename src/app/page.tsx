@@ -3,7 +3,7 @@ import HeroSection from '@/components/hero/HeroSection'
 import Marquee from '@/components/shared/Marquee'
 import ProjectScroll from '@/components/projects/ProjectScroll'
 import PluginsTeaser from '@/components/plugins/PluginsTeaser'
-import ApproachStatement from '@/components/home/ApproachStatement'
+import KeywordsWall from '@/components/home/KeywordsWall'
 
 type Project = {
   slug: string
@@ -14,10 +14,14 @@ type Project = {
   cover_url: string | null
 }
 
+export const revalidate = 3600
+
 const PLACEHOLDER_PROJECTS: Project[] = [
-  { slug: 'projeto-01', title: 'Casa-pátio', category: 'Residencial', location: 'Imagem conceitual', year: 2026, cover_url: '/projects/residencia-courtyard.png' },
-  { slug: 'projeto-02', title: 'Entre planos', category: 'Interiores', location: 'Imagem conceitual', year: 2026, cover_url: '/projects/interior-stair.png' },
-  { slug: 'projeto-03', title: 'Pavilhão norte', category: 'Comercial', location: 'Imagem conceitual', year: 2026, cover_url: '/projects/pavilhao-creative.png' },
+  { slug: 'estudio-bola', title: 'Estúdio Bola', category: 'Comercial', location: 'São Paulo, SP', year: 2023, cover_url: '/projects/estudio-bola.webp' },
+  { slug: 'central-parque', title: 'Central Parque', category: 'Residencial', location: 'Curitiba, PR', year: 2024, cover_url: '/projects/central-parque.webp' },
+  { slug: 'raizes', title: 'Raízes', category: 'Residencial', location: 'Capão Bonito, SP', year: 2024, cover_url: '/projects/raizes-manha.webp' },
+  { slug: 'goya', title: 'Goya', category: 'Residencial', location: 'São Paulo, SP', year: 2024, cover_url: '/projects/goya-gourmet.webp' },
+  { slug: 'moradas-do-bosque', title: 'Moradas do Bosque', category: 'Condomínio', location: 'Campinas, SP', year: 2023, cover_url: '/projects/moradas-bosque.webp' },
 ]
 
 async function getProjects(): Promise<Project[]> {
@@ -42,7 +46,7 @@ export default async function Home() {
     <>
       <HeroSection />
       <Marquee />
-      <ApproachStatement />
+      <KeywordsWall />
       <ProjectScroll projects={visibleProjects} />
       <PluginsTeaser />
     </>

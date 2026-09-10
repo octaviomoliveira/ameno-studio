@@ -2,6 +2,8 @@
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
+> O login opcional e a área do cliente estão detalhados em `PLANO_AUTENTICACAO.md`. A compra continua sem cadastro obrigatório.
+
 > **Stack declarada no projeto:** Next.js 16.3.4 + React 19 + Tailwind 4 + GSAP + Lenis + Supabase + Stripe + Vercel
 > **Domínio:** ameno.studio
 > **Repo:** github.com/octaviomoliveira/ameno-studio
@@ -59,6 +61,7 @@ Na implementação, adaptar os efeitos para celular/touch, navegação por tecla
 - Valor sugerido de **R$29,00**, preenchido no formulário e livremente editável.
 - **Pagamento único por versão**, sem assinatura mensal/anual nesta fase.
 - **Compra direta, sem login obrigatório**.
+- **Login opcional por e-mail** para recuperar compras, licenças e futuros downloads na área do cliente.
 - **1 compra = 1 licença = 1 computador**.
 - O plugin verifica um token na API ao iniciar; a primeira verificação vincula a licença ao computador e verificações seguintes exigem o mesmo computador.
 - Outro computador exige uma nova compra. Trocas manuais poderão ser tratadas pelo suporte.
@@ -137,6 +140,8 @@ O checklist foi reconciliado com o código e com a publicação atual. A interfa
 - [x] `POST /api/verify` e webhook de geração de token implementados; testes locais das rotas passam
 - [x] Webhook de teste do Stripe configurado para `checkout.session.completed` e entregue ao site com HTTP `200`
 - [ ] Retorno da compra e recuperação do download sem cadastro obrigatório
+- [x] Base de autenticação por e-mail, sessão SSR e área da conta protegida
+- [x] Vínculo seguro de compras convidadas pelo e-mail confirmado
 - [x] Verificação integrada local com `SUPABASE_SERVICE_ROLE_KEY` (token fictício retorna `not_found` sem erro de serviço)
 - [ ] Downloads protegidos
 - [ ] Fluxo de suporte completo definido

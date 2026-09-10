@@ -20,6 +20,7 @@ function loadRoute(file, rpc) {
     require(name) {
       if (name === 'next/server') return { NextResponse: { json: (data, init) => Response.json(data, init) } }
       if (name === '@/lib/supabase-admin') return { getSupabaseAdmin: () => ({ rpc }) }
+      if (name === '@/lib/supabase/server') return { createClient: async () => ({ auth: { getClaims: async () => ({ data: null }) } }) }
       if (name === '@/lib/stripe') return { stripe, STRIPE_MIN_AMOUNT: 1000 }
       if (name === 'node:crypto') return { randomUUID }
       throw new Error(`Unexpected import: ${name}`)
@@ -27,6 +28,31 @@ function loadRoute(file, rpc) {
   }
   vm.runInNewContext(code, sandbox, { filename: file })
   return { ...exports, stripe, secret }
+}
+
+function loadCheckoutRoute(claims, createCheckout) {
+  const file = 'src/app/api/checkout/route.ts'
+  const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+  }).outputText
+  const exports = {}
+  const sandbox = {
+    exports,
+    process: { env: { NEXT_PUBLIC_SITE_URL: 'http://localhost' } },
+    require(name) {
+      if (name === 'next/server') return { NextResponse: { json: (data, init) => Response.json(data, init) } }
+      if (name === '@/lib/stripe') return {
+        STRIPE_MIN_AMOUNT: 1000,
+        stripe: { checkout: { sessions: { create: createCheckout } } },
+      }
+      if (name === '@/lib/supabase/server') return {
+        createClient: async () => ({ auth: { getClaims: async () => ({ data: claims ? { claims } : null }) } }),
+      }
+      throw new Error(`Unexpected import: ${name}`)
+    },
+  }
+  vm.runInNewContext(code, sandbox, { filename: file })
+  return exports
 }
 
 test('verify validates inputs before database access and preserves denial reasons', async () => {
@@ -56,12 +82,39 @@ test('verify validates inputs before database access and preserves denial reason
   assert.equal((await unavailable.json()).reason, 'service_unavailable')
 })
 
+test('checkout remains public and only attaches server-verified identity', async () => {
+  const created = []
+  const createCheckout = async (options) => {
+    created.push(options)
+    return { url: 'https://checkout.stripe.test/session' }
+  }
+  const request = () => new Request('http://localhost/api/checkout', {
+    method: 'POST',
+    body: JSON.stringify({ amount: 2900, user_id: 'untrusted-client-value' }),
+  })
+
+  const guest = loadCheckoutRoute(null, createCheckout)
+  assert.equal((await guest.POST(request())).status, 200)
+  assert.equal(created[0].client_reference_id, undefined)
+  assert.equal(created[0].metadata.user_id, undefined)
+
+  const claims = {
+    sub: '2d57a8ba-d6e9-42ee-9d16-1f2dfaf9d57f',
+    email: 'BUYER@EXAMPLE.INVALID',
+  }
+  const authenticated = loadCheckoutRoute(claims, createCheckout)
+  assert.equal((await authenticated.POST(request())).status, 200)
+  assert.equal(created[1].client_reference_id, claims.sub)
+  assert.equal(created[1].metadata.user_id, claims.sub)
+  assert.equal(created[1].customer_email, 'buyer@example.invalid')
+})
+
 test('webhook verifies real signatures, requires paid status and uses atomic fulfillment', async () => {
   const calls = []
   let dbFails = false
   const route = loadRoute('src/app/api/webhooks/stripe/route.ts', async (name, args) => {
     calls.push({ name, args })
-    return { error: dbFails ? { message: 'private error' } : null }
+    return { data: name === 'attach_purchase_to_user' ? true : null, error: dbFails ? { message: 'private error' } : null }
   })
   const session = { id: 'cs_test_local', mode: 'payment', payment_status: 'paid',
     metadata: { product: 'ameno-cotas' }, amount_total: 2900, currency: 'brl',
@@ -85,6 +138,16 @@ test('webhook verifies real signatures, requires paid status and uses atomic ful
   assert.equal(calls[0].args.p_amount, 2900)
   assert.match(calls[0].args.p_token, /^[0-9a-f-]{36}$/)
   assert.equal((await route.POST(request(session, 'checkout.session.async_payment_succeeded'))).status, 200)
+  const userId = '2d57a8ba-d6e9-42ee-9d16-1f2dfaf9d57f'
+  const ownedSession = {
+    ...session,
+    id: 'cs_test_owned',
+    client_reference_id: userId,
+    metadata: { product: 'ameno-cotas', user_id: userId },
+  }
+  assert.equal((await route.POST(request(ownedSession))).status, 200)
+  assert.equal(calls.at(-1).name, 'attach_purchase_to_user')
+  assert.equal(calls.at(-1).args.p_email, 'test@example.invalid')
   dbFails = true
   assert.equal((await route.POST(request())).status, 500)
 })

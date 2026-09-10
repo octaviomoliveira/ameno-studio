@@ -44,8 +44,9 @@ export default function PurchaseForm({ minimum, suggested }: { minimum: number; 
         className="purchase-input" />
       <p id="amount-hint" className="purchase-hint">mínimo {minimumLabel}</p>
       <p id="amount-error" className="purchase-error" role="alert">{error}</p>
-      <button type="submit" disabled={pending} className="purchase-submit">
-        {pending ? 'Abrindo pagamento…' : 'Comprar Ameno Cotas'}
+      <button type="submit" disabled={pending} className="purchase-submit ameno-button ameno-button--primary ameno-button--block">
+        <span>{pending ? 'Abrindo pagamento…' : 'Comprar Ameno Cotas'}</span>
+        {!pending ? <span aria-hidden="true">→</span> : null}
       </button>
     </form>
   )

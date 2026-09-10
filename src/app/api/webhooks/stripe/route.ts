@@ -31,15 +31,28 @@ export async function POST(request: Request) {
   }
 
   try {
+    const supabase = getSupabaseAdmin()
     const paymentIntent = typeof session.payment_intent === 'string'
       ? session.payment_intent : session.payment_intent?.id ?? null
-    const { error } = await getSupabaseAdmin().rpc('fulfill_plugin_purchase', {
+    const customerEmail = session.customer_details?.email ?? session.customer_email ?? null
+    const { error } = await supabase.rpc('fulfill_plugin_purchase', {
       p_session_id: session.id, p_payment_intent: paymentIntent,
       p_amount: session.amount_total, p_currency: session.currency,
-      p_email: session.customer_details?.email ?? session.customer_email ?? null,
+      p_email: customerEmail,
       p_product: 'ameno-cotas', p_token: randomUUID(),
     })
     if (error) throw new Error('Purchase fulfillment failed')
+
+    const userId = session.metadata?.user_id
+    if (userId && session.client_reference_id === userId && customerEmail) {
+      const { error: attachError } = await supabase.rpc('attach_purchase_to_user', {
+        p_session_id: session.id,
+        p_user_id: userId,
+        p_email: customerEmail,
+      })
+      if (attachError) throw new Error('Purchase ownership failed')
+    }
+
     // Email delivery is a later step. Never return the license in a webhook response.
     return NextResponse.json({ received: true })
   } catch {

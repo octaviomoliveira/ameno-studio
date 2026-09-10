@@ -33,11 +33,16 @@ export default function InterferenceField() {
     const pointer = { x: -1000, y: -1000, active: false }
     let points: Point[] = []
     let frame = 0
+    let ambientFrame = 0
+    let lastTouchSpray = 0
     let width = 0
     let height = 0
 
+    let isRunning = false
+    let isIntersecting = false
+
     const createPoints = () => {
-      const count = coarsePointer ? 18 : 34
+      const count = coarsePointer ? 16 : 28
       points = Array.from({ length: count }, (_, index) => ({
         x: pseudoRandom(index + 4) * width,
         y: pseudoRandom(index + 19) * height,
@@ -50,8 +55,8 @@ export default function InterferenceField() {
       }))
     }
 
-    const addSpray = (x: number, y: number) => {
-      for (let index = 0; index < 5; index += 1) {
+    const addSpray = (x: number, y: number, amount = 4) => {
+      for (let index = 0; index < amount; index += 1) {
         const angle = Math.random() * Math.PI * 2
         const speed = 0.08 + Math.random() * 0.34
         points.push({
@@ -66,7 +71,7 @@ export default function InterferenceField() {
         })
       }
 
-      if (points.length > 150) points.splice(34, points.length - 150)
+      if (points.length > 100) points.splice(28, points.length - 100)
     }
 
     const resize = () => {
@@ -81,7 +86,17 @@ export default function InterferenceField() {
     }
 
     const draw = () => {
+      if (!isRunning) return
       context.clearRect(0, 0, width, height)
+      ambientFrame += 1
+
+      if (coarsePointer && !reducedMotion && ambientFrame % 105 === 0) {
+        addSpray(
+          width * (0.2 + Math.random() * 0.6),
+          height * (0.28 + Math.random() * 0.42),
+          2,
+        )
+      }
       for (let index = points.length - 1; index >= 0; index -= 1) {
         const point = points[index]
         point.x += point.vx
@@ -102,7 +117,7 @@ export default function InterferenceField() {
         if (point.ambient && point.y < -8) point.y = height + 8
       }
 
-      if (pointer.active && !coarsePointer && !reducedMotion) {
+      if (pointer.active && !coarsePointer) {
         const halo = context.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 42)
         halo.addColorStop(0, 'rgba(230, 59, 46, 0.12)')
         halo.addColorStop(1, 'rgba(230, 59, 46, 0)')
@@ -110,10 +125,41 @@ export default function InterferenceField() {
         context.fillRect(pointer.x - 42, pointer.y - 42, 84, 84)
       }
 
-      if (!reducedMotion) frame = requestAnimationFrame(draw)
+      frame = requestAnimationFrame(draw)
     }
 
+    const startAnimation = () => {
+      if (isRunning || !isIntersecting) return
+      if (document.documentElement.hasAttribute('data-intro-active')) return
+      isRunning = true
+      frame = requestAnimationFrame(draw)
+    }
+
+    const stopAnimation = () => {
+      isRunning = false
+      if (frame) cancelAnimationFrame(frame)
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isIntersecting = entry.isIntersecting
+        if (isIntersecting) {
+          startAnimation()
+        } else {
+          stopAnimation()
+        }
+      },
+      { threshold: 0.05 }
+    )
+    observer.observe(canvas)
+
+    const onIntroDismiss = () => {
+      if (isIntersecting) startAnimation()
+    }
+    window.addEventListener('ameno:intro-dismiss', onIntroDismiss)
+
     const onPointerMove = (event: PointerEvent) => {
+      if (!isRunning) return
       const bounds = canvas.getBoundingClientRect()
       const x = event.clientX - bounds.left
       const y = event.clientY - bounds.top
@@ -121,8 +167,15 @@ export default function InterferenceField() {
 
       pointer.x = x
       pointer.y = y
-      pointer.active = isInside
-      if (isInside && !coarsePointer && !reducedMotion) addSpray(x, y)
+      pointer.active = isInside && !coarsePointer
+      if (!isInside || reducedMotion) return
+
+      if (!coarsePointer) {
+        addSpray(x, y)
+      } else if (event.pointerType === 'touch' && event.timeStamp - lastTouchSpray > 90) {
+        addSpray(x, y, 2)
+        lastTouchSpray = event.timeStamp
+      }
     }
 
     const onPointerLeave = () => {
@@ -130,13 +183,14 @@ export default function InterferenceField() {
     }
 
     resize()
-    draw()
     window.addEventListener('resize', resize)
-    if (!coarsePointer && !reducedMotion) window.addEventListener('pointermove', onPointerMove, { passive: true })
+    if (!reducedMotion) window.addEventListener('pointermove', onPointerMove, { passive: true })
     document.documentElement.addEventListener('pointerleave', onPointerLeave)
 
     return () => {
-      cancelAnimationFrame(frame)
+      stopAnimation()
+      observer.disconnect()
+      window.removeEventListener('ameno:intro-dismiss', onIntroDismiss)
       window.removeEventListener('resize', resize)
       window.removeEventListener('pointermove', onPointerMove)
       document.documentElement.removeEventListener('pointerleave', onPointerLeave)

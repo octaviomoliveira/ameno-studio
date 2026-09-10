@@ -1,5 +1,6 @@
 ﻿import { NextRequest, NextResponse } from 'next/server'
 import { stripe, STRIPE_MIN_AMOUNT } from '@/lib/stripe'
+import { createClient } from '@/lib/supabase/server'
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +14,12 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       )
     }
+
+    const supabase = await createClient()
+    const { data: claimsData } = await supabase.auth.getClaims()
+    const claims = claimsData?.claims
+    const userId = typeof claims?.sub === 'string' ? claims.sub : null
+    const userEmail = typeof claims?.email === 'string' ? claims.email.trim().toLowerCase() : null
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -30,10 +37,13 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: 'payment',
+      customer_email: userEmail ?? undefined,
+      client_reference_id: userId ?? undefined,
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/conta?success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/plugins`,
       metadata: {
         product: 'ameno-cotas',
+        ...(userId ? { user_id: userId } : {}),
       },
     })
 

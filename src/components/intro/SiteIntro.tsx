@@ -18,6 +18,9 @@ export default function SiteIntro() {
       if (isAlreadyLeaving) return isAlreadyLeaving
 
       window.sessionStorage.setItem(INTRO_STORAGE_KEY, 'true')
+      document.documentElement.removeAttribute('data-intro-active')
+      window.dispatchEvent(new CustomEvent('ameno:intro-dismiss'))
+
       window.setTimeout(() => {
         setVisible(false)
         setLeaving(false)
@@ -32,11 +35,13 @@ export default function SiteIntro() {
     const forceIntro = new URLSearchParams(window.location.search).has('intro')
     const hasSeenIntro = window.sessionStorage.getItem(INTRO_STORAGE_KEY) === 'true'
 
-    const revealFrame = window.requestAnimationFrame(() => {
-      if (forceIntro || !hasSeenIntro) setVisible(true)
-    })
-
-    return () => window.cancelAnimationFrame(revealFrame)
+    if (forceIntro || !hasSeenIntro) {
+      document.documentElement.setAttribute('data-intro-active', 'true')
+      const frame = window.requestAnimationFrame(() => setVisible(true))
+      return () => window.cancelAnimationFrame(frame)
+    } else {
+      document.documentElement.removeAttribute('data-intro-active')
+    }
   }, [pathname])
 
   useEffect(() => {

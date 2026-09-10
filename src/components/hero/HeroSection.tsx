@@ -20,10 +20,11 @@ export default function HeroSection() {
     const media = mediaRef.current
     const copy = copyRef.current
     if (!section || !media || !copy || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
 
     const context = gsap.context(() => {
       gsap.to(media, {
-        scale: 1.08,
+        scale: isMobile ? 1.035 : 1.08,
         ease: 'none',
         scrollTrigger: {
           trigger: section,
@@ -34,8 +35,8 @@ export default function HeroSection() {
       })
 
       gsap.to(copy, {
-        yPercent: -12,
-        opacity: 0.18,
+        yPercent: isMobile ? -4 : -12,
+        opacity: isMobile ? 0.42 : 0.18,
         ease: 'none',
         scrollTrigger: {
           trigger: section,
@@ -53,7 +54,7 @@ export default function HeroSection() {
     <section ref={sectionRef} className="narrative-hero" aria-labelledby="hero-title">
       <div ref={mediaRef} className="narrative-hero-media">
         <Image
-          src="/hero/ameno-hero-concept-v1.png"
+          src="/hero/ameno-hero-concept-v1.webp"
           alt="Pavilhão monumental de concreto ao entardecer — imagem conceitual"
           fill
           priority
@@ -78,8 +79,8 @@ export default function HeroSection() {
           <span className="font-editorial">não existe.</span>
         </h1>
         <div className="narrative-hero-actions">
-          <Link href="#portfolio">Ver projetos <span aria-hidden="true">→</span></Link>
-          <Link href="/plugins">Conhecer ferramentas <span aria-hidden="true">→</span></Link>
+          <Link href="#portfolio" className="ameno-button ameno-button--primary">Ver projetos <span aria-hidden="true">→</span></Link>
+          <Link href="/plugins" className="ameno-button ameno-button--secondary">Conhecer ferramentas <span aria-hidden="true">→</span></Link>
         </div>
       </div>
 
