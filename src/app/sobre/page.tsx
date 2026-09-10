@@ -42,12 +42,6 @@ export default function SobrePage() {
 
         <div className="about-copy-grid mt-20 grid gap-12 border-t border-[#222222] pt-8 sm:mt-28 lg:grid-cols-[1fr_2fr] lg:gap-24">
           <div>
-            <div className="about-identity">
-              <p className="text-lg">Octávio Oliveira</p>
-              <p className="mt-2 text-sm text-[#666666]">Arquitetura · Visualização · Ferramentas</p>
-              <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.2em] text-[#E63B2E]">Disponível para colaborações</p>
-            </div>
-
             <figure className="about-portrait">
               <div className="about-portrait-frame">
                 <Image
@@ -62,6 +56,10 @@ export default function SobrePage() {
               </div>
               <figcaption><span>Octávio Oliveira</span><span>Recife / Brasil</span></figcaption>
             </figure>
+            <div className="about-portrait-meta">
+              <p>Arquitetura · Visualização · Ferramentas</p>
+              <p>Disponível para colaborações</p>
+            </div>
           </div>
           <div className="max-w-2xl space-y-6 text-lg leading-relaxed text-[#e8e8e0]">
             <p>Eu sou Octávio Oliveira. O ameno.studio é o ponto de encontro entre meu trabalho com arquitetura, visualização e criação de ferramentas. Nasceu da vontade de transformar ideias complexas em imagens claras — e processos repetitivos em soluções mais inteligentes.</p>

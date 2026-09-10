@@ -989,7 +989,7 @@ input:focus-visible {
 }
 
 .about-portrait {
-  margin-top: clamp(3rem, 7vw, 6rem);
+  margin-top: 0;
 }
 
 .about-portrait-frame {
@@ -1034,6 +1034,24 @@ input:focus-visible {
   font-size: 0.5625rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.about-portrait-meta {
+  display: grid;
+  gap: 0.65rem;
+  padding-top: 1.25rem;
+  font-family: monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.about-portrait-meta p:first-child {
+  color: var(--gray);
+}
+
+.about-portrait-meta p:last-child {
+  color: var(--red);
 }
 
 .about-disciplines span {
