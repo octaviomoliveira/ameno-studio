@@ -14,7 +14,10 @@ type Project = {
   location: string | null
   year: number | null
   cover_url: string | null
+  is_provisional?: boolean
 }
+
+const TOUCH_LAYOUT_QUERY = '(max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 1024px)'
 
 function PlaceholderGraphic({ index }: { index: number }) {
   const gridId = `project-grid-${index}`
@@ -41,68 +44,91 @@ export default function ProjectScroll({ projects }: { projects: Project[] }) {
   useEffect(() => {
     const section = sectionRef.current
     if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const isMobile = window.matchMedia('(max-width: 767px)').matches
+    const touchLayout = window.matchMedia(TOUCH_LAYOUT_QUERY)
+    let context: gsap.Context | null = null
 
-    const context = gsap.context(() => {
-      const panels = gsap.utils.toArray<HTMLElement>('[data-project-panel]')
+    const setupAnimations = () => {
+      context?.revert()
+      const isTouchLayout = touchLayout.matches
 
-      panels.forEach((panel) => {
-        const frame = panel.querySelector('[data-project-media-frame]')
-        const media = panel.querySelector('[data-project-media]')
-        const info = panel.querySelector('[data-project-info]')
-        if (!frame || !media || !info) return
+      context = gsap.context(() => {
+        const panels = gsap.utils.toArray<HTMLElement>('[data-project-panel]')
 
-        if (isMobile) {
-          gsap.fromTo(panel,
-            { y: 28, opacity: 0 },
+        panels.forEach((panel) => {
+          const frame = panel.querySelector('[data-project-media-frame]')
+          const media = panel.querySelector('[data-project-media]')
+          const info = panel.querySelector('[data-project-info]')
+          if (!frame || !media || !info) return
+
+          if (isTouchLayout) {
+            gsap.fromTo(panel,
+              { y: 28, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.72,
+                ease: 'power3.out',
+                scrollTrigger: { trigger: panel, start: 'top 88%', once: true },
+              },
+            )
+
+            gsap.fromTo(media,
+              { scale: 1.04, yPercent: -2.5 },
+              {
+                scale: 1.04,
+                yPercent: 2.5,
+                ease: 'none',
+                scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: 0.35 },
+              },
+            )
+            return
+          }
+
+          gsap.fromTo(frame,
+            { clipPath: 'inset(7% 4% 7% 4%)' },
+            {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              ease: 'none',
+              scrollTrigger: { trigger: panel, start: 'top bottom', end: 'top 22%', scrub: 1 },
+            },
+          )
+
+          gsap.fromTo(media,
+            { scale: 1.12, yPercent: -2 },
+            {
+              scale: 1,
+              yPercent: -7,
+              ease: 'none',
+              scrollTrigger: { trigger: panel, start: 'top bottom', end: 'bottom top', scrub: 1 },
+            },
+          )
+
+          gsap.fromTo(info,
+            { y: 44, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              duration: 0.72,
               ease: 'power3.out',
-              scrollTrigger: { trigger: panel, start: 'top 88%', once: true },
+              scrollTrigger: {
+                trigger: panel,
+                start: 'top 60%',
+                end: 'top 34%',
+                scrub: 1,
+              },
             },
           )
-          return
-        }
+        })
+      }, section)
+      ScrollTrigger.refresh()
+    }
 
-        gsap.fromTo(frame,
-          { clipPath: 'inset(7% 4% 7% 4%)' },
-          {
-            clipPath: 'inset(0% 0% 0% 0%)',
-            ease: 'none',
-            scrollTrigger: { trigger: panel, start: 'top bottom', end: 'top 22%', scrub: 1 },
-          },
-        )
+    setupAnimations()
+    touchLayout.addEventListener('change', setupAnimations)
 
-        gsap.fromTo(media,
-          { scale: 1.12, yPercent: -2 },
-          {
-            scale: 1,
-            yPercent: -7,
-            ease: 'none',
-            scrollTrigger: { trigger: panel, start: 'top bottom', end: 'bottom top', scrub: 1 },
-          },
-        )
-
-        gsap.fromTo(info,
-          { y: 44, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: panel,
-              start: 'top 60%',
-              end: 'top 34%',
-              scrub: 1,
-            },
-          },
-        )
-      })
-    }, section)
-
-    return () => context.revert()
+    return () => {
+      touchLayout.removeEventListener('change', setupAnimations)
+      context?.revert()
+    }
   }, [])
 
   return (
@@ -138,14 +164,13 @@ export default function ProjectScroll({ projects }: { projects: Project[] }) {
                     fill
                     className="object-cover"
                     sizes="100vw"
-                    priority={index === 0}
                   />
                 ) : (
                   <PlaceholderGraphic index={index} />
                 )}
               </div>
               <div className="project-media-wash" aria-hidden="true" />
-              {project.cover_url?.startsWith('/projects/') ? (
+              {project.is_provisional ? (
                 <span className="project-concept-label">IMAGEM CONCEITUAL / PROVISÓRIA</span>
               ) : null}
             </div>

@@ -41,6 +41,7 @@ A home e a navegação devem dar destaque equivalente a projetos/contato e plugi
 
 - Entrada de marca com cotas, `O` grafitado e partículas de spray.
 - Cotas SVG interativas no hero e interferência que reage ao cursor.
+- Marquee de disciplinas como transição oficial entre a promessa e a parede visual.
 - Parede tipográfica que revela renders conforme a proximidade do mouse.
 - Projetos fullbleed com painel sticky, clip-path e parallax conduzidos pelo scroll.
 - Navbar com hide/show, cursor técnico, linhas e microinterações vermelhas.
@@ -51,7 +52,7 @@ A home e a navegação devem dar destaque equivalente a projetos/contato e plugi
 - Menu de navegação em tela cheia, com alvos de toque grandes e fechamento por link/Escape.
 - Scroll nativo em dispositivos `pointer: coarse`; não usar Lenis no toque.
 - A parede tipográfica vira uma sequência horizontal com seis renders, texto curto e `scroll-snap`.
-- Projetos entram no fluxo vertical como cards editoriais; sem sticky, scrub ou parallax.
+- Projetos entram no fluxo vertical como cards editoriais; sem sticky, com parallax sutil vinculado à rolagem natural por toque.
 - Animações curtas de entrada, sem depender de hover e respeitando `prefers-reduced-motion`.
 - Botões usam o mesmo sistema visual em hero, plugins, login e conta.
 
@@ -103,23 +104,23 @@ Pendente para abrir vendas reais:
 
 ## Conteúdo e páginas
 
-- Home: `HeroSection → KeywordsWall → ProjectScroll → PluginsTeaser → Footer`, com entrada de marca opcional antes do hero.
+- Home: `HeroSection → Marquee → KeywordsWall → ProjectScroll → PluginsTeaser → Footer`, com entrada de marca opcional antes do hero.
 - Portfólio: projetos com imagens, contexto e caminho claro para contato.
 - Plugins: descrição, requisitos e compra direta com valor livre a partir de R$10,00; informar que a compra gera uma licença para um computador.
 - Sobre/contato: apresentação profissional e canais de atendimento.
 - Retorno da compra em `/conta`: fluxo de confirmação/entrega a implementar, sem login obrigatório para comprar.
 
-**Conteúdo atual:** imagens conceituais e renders de composição estão versionados em `public/hero`, `public/projects` e `public/renders`. Todo material ainda não confirmado pelo proprietário permanece provisório e deve ser substituído ou aprovado antes do lançamento comercial.
+**Conteúdo atual:** o hero permanece conceitual. As imagens de projetos e da parede visual são trabalhos reais e ficam oficializadas como seleção atual, embora a curadoria possa ser revista depois. Os arquivos estão versionados em `public/hero`, `public/projects` e `public/renders`.
 
 ## Plano de execução por fases
 
 1. **Fundação navegável** — estrutura Next.js, identidade, navegação, páginas e integrações base.
 2. **Direção visual** — entrada interativa, hero editorial, cotas, parede visual responsiva e projetos cinematográficos no desktop.
-3. **Conteúdo demonstrável** — imagens conceituais provisórias para validar a composição; substituir pelos renders oficiais quando recebidos.
+3. **Conteúdo demonstrável** — trabalhos reais na parede visual e no portfólio; revisar a seleção e substituir apenas quando a curadoria final for definida.
 4. **Produto e venda** — checkout, webhook, licença por computador, entrega protegida do arquivo e integração do token no plugin.
 5. **Refino e lançamento** — revisão mobile/acessibilidade, conteúdo final, teste ponta a ponta, deploy, domínio e serviços de produção.
 
-**Estado atual:** fundação, direção visual, conteúdo provisório, domínio e deploy estão concluídos. Produto e venda têm backend funcional em modo de teste, mas ainda dependem do plugin, entrega protegida, Stripe live e teste comercial completo.
+**Estado atual:** fundação, direção visual, conteúdo visual atual, domínio e deploy estão concluídos. Produto e venda têm backend funcional em modo de teste, mas ainda dependem do plugin, entrega protegida, Stripe live e teste comercial completo.
 
 ---
 
@@ -144,11 +145,11 @@ O checklist foi reconciliado com o código e com a publicação atual. A interfa
 - [x] Entrada “Da ideia à forma” com cotas, `O` grafitado e partículas de spray
 - [x] Campo de interferência e cotas técnicas transparentes no hero
 - [x] Parede tipográfica interativa no desktop e carrossel visual com seis renders no mobile
-- [x] Projetos fullbleed com sticky/parallax no desktop e cards de fluxo natural no mobile
+- [x] Projetos fullbleed com sticky/parallax no desktop e cards de fluxo natural com parallax sutil de rolagem no mobile/tablet touch
 - [x] Menu mobile em tela cheia e scroll nativo para dispositivos touch
 - [x] Sistema unificado de botões aplicado a hero, loja, login e conta
 - [x] Páginas visuais `/sobre` e `/conta` com estados e diagramas técnicos provisórios
-- [x] Imagens conceituais provisórias no portfólio e esquema do Ameno Cotas na home/loja
+- [x] Trabalhos reais oficializados como seleção atual no portfólio e na parede visual; esquema do Ameno Cotas na home/loja
 - [x] Schema `licenses`, funções atômicas e RLS aplicados no Supabase
 - [x] `POST /api/verify` e webhook de geração de token implementados; testes locais das rotas passam
 - [x] Webhook de teste do Stripe configurado para `checkout.session.completed` e entregue ao site com HTTP `200`
@@ -163,7 +164,8 @@ O checklist foi reconciliado com o código e com a publicação atual. A interfa
 - [x] Revisão mobile verificada em 390 × 844, 429 × 694 e 768 × 1024, sem overflow horizontal
 - [x] Fallback de movimento reduzido implementado
 - [ ] Auditoria detalhada de teclado e teste ponta a ponta de acessibilidade
-- [ ] Renders reais e conteúdo final revisados
+- [x] Renders atuais confirmados como trabalhos reais
+- [ ] Curadoria final dos renders e conteúdo textual revisados
 - [x] Deploy Vercel e domínio `ameno.studio` verificados no commit `35cc71b`
 - [x] Variáveis de produção configuradas no Vercel; segredos não ficam no repositório
 
@@ -183,6 +185,7 @@ Preços e regras da futura Ameno Suite serão definidos quando houver múltiplos
 
 - Receber o relato e as alterações do Antigravity; manter este plano como referência reconciliada.
 - `SUPABASE_SERVICE_ROLE_KEY` já está em `D:\Ameno\ameno-studio\.env.local`; não commitar nem compartilhar o valor.
-- Aprovar ou substituir os renders provisórios já usados na home, portfólio e parede visual.
+- Revisar futuramente se a seleção atual de trabalhos reais permanece na home, portfólio e parede visual.
+- Links públicos confirmados: Instagram `@arq.octaviooliveira` e LinkedIn `octavio-m-oliveira`.
 - Preparar/revisar apresentação profissional, descrição dos plugins e requisitos de compatibilidade a partir de informações verificadas.
 - O Stripe permanece em modo de teste; deixar a compra ponta a ponta para quando o app/plugin estiver pronto e, no lançamento, trocar as chaves e criar o webhook live.

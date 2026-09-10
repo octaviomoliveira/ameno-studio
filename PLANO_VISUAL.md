@@ -35,6 +35,7 @@ A home deixa de apresentar todos os recursos gráficos ao mesmo tempo. Cada tela
 
 ### 02 — Espaços em cena / Do detalhe ao conjunto
 
+- O marquee de disciplinas permanece como transição oficial e legível entre o hero e a parede visual.
 - Desktop: parede tipográfica de disciplinas e ambientes; o mouse escolhe a palavra mais próxima e revela seu render.
 - Mobile: título editorial curto seguido de seis cards de render em trilho horizontal com `scroll-snap`.
 - A versão touch não replica a densidade tipográfica do desktop e não depende de hover.
@@ -44,7 +45,7 @@ A home deixa de apresentar todos os recursos gráficos ao mesmo tempo. Cada tela
 
 - Cabeçalho de capítulo curto, seguido imediatamente pelas imagens.
 - Desktop: projetos fullbleed com sticky, clip-path e parallax conduzidos pelo scroll.
-- Mobile: cards verticais em fluxo natural, com uma animação curta de entrada e texto abaixo da imagem.
+- Mobile/tablet touch: cards verticais em fluxo natural, com entrada curta, texto abaixo da imagem e parallax sutil vinculado à rolagem da página.
 - Apenas nome, categoria, local, ano e contador sobre a base da imagem.
 - Sem índice ou lista de projetos antes das imagens.
 
@@ -66,6 +67,7 @@ A home deixa de apresentar todos os recursos gráficos ao mesmo tempo. Cada tela
 ```text
 SiteIntro
 HeroSection
+Marquee
 KeywordsWall
 ProjectScroll
 PluginsTeaser
@@ -92,11 +94,11 @@ O conteúdo detalhado de método sai da home e passa para `/sobre`.
 | --- | --- | --- |
 | Entrada interativa | Canvas responsivo | Concluído |
 | Hero | Render 2400 px ou WebM mudo de 8–12 s | Conceitual provisório |
-| Projetos | 1 hero horizontal + 2 detalhes por projeto | Conceituais provisórios |
+| Projetos | 1 hero horizontal + 2 detalhes por projeto | Trabalhos reais; seleção atual oficializada |
 | Ameno Cotas | Screenshot 1600×1000 + vídeo/GIF curto | Pendente |
 | Sobre | Retrato ou ambiente de trabalho real | Pendente |
 
-Todo material conceitual permanece identificado como provisório até a substituição pelos trabalhos oficiais.
+O hero conceitual permanece identificado como provisório. As imagens de projetos e da parede visual são trabalhos reais; a seleção pode ser revista na curadoria final.
 
 ## 6. Fases de execução
 
@@ -121,10 +123,12 @@ Todo material conceitual permanece identificado como provisório até a substitu
 
 ### Fase C — Conteúdo real
 
-- [ ] Inserir renders, nomes, locais e anos oficiais.
+- [x] Confirmar que os renders atuais são trabalhos reais e mantê-los como seleção oficial desta fase.
+- [ ] Revisar a curadoria, nomes, locais e anos definitivos.
 - [ ] Inserir captura e demonstração do Ameno Cotas.
 - [ ] Finalizar apresentação profissional e fotografia do estúdio.
-- [ ] Confirmar redes sociais e canal de suporte.
+- [x] Confirmar Instagram e LinkedIn.
+- [ ] Confirmar canal e política de suporte.
 
 ### Fase D — Validação
 

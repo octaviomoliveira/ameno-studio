@@ -12,16 +12,17 @@ type Project = {
   location: string | null
   year: number | null
   cover_url: string | null
+  is_provisional?: boolean
 }
 
 export const revalidate = 3600
 
-const PLACEHOLDER_PROJECTS: Project[] = [
-  { slug: 'estudio-bola', title: 'Estúdio Bola', category: 'Comercial', location: 'São Paulo, SP', year: 2023, cover_url: '/projects/estudio-bola.webp' },
-  { slug: 'central-parque', title: 'Central Parque', category: 'Residencial', location: 'Curitiba, PR', year: 2024, cover_url: '/projects/central-parque.webp' },
-  { slug: 'raizes', title: 'Raízes', category: 'Residencial', location: 'Capão Bonito, SP', year: 2024, cover_url: '/projects/raizes-manha.webp' },
-  { slug: 'goya', title: 'Goya', category: 'Residencial', location: 'São Paulo, SP', year: 2024, cover_url: '/projects/goya-gourmet.webp' },
-  { slug: 'moradas-do-bosque', title: 'Moradas do Bosque', category: 'Condomínio', location: 'Campinas, SP', year: 2023, cover_url: '/projects/moradas-bosque.webp' },
+const FEATURED_PROJECTS: Project[] = [
+  { slug: 'estudio-bola', title: 'Estúdio Bola', category: 'Comercial', location: 'São Paulo, SP', year: 2023, cover_url: '/projects/estudio-bola.webp', is_provisional: false },
+  { slug: 'central-parque', title: 'Central Parque', category: 'Residencial', location: 'Curitiba, PR', year: 2024, cover_url: '/projects/central-parque.webp', is_provisional: false },
+  { slug: 'raizes', title: 'Raízes', category: 'Residencial', location: 'Capão Bonito, SP', year: 2024, cover_url: '/projects/raizes-manha.webp', is_provisional: false },
+  { slug: 'goya', title: 'Goya', category: 'Residencial', location: 'São Paulo, SP', year: 2024, cover_url: '/projects/goya-gourmet.webp', is_provisional: false },
+  { slug: 'moradas-do-bosque', title: 'Moradas do Bosque', category: 'Condomínio', location: 'Campinas, SP', year: 2023, cover_url: '/projects/moradas-bosque.webp', is_provisional: false },
 ]
 
 async function getProjects(): Promise<Project[]> {
@@ -40,7 +41,7 @@ async function getProjects(): Promise<Project[]> {
 
 export default async function Home() {
   const projects = (await getProjects())
-  const visibleProjects = projects.length > 0 ? projects : PLACEHOLDER_PROJECTS
+  const visibleProjects = projects.length > 0 ? projects : FEATURED_PROJECTS
 
   return (
     <>

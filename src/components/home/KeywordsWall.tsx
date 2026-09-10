@@ -45,7 +45,7 @@ const KEYWORDS: KeywordItem[] = [
 const MOBILE_FEATURED_INDEXES = [0, 5, 3, 12, 6, 18]
 const MOBILE_FEATURED = MOBILE_FEATURED_INDEXES.map((index) => KEYWORDS[index])
 
-const INPUT_MODE_QUERY = '(max-width: 767px), (hover: none), (pointer: coarse)'
+const INPUT_MODE_QUERY = '(max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 1024px)'
 const subscribeToInputMode = (callback: () => void) => {
   const media = window.matchMedia(INPUT_MODE_QUERY)
   media.addEventListener('change', callback)
@@ -64,8 +64,49 @@ export default function KeywordsWall() {
   const sectionRef = useRef<HTMLElement>(null)
   const wordsRef = useRef<(HTMLButtonElement | null)[]>([])
   const floatingBoxRef = useRef<HTMLDivElement>(null)
+  const wordBoundsRef = useRef<Array<{ index: number; left: number; right: number; top: number; bottom: number; centerX: number; centerY: number }>>([])
+  const activeIndexRef = useRef<number | null>(null)
   const posRef = useRef({ curX: -9999, curY: -9999, tgtX: -9999, tgtY: -9999 })
   const rafRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+    let cancelled = false
+
+    const measureWords = () => {
+      if (cancelled) return
+      wordBoundsRef.current = wordsRef.current.flatMap((element, index) => {
+        if (!element) return []
+        const rect = element.getBoundingClientRect()
+        const left = rect.left + window.scrollX
+        const top = rect.top + window.scrollY
+        return [{
+          index,
+          left,
+          right: left + rect.width,
+          top,
+          bottom: top + rect.height,
+          centerX: left + rect.width / 2,
+          centerY: top + rect.height / 2,
+        }]
+      })
+    }
+
+    measureWords()
+    const observer = new ResizeObserver(measureWords)
+    observer.observe(section)
+    window.addEventListener('resize', measureWords, { passive: true })
+    void document.fonts.ready.then(measureWords)
+
+    return () => {
+      cancelled = true
+      observer.disconnect()
+      window.removeEventListener('resize', measureWords)
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+    }
+  }, [])
 
   // Entrada no scroll
   useEffect(() => {
@@ -86,30 +127,37 @@ export default function KeywordsWall() {
     return () => ctx.revert()
   }, [])
 
-  // Atualização direta e imediata do cursor para 120fps sem lag
+  // O preview acompanha o cursor e encerra o RAF assim que alcança o alvo.
   function tick() {
     const p = posRef.current
-    // interpolação bem rápida e responsiva para não dessincronizar do mouse
     p.curX += (p.tgtX - p.curX) * 0.35
     p.curY += (p.tgtY - p.curY) * 0.35
 
     if (floatingBoxRef.current) {
       floatingBoxRef.current.style.transform = `translate3d(calc(${Math.round(p.curX)}px - 50%), calc(${Math.round(p.curY)}px - 50%), 0)`
     }
+
+    if (Math.abs(p.tgtX - p.curX) < 0.1 && Math.abs(p.tgtY - p.curY) < 0.1) {
+      p.curX = p.tgtX
+      p.curY = p.tgtY
+      rafRef.current = null
+      return
+    }
+
     rafRef.current = requestAnimationFrame(tick)
   }
 
   // Onde o mouse passar na seção inteira, acha a palavra mais próxima instantaneamente
   const handleMouseMove = (e: React.MouseEvent) => {
     if (touchMode) return
-    const mouseX = e.clientX
-    const mouseY = e.clientY
-    posRef.current.tgtX = mouseX
-    posRef.current.tgtY = mouseY
+    const pointerX = e.pageX
+    const pointerY = e.pageY
+    posRef.current.tgtX = e.clientX
+    posRef.current.tgtY = e.clientY
 
     if (posRef.current.curX === -9999) {
-      posRef.current.curX = mouseX
-      posRef.current.curY = mouseY
+      posRef.current.curX = e.clientX
+      posRef.current.curY = e.clientY
     }
 
     if (!rafRef.current) {
@@ -120,39 +168,35 @@ export default function KeywordsWall() {
     let bestIndex = 0
     let minDistance = Infinity
 
-    for (let i = 0; i < wordsRef.current.length; i++) {
-      const el = wordsRef.current[i]
-      if (!el) continue
-      const rect = el.getBoundingClientRect()
-
-      // Se o mouse está diretamente dentro dos limites da palavra
+    for (const bounds of wordBoundsRef.current) {
       if (
-        mouseX >= rect.left &&
-        mouseX <= rect.right &&
-        mouseY >= rect.top &&
-        mouseY <= rect.bottom
+        pointerX >= bounds.left &&
+        pointerX <= bounds.right &&
+        pointerY >= bounds.top &&
+        pointerY <= bounds.bottom
       ) {
-        bestIndex = i
+        bestIndex = bounds.index
         minDistance = 0
         break
       }
 
-      // Senão, calcula a distância do centro da palavra
-      const centerX = rect.left + rect.width / 2
-      const centerY = rect.top + rect.height / 2
-      const dist = Math.hypot(mouseX - centerX, mouseY - centerY)
+      const dist = Math.hypot(pointerX - bounds.centerX, pointerY - bounds.centerY)
 
       if (dist < minDistance) {
         minDistance = dist
-        bestIndex = i
+        bestIndex = bounds.index
       }
     }
 
-    setActiveIndex(bestIndex)
+    if (activeIndexRef.current !== bestIndex) {
+      activeIndexRef.current = bestIndex
+      setActiveIndex(bestIndex)
+    }
   }
 
   const handleMouseLeave = () => {
     if (touchMode) return
+    activeIndexRef.current = null
     setActiveIndex(null)
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current)
@@ -183,8 +227,8 @@ export default function KeywordsWall() {
                   key={item.text + idx}
                   ref={el => { wordsRef.current[idx] = el }}
                   className={`${item.cls} keywords-wall-word`}
-                  onClick={() => setActiveIndex(idx)}
-                  onFocus={() => setActiveIndex(idx)}
+                  onClick={() => { activeIndexRef.current = idx; setActiveIndex(idx) }}
+                  onFocus={() => { activeIndexRef.current = idx; setActiveIndex(idx) }}
                   style={{
                     display: 'inline-block',
                     lineHeight: 0.9,

@@ -40,6 +40,16 @@ export const metadata: Metadata = {
     siteName: 'ameno.studio',
     locale: 'pt_BR',
     type: 'website',
+    images: [{
+      url: '/hero/ameno-hero-concept-v1.webp',
+      alt: 'ameno.studio — arquitetura, visualização e ferramentas',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ameno.studio',
+    description: 'Arquitetura. Visualização. Ferramentas.',
+    images: ['/hero/ameno-hero-concept-v1.webp'],
   },
 }
 

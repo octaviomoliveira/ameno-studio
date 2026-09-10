@@ -73,7 +73,7 @@ export default function Navbar() {
 
         <div className="site-nav-links">
           {NAV_ITEMS.map(({ href, label }) => {
-            const active = pathname === href
+            const active = href.startsWith('/#') ? pathname === '/' : pathname === href
             return (
               <Link
                 key={href}

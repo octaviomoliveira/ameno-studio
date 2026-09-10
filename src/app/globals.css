@@ -1238,7 +1238,7 @@ input:focus-visible {
   min-height: 24rem;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
   .graffiti-wall-ghost {
     width: min(110vw, 78svh);
   }
@@ -1384,7 +1384,7 @@ input:focus-visible {
 
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
   .hero-grid {
     background-size: 18vw 18vw;
   }
@@ -2063,7 +2063,7 @@ input:focus-visible {
   text-transform: uppercase;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
   .narrative-hero .cotas-svg {
     opacity: 0.12 !important;
   }
@@ -2592,7 +2592,7 @@ input:focus-visible {
   text-transform: uppercase;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
   .account-dashboard-header {
     align-items: stretch;
     flex-direction: column;
@@ -2869,7 +2869,7 @@ input:focus-visible {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
   .site-navbar {
     min-height: 4.5rem;
     padding: 0.8rem 1.25rem;
@@ -3241,8 +3241,7 @@ input:focus-visible {
   }
 
   .project-media {
-    inset: 0;
-    transform: none !important;
+    inset: -3% 0;
   }
 
   .project-media-wash {
@@ -3355,7 +3354,8 @@ input:focus-visible {
   }
 }
 
-@media (max-width: 767px) and (orientation: landscape) {
+@media (max-width: 767px) and (orientation: landscape),
+  (hover: none) and (pointer: coarse) and (max-width: 1024px) and (orientation: landscape) {
   .narrative-hero {
     min-height: 36rem;
   }

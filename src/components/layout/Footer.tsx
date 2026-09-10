@@ -15,9 +15,9 @@ export default function Footer() {
           <small>© {new Date().getFullYear()} Octávio Oliveira</small>
         </div>
         <a href="mailto:contato@ameno.studio">contato@ameno.studio</a>
-        <div className="site-footer-social" aria-label="Redes sociais em atualização">
-          <span title="Link em atualização">Instagram</span>
-          <span title="Link em atualização">LinkedIn</span>
+        <div className="site-footer-social" aria-label="Redes sociais">
+          <a href="https://www.instagram.com/arq.octaviooliveira/" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/octavio-m-oliveira/" target="_blank" rel="noreferrer">LinkedIn</a>
         </div>
       </div>
     </footer>
