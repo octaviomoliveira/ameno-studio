@@ -7,7 +7,7 @@
 > **Stack declarada no projeto:** Next.js 16.3.4 + React 19 + Tailwind 4 + GSAP + Lenis + Supabase + Stripe + Vercel
 > **Domínio:** ameno.studio
 > **Repo:** github.com/octaviomoliveira/ameno-studio
-> **Atualizado em:** 2026-09-08 — decisões do proprietário e estado reconciliado do projeto.
+> **Atualizado em:** 2026-09-10 — estado publicado no commit `35cc71b` e pendências reconciliadas.
 
 ---
 
@@ -35,21 +35,27 @@ A home e a navegação devem dar destaque equivalente a projetos/contato e plugi
 
 ---
 
-## Efeitos de scroll aprovados
+## Sistema visual e movimento aprovados
 
-- Cotas SVG interativas no hero (mouse → valores mudam)
-- Texto stagger letra por letra
-- Corte/slash de transição entre seções
-- Image reveal (scale + clip-path) nos projetos
-- Pinned scroll nos projetos
-- Parallax nas imagens
-- Marquee horizontal entre seções
-- Linha vermelha animada
-- Cursor crosshair com coordenadas X/Y
-- Navbar hide/show no scroll
-- Lenis em tudo
+### Desktop
 
-Na implementação, adaptar os efeitos para celular/touch, navegação por teclado e preferência por movimento reduzido. Cursor e interação por mouse devem ter alternativas; conteúdo e navegação não podem depender das animações.
+- Entrada de marca com cotas, `O` grafitado e partículas de spray.
+- Cotas SVG interativas no hero e interferência que reage ao cursor.
+- Parede tipográfica que revela renders conforme a proximidade do mouse.
+- Projetos fullbleed com painel sticky, clip-path e parallax conduzidos pelo scroll.
+- Navbar com hide/show, cursor técnico, linhas e microinterações vermelhas.
+- Lenis para suavização do scroll em dispositivos com mouse.
+
+### Mobile/touch
+
+- Menu de navegação em tela cheia, com alvos de toque grandes e fechamento por link/Escape.
+- Scroll nativo em dispositivos `pointer: coarse`; não usar Lenis no toque.
+- A parede tipográfica vira uma sequência horizontal com seis renders, texto curto e `scroll-snap`.
+- Projetos entram no fluxo vertical como cards editoriais; sem sticky, scrub ou parallax.
+- Animações curtas de entrada, sem depender de hover e respeitando `prefers-reduced-motion`.
+- Botões usam o mesmo sistema visual em hero, plugins, login e conta.
+
+O desktop não deve ser simplificado para acomodar o mobile. Cada modo mantém a mesma história com interação adequada ao dispositivo.
 
 ---
 
@@ -71,58 +77,60 @@ Na implementação, adaptar os efeitos para celular/touch, navegação por tecla
 
 Esta decisão substitui o planejamento anterior de assinatura, login obrigatório e licença para dois computadores. Nesta fase não haverá conta obrigatória no site.
 
-### Requisitos de implementação a detalhar
+### Estado técnico da venda
 
 Fluxo previsto: escolha do plugin e valor → Stripe Checkout de pagamento único → confirmação por webhook → registro da compra → entrega do download.
 
-- Formulário em `/plugins`: valor inicial R$29,00, mínimo R$10,00 e mensagem `mínimo R$ 10,00` abaixo do input.
-- Validar o mínimo no frontend e no backend; enviar ao Stripe apenas valores inteiros em centavos.
-- Constantes em `src/lib/stripe.ts`: `STRIPE_MIN_AMOUNT = 1000` e `STRIPE_SUGGESTED_AMOUNT = 2900`.
-- Verificar o direito de acesso no servidor; o redirecionamento de sucesso do checkout não comprova pagamento.
-- Processar eventos de pagamento sem duplicar efeitos quando um webhook for reenviado.
-- Definir entrega e recuperação do download sem exigir cadastro para comprar.
-- Gerar e guardar um token único após o pagamento confirmado pelo webhook.
-- Disponibilizar `POST /api/verify` para o plugin com `token` e `machine_id`, retornando `valid`, `not_found`, `machine_mismatch`, `inactive` ou `rate_limited`.
-- Vincular apenas a primeira máquina usando operação atômica no Supabase; não permitir que uma corrida vincule dois computadores.
-- Não expor token, fingerprint ou chave administrativa em logs e respostas desnecessárias.
-- Manter por solicitação do proprietário os retornos `/conta?success=true` e `/plugins`; a página de retorno já existe e a entrega ainda precisa ser implementada.
+Implementado:
 
-**Ordem de execução:** corrigir plano, valores, formulário e checkout; executar `npm run build` com sucesso antes de iniciar qualquer funcionalidade adicional.
+- Formulário em `/plugins` com sugestão de R$29,00, mínimo de R$10,00 e validação no cliente e servidor.
+- Checkout público de pagamento único; login continua opcional.
+- Webhook assinado, idempotente e condicionado a pagamento confirmado.
+- Geração de compra e licença no Supabase por operação atômica.
+- `POST /api/verify` com vínculo da primeira máquina e motivos de recusa definidos.
+- Área `/conta`, autenticação sem senha e recuperação de compras pelo e-mail confirmado.
+- Retornos para `/conta?success=true` e `/plugins` mantidos.
+
+Pendente para abrir vendas reais:
+
+- Arquivo final do plugin e integração do token no código do 3ds Max.
+- Download protegido e recuperação do arquivo para compras convidadas.
+- E-mail transacional de licença/download.
+- Stripe em modo live, webhook live e teste ponta a ponta com pagamento real.
+- Política comercial, atualização de versão e processo de suporte.
 
 ---
 
 ## Conteúdo e páginas
 
-- Home: apresentação profissional e entradas equilibradas para portfólio e loja.
+- Home: `HeroSection → KeywordsWall → ProjectScroll → PluginsTeaser → Footer`, com entrada de marca opcional antes do hero.
 - Portfólio: projetos com imagens, contexto e caminho claro para contato.
 - Plugins: descrição, requisitos e compra direta com valor livre a partir de R$10,00; informar que a compra gera uma licença para um computador.
 - Sobre/contato: apresentação profissional e canais de atendimento.
 - Retorno da compra em `/conta`: fluxo de confirmação/entrega a implementar, sem login obrigatório para comprar.
 
-**Conteúdo inicial aprovado:** placeholders. Nesta versão foram usadas imagens conceituais geradas especificamente para a prévia, identificadas como provisórias; não apresentar imagens de banco como trabalhos reais do estúdio.
-
-O proprietário pretende fornecer os renders em **2026-09-09**. Após recebê-los, selecionar os projetos e substituir os placeholders.
+**Conteúdo atual:** imagens conceituais e renders de composição estão versionados em `public/hero`, `public/projects` e `public/renders`. Todo material ainda não confirmado pelo proprietário permanece provisório e deve ser substituído ou aprovado antes do lançamento comercial.
 
 ## Plano de execução por fases
 
 1. **Fundação navegável** — estrutura Next.js, identidade, navegação, páginas e integrações base.
-2. **Direção visual** — hero editorial, cotas, tipografia letra a letra, cortes, marquee e scroll cinematográfico com projetos fullbleed.
+2. **Direção visual** — entrada interativa, hero editorial, cotas, parede visual responsiva e projetos cinematográficos no desktop.
 3. **Conteúdo demonstrável** — imagens conceituais provisórias para validar a composição; substituir pelos renders oficiais quando recebidos.
 4. **Produto e venda** — checkout, webhook, licença por computador, entrega protegida do arquivo e integração do token no plugin.
-5. **Refino e lançamento** — revisão mobile/acessibilidade, conteúdo final, teste ponta a ponta, deploy, domínio e webhook de produção.
+5. **Refino e lançamento** — revisão mobile/acessibilidade, conteúdo final, teste ponta a ponta, deploy, domínio e serviços de produção.
 
-**Estado atual:** fases 1, 2 e 3 concluídas para a prévia visual; a revisão visual de `/sobre`, `/conta`, portfólio e loja foi aplicada. Fases 4 e 5 seguem parcialmente implementadas e ainda dependem da entrega do plugin, decisão de distribuição e materiais finais.
+**Estado atual:** fundação, direção visual, conteúdo provisório, domínio e deploy estão concluídos. Produto e venda têm backend funcional em modo de teste, mas ainda dependem do plugin, entrega protegida, Stripe live e teste comercial completo.
 
 ---
 
-## Status de implementação — 2026-09-08 (reconciliado após publicação)
+## Status de implementação — 2026-09-10
 
 O checklist foi reconciliado com o código e com a publicação atual. A interface, a infraestrutura de licenças e a base de produção estão funcionando; a loja ainda não deve ser considerada pronta para venda porque a entrega do arquivo, a integração final no plugin, o conteúdo definitivo e o teste completo de compra continuam pendentes.
 
 - [x] Estrutura inicial do Next.js criada
 - [x] Arquivos de Supabase e Stripe criados e configuração base carregada
 - [x] Logos copiados — conforme registro anterior
-- [x] `npm run build` passou em 2026-09-08 sem erros ou avisos do projeto
+- [x] `npm run check` passou em 2026-09-10: lint, 3 testes de rota e build de produção
 - [x] Compilação e configuração base verificadas após conciliação
 - [x] Paleta aprovada aplicada no Tailwind 4 e conferida visualmente
 - [x] Sintaxe e validação do checkout corrigidas para pagamento único, mínimo R$10,00
@@ -132,8 +140,13 @@ O checklist foi reconciliado com o código e com a publicação atual. A interfa
 - [x] Hero + Cotas
 - [x] Projetos scroll
 - [x] /plugins com formulário editável, sugestão R$29,00 e mínimo R$10,00
-- [x] Home editorial em cinco capítulos: manifesto, método, portfólio, ferramentas e contato
-- [x] Campo de interferência no hero, índice navegável de projetos e scroll fullbleed
+- [x] Home simplificada em cinco capítulos: hero, espaços em cena, portfólio, ferramentas e contato
+- [x] Entrada “Da ideia à forma” com cotas, `O` grafitado e partículas de spray
+- [x] Campo de interferência e cotas técnicas transparentes no hero
+- [x] Parede tipográfica interativa no desktop e carrossel visual com seis renders no mobile
+- [x] Projetos fullbleed com sticky/parallax no desktop e cards de fluxo natural no mobile
+- [x] Menu mobile em tela cheia e scroll nativo para dispositivos touch
+- [x] Sistema unificado de botões aplicado a hero, loja, login e conta
 - [x] Páginas visuais `/sobre` e `/conta` com estados e diagramas técnicos provisórios
 - [x] Imagens conceituais provisórias no portfólio e esquema do Ameno Cotas na home/loja
 - [x] Schema `licenses`, funções atômicas e RLS aplicados no Supabase
@@ -147,10 +160,11 @@ O checklist foi reconciliado com o código e com a publicação atual. A interfa
 - [ ] Fluxo de suporte completo definido
 - [ ] Compra e entrega testadas de ponta a ponta
 - [ ] Integração da verificação no código do plugin em `D:\Ameno\_tools`
-- [x] Revisão visual mobile e fallback de movimento reduzido implementados
+- [x] Revisão mobile verificada em 390 × 844, 429 × 694 e 768 × 1024, sem overflow horizontal
+- [x] Fallback de movimento reduzido implementado
 - [ ] Auditoria detalhada de teclado e teste ponta a ponta de acessibilidade
 - [ ] Renders reais e conteúdo final revisados
-- [x] Deploy Vercel, domínio `ameno.studio` e resposta pública verificados
+- [x] Deploy Vercel e domínio `ameno.studio` verificados no commit `35cc71b`
 - [x] Variáveis de produção configuradas no Vercel; segredos não ficam no repositório
 
 ---
@@ -169,6 +183,6 @@ Preços e regras da futura Ameno Suite serão definidos quando houver múltiplos
 
 - Receber o relato e as alterações do Antigravity; manter este plano como referência reconciliada.
 - `SUPABASE_SERVICE_ROLE_KEY` já está em `D:\Ameno\ameno-studio\.env.local`; não commitar nem compartilhar o valor.
-- Receber os renders previstos para 2026-09-09; placeholders estão autorizados inicialmente.
+- Aprovar ou substituir os renders provisórios já usados na home, portfólio e parede visual.
 - Preparar/revisar apresentação profissional, descrição dos plugins e requisitos de compatibilidade a partir de informações verificadas.
 - O Stripe permanece em modo de teste; deixar a compra ponta a ponta para quando o app/plugin estiver pronto e, no lançamento, trocar as chaves e criar o webhook live.

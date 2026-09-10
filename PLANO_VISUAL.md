@@ -1,6 +1,6 @@
 # Plano visual e narrativo v3 — ameno.studio
 
-Status: execução iniciada em 2026-09-08.
+Status: direção visual publicada em `ameno.studio` em 2026-09-10; conteúdo definitivo ainda pendente.
 
 Referências principais:
 
@@ -33,22 +33,18 @@ A home deixa de apresentar todos os recursos gráficos ao mesmo tempo. Cada tela
 - O efeito permanece ambiental e não atravessa a legibilidade da manchete.
 - Resposta: o ameno torna visível aquilo que ainda será construído.
 
-### Transição — Disciplinas
+### 02 — Espaços em cena / Do detalhe ao conjunto
 
-- Marquee fina: arquitetura, visualização, interiores, BIM, CGI e ferramentas.
-- Baixo contraste; não funciona como nova seção.
-
-### 02 — Princípio / Clareza antes do ruído
-
-- Uma tela editorial clara, sem cards.
-- Frase principal: uma imagem só funciona quando torna uma decisão mais clara.
-- Contraponto: forma sem intenção é só ruído.
-- Resposta: por que o trabalho do estúdio importa.
+- Desktop: parede tipográfica de disciplinas e ambientes; o mouse escolhe a palavra mais próxima e revela seu render.
+- Mobile: título editorial curto seguido de seis cards de render em trilho horizontal com `scroll-snap`.
+- A versão touch não replica a densidade tipográfica do desktop e não depende de hover.
+- Resposta: quais atmosferas, escalas e usos o estúdio consegue tornar visíveis.
 
 ### 03 — Prova / Projetos que tornam ideias visíveis
 
 - Cabeçalho de capítulo curto, seguido imediatamente pelas imagens.
-- Projetos fullbleed e conduzidos pelo scroll.
+- Desktop: projetos fullbleed com sticky, clip-path e parallax conduzidos pelo scroll.
+- Mobile: cards verticais em fluxo natural, com uma animação curta de entrada e texto abaixo da imagem.
 - Apenas nome, categoria, local, ano e contador sobre a base da imagem.
 - Sem índice ou lista de projetos antes das imagens.
 
@@ -70,8 +66,7 @@ A home deixa de apresentar todos os recursos gráficos ao mesmo tempo. Cada tela
 ```text
 SiteIntro
 HeroSection
-Marquee
-ApproachStatement
+KeywordsWall
 ProjectScroll
 PluginsTeaser
 Footer
@@ -89,6 +84,7 @@ O conteúdo detalhado de método sai da home e passa para `/sobre`.
 6. Metadados ficam nas bordas e nunca atravessam a manchete.
 7. Se uma informação não ajuda a entender, confiar ou agir, ela sai da home.
 8. No celular, o percurso é linear e não depende de hover.
+9. CTAs compartilham altura, raio, tipografia, estados e movimento da seta.
 
 ## 5. Material visual
 
@@ -108,7 +104,7 @@ Todo material conceitual permanece identificado como provisório até a substitu
 
 - [x] Criar entrada interativa.
 - [x] Reescrever o hero como promessa visual.
-- [x] Substituir `StudioMethod` por princípio editorial curto.
+- [x] Substituir `StudioMethod` pela seção visual “Do detalhe ao conjunto”.
 - [x] Remover índice e transformar projetos em painéis fullbleed.
 - [x] Simplificar o teaser de ferramentas.
 - [x] Absorver contato no footer.
@@ -117,9 +113,11 @@ Todo material conceitual permanece identificado como provisório até a substitu
 ### Fase B — Direção de arte
 
 - [x] Refinar enquadramentos desktop e mobile.
-- [x] Ajustar ritmo e duração dos painéis sticky.
+- [x] Ajustar painéis sticky no desktop e removê-los do mobile.
 - [x] Harmonizar navegação com fundos claros e escuros.
 - [x] Substituir render repetido no hero por material exclusivo.
+- [x] Criar menu mobile em tela cheia.
+- [x] Unificar o sistema de botões do site.
 
 ### Fase C — Conteúdo real
 
@@ -130,11 +128,11 @@ Todo material conceitual permanece identificado como provisório até a substitu
 
 ### Fase D — Validação
 
-- [x] Conferir a experiência móvel em 429 e 573 px.
-- [ ] Conferir 390, 768 e 1440 px como matriz final.
+- [x] Conferir a experiência móvel em 390, 429 e 768 px.
+- [x] Conferir o desktop em 1440 px sem alterar o comportamento aprovado.
 - [ ] Validar teclado, contraste e movimento reduzido.
-- [x] Verificar ausência de sobreposição, imagens quebradas e erro ativo na prévia mobile.
-- [x] Rodar lint e build.
+- [x] Verificar ausência de overflow horizontal, imagens quebradas e erro ativo no mobile.
+- [x] Rodar lint, testes de rota e build.
 - [ ] Validar o fluxo de compra com Stripe e webhook configurados.
 
 ## 7. Critérios de aceite
