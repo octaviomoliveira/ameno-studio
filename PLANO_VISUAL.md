@@ -96,7 +96,7 @@ O conteúdo detalhado de método sai da home e passa para `/sobre`.
 | Hero | Render 2400 px ou WebM mudo de 8–12 s | Conceitual provisório |
 | Projetos | 1 hero horizontal + 2 detalhes por projeto | Trabalhos reais; seleção atual oficializada |
 | Ameno Cotas | Screenshot 1600×1000 + vídeo/GIF curto | Pendente |
-| Sobre | Retrato ou ambiente de trabalho real | Pendente |
+| Sobre | Retrato real de Octávio Oliveira | Concluído |
 
 O hero conceitual permanece identificado como provisório. As imagens de projetos e da parede visual são trabalhos reais; a seleção pode ser revista na curadoria final.
 
@@ -127,7 +127,8 @@ O hero conceitual permanece identificado como provisório. As imagens de projeto
 - [ ] Revisar a curadoria, nomes, locais e anos definitivos.
 - [ ] Inserir captura e demonstração do Ameno Cotas.
 - [x] Escrever e publicar a primeira versão da apresentação profissional.
-- [ ] Revisar o texto final e inserir fotografia do estúdio.
+- [x] Inserir retrato profissional na página Sobre.
+- [ ] Revisar o texto final e, se desejado, acrescentar fotografia do ambiente de trabalho.
 - [x] Confirmar Instagram e LinkedIn.
 - [ ] Confirmar canal e política de suporte.
 

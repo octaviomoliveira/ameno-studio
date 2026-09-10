@@ -988,6 +988,54 @@ input:focus-visible {
   padding-top: 0.25rem;
 }
 
+.about-portrait {
+  margin-top: clamp(3rem, 7vw, 6rem);
+}
+
+.about-portrait-frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #111111;
+}
+
+.about-portrait-frame img {
+  object-position: 50% 50%;
+  filter: saturate(0.9) contrast(1.04);
+}
+
+.about-portrait-wash {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.06), transparent 62%, rgba(10, 10, 10, 0.34)),
+    linear-gradient(90deg, rgba(230, 59, 46, 0.08), transparent 30%);
+}
+
+.about-portrait-code {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: rgba(232, 232, 224, 0.72);
+  font-family: monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+}
+
+.about-portrait figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem 0;
+  color: var(--gray);
+  font-family: monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .about-disciplines span {
   position: relative;
 }
