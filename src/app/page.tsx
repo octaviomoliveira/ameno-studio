@@ -1,54 +1,27 @@
-import { supabase } from '@/lib/supabase'
-import HeroSection from '@/components/hero/HeroSection'
+import HeroVideo from '@/components/hero/HeroVideo'
 import Marquee from '@/components/shared/Marquee'
-import ProjectScroll from '@/components/projects/ProjectScroll'
 import PluginsTeaser from '@/components/plugins/PluginsTeaser'
-import KeywordsWall from '@/components/home/KeywordsWall'
-
-type Project = {
-  slug: string
-  title: string
-  category: string | null
-  location: string | null
-  year: number | null
-  cover_url: string | null
-  is_provisional?: boolean
-}
+import HomePortfolioTeaser from '@/components/home/HomePortfolioTeaser'
 
 export const revalidate = 3600
 
-const FEATURED_PROJECTS: Project[] = [
-  { slug: 'estudio-bola', title: 'Estúdio Bola', category: 'Comercial', location: 'São Paulo, SP', year: 2023, cover_url: '/projects/estudio-bola.webp', is_provisional: false },
-  { slug: 'central-parque', title: 'Central Parque', category: 'Residencial', location: 'Curitiba, PR', year: 2024, cover_url: '/projects/central-parque.webp', is_provisional: false },
-  { slug: 'raizes', title: 'Raízes', category: 'Residencial', location: 'Capão Bonito, SP', year: 2024, cover_url: '/projects/raizes-manha.webp', is_provisional: false },
-  { slug: 'goya', title: 'Goya', category: 'Residencial', location: 'São Paulo, SP', year: 2024, cover_url: '/projects/goya-gourmet.webp', is_provisional: false },
-  { slug: 'moradas-do-bosque', title: 'Moradas do Bosque', category: 'Condomínio', location: 'Campinas, SP', year: 2023, cover_url: '/projects/moradas-bosque.webp', is_provisional: false },
-]
-
-async function getProjects(): Promise<Project[]> {
-  try {
-    const { data } = await supabase
-      .from('projects')
-      .select('slug, title, category, location, year, cover_url')
-      .eq('published', true)
-      .order('order_index', { ascending: true })
-
-    return ((data ?? []) as Project[]).filter((project) => !project.cover_url?.includes('images.unsplash.com'))
-  } catch {
-    return []
-  }
-}
-
-export default async function Home() {
-  const projects = (await getProjects())
-  const visibleProjects = projects.length > 0 ? projects : FEATURED_PROJECTS
-
+export default function Home() {
   return (
     <>
-      <HeroSection />
+      {/* Cap. 1 — Hero 3D com scroll sincronizado */}
+      <HeroVideo
+        videoSrc="/hero/hero-central-parque.webm"
+        posterSrc="/hero/ameno-hero-concept-v1.webp"
+        alt="Vista aérea do Central Parque — ameno.studio"
+      />
+
+      {/* Cap. 2 — Marquee de disciplinas (transição) */}
       <Marquee />
-      <KeywordsWall />
-      <ProjectScroll projects={visibleProjects} />
+
+      {/* Cap. 3 — Teaser do portfólio (1 projeto em destaque + link) */}
+      <HomePortfolioTeaser />
+
+      {/* Cap. 4 — Teaser de plugins */}
       <PluginsTeaser />
     </>
   )

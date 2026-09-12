@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 const NAV_ITEMS = [
-  { href: '/#portfolio', label: 'projetos' },
+  { href: '/portfolio', label: 'portfólio' },
   { href: '/plugins', label: 'plugins' },
   { href: '/sobre', label: 'sobre' },
   { href: '/conta', label: 'conta' },
