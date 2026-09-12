@@ -151,6 +151,7 @@
 .page :global(.plugin-purchase-min),
 .page :global(.plugin-purchase-security) { color: var(--off-white); line-height: 1.6; }
 .page :global(.plugin-purchase-price-hint) { flex-wrap: wrap; gap: 0.5rem 1rem; }
+.page :global(.purchase-hint) { color: var(--off-white); }
 
 .page :global(.plugin-faq) { max-width: 56rem; margin-block: 3rem 2rem; }
 .page :global(.plugin-faq-item) { padding-block: 2rem; }

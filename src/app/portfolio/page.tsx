@@ -40,12 +40,12 @@ const ASSETS_3D: Asset3D[] = [
 
 export default function PortfolioPage() {
   return (
-    <main className="portfolio-page">
+    <div className="portfolio-page">
       <PortfolioTabs
         autoraisProjects={[...AUTORAIS_PROJECTS]}
         studioprojects={[...STUDIO_PROJECTS]}
         assets={[...ASSETS_3D]}
       />
-    </main>
+    </div>
   )
 }

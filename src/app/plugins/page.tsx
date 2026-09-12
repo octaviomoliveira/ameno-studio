@@ -56,7 +56,7 @@ export default function PluginsPage() {
   const minLabel = `R$ ${(STRIPE_MIN_AMOUNT / 100).toFixed(2).replace('.', ',')}`
 
   return (
-    <div className={`plugin-page ${styles.page}`} aria-labelledby="plugin-title">
+    <div className={`plugin-page ${styles.page}`}>
 
       {/* ── HERO DO PRODUTO ─────────────────────────────────── */}
       <section className="plugin-hero">

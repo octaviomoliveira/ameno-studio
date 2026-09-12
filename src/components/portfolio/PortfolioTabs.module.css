@@ -10,7 +10,7 @@
 .tab { display: flex; align-items: baseline; gap: .8rem; padding: 1.3rem 0; border: 0; background: none; color: var(--off-white); font-size: .85rem; letter-spacing: .05em; white-space: nowrap; cursor: pointer; transition: color .2s; }
 .tab[aria-selected='true'] { color: var(--white); }
 .tab:hover { color: var(--red); }
-.tabNumber { font-family: var(--font-ibm-plex-mono), monospace; color: var(--gray); font-size: .625rem; }
+.tabNumber { font-family: var(--font-ibm-plex-mono), monospace; color: var(--off-white); font-size: .625rem; }
 .tab[aria-selected='true'] .tabNumber { color: var(--red); }
 .content { min-width: 0; }
 .content > [role='tabpanel']:focus-visible { outline: 1px solid var(--off-white); outline-offset: -1px; }

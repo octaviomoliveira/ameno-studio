@@ -1,6 +1,6 @@
 export default function PluginDiagram({ compact = false }: { compact?: boolean }) {
   return (
-    <div className={`plugin-diagram${compact ? ' plugin-diagram-compact' : ''}`} aria-label="Esquema demonstrativo do Ameno Cotas">
+    <div className={`plugin-diagram${compact ? ' plugin-diagram-compact' : ''}`} role="img" aria-label="Esquema demonstrativo do Ameno Cotas">
       <div className="plugin-diagram-topline">
         <span>AMENO COTAS / 001</span>
         <span>3DS MAX TOOL</span>

@@ -49,7 +49,7 @@ export default function SobrePage() {
       <section className={styles.story} aria-labelledby="about-approach">
         <div className={styles.storyRail}>
           <p className={styles.label}>Arquitetura · Visualização · Ferramentas</p>
-          <div className={styles.disciplines} aria-label="Áreas de atuação">
+          <div className={styles.disciplines} role="group" aria-label="Áreas de atuação">
             <span>Arquitetura</span><span>ArchViz</span><span>Interiores</span><span>BIM</span><span>Produtos</span>
           </div>
         </div>
