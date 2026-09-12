@@ -1,5 +1,3 @@
-'use client'
-
 const TEXT = 'ARQUITETURA · VISUALIZAÇÃO · PLUGINS · AMENO.STUDIO · RECIFE · BRASIL · '
 
 export default function Marquee() {
@@ -7,7 +5,7 @@ export default function Marquee() {
     <div
       aria-hidden="true"
       className="overflow-hidden py-5 select-none"
-      style={{ borderTop: '1px solid #222222', borderBottom: '1px solid #222222' }}
+      style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}
     >
       <div
         className="marquee-track flex whitespace-nowrap"
@@ -16,7 +14,7 @@ export default function Marquee() {
           <span
             key={i}
             className="text-xs tracking-[0.3em] mr-0"
-            style={{ color: '#444444' }}
+            style={{ color: 'var(--off-white)' }}
           >
             {TEXT}
           </span>

@@ -1,4 +1,4 @@
-import PortfolioTabs from '@/components/portfolio/PortfolioTabs'
+import PortfolioTabs, { type Project, type Asset3D } from '@/components/portfolio/PortfolioTabs'
 
 export const metadata = {
   title: 'Portfólio — ameno.studio',
@@ -27,15 +27,13 @@ const STUDIO_PROJECTS: Project[] = [
   { slug: 'moradas-do-bosque', title: 'Moradas do Bosque', category: 'Condomínio', location: 'Campinas, SP', year: 2023, cover_url: '/projects/moradas-bosque.webp' },
 ]
 
-// Assets 3D — cadeira-raia.fbx em public/assets/3d/
-// PENDENTE: converter cadeira-raia.fbx → cadeira-raia.glb via Blender
-// (File → Export → glTF 2.0 → marcar "Draco mesh compression")
+// Assets 3D disponíveis — material cinza, sem texturas.
 const ASSETS_3D: Asset3D[] = [
   {
     slug: 'cadeira-raia',
     name: 'Cadeira Raia',
     description: 'Modelagem de alta precisão para uso em renders de interiores.',
-    glbSrc: '/assets/3d/cadeira-raia.glb',         // ← disponível após conversão
+    glbSrc: '/assets/3d/cadeira-raia.glb',
     fallbackImg: '/projects/interior-stair.webp',   // ← imagem temporária até ter preview
   },
 ]

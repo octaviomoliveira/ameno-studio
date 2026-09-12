@@ -1,5 +1,7 @@
 import PurchaseForm from './purchase-form'
 import { STRIPE_MIN_AMOUNT, STRIPE_SUGGESTED_AMOUNT } from '@/lib/stripe'
+import PluginDiagram from '@/components/plugins/PluginDiagram'
+import styles from './page.module.css'
 
 export const metadata = {
   title: 'Ameno Cotas — Plugin para 3ds Max',
@@ -57,27 +59,35 @@ export default function PluginsPage() {
   const minLabel = `R$ ${(STRIPE_MIN_AMOUNT / 100).toFixed(2).replace('.', ',')}`
 
   return (
-    <main className="plugin-page" aria-labelledby="plugin-title">
+    <div className={`plugin-page ${styles.page}`} aria-labelledby="plugin-title">
 
       {/* ── HERO DO PRODUTO ─────────────────────────────────── */}
       <section className="plugin-hero">
-        <div className="plugin-hero-inner">
+        <div className={`plugin-hero-inner ${styles.heroInner}`}>
           <div className="plugin-hero-topline">
             <span>AMENO TOOLS / 001</span>
             <span>PLUGIN PARA 3DS MAX</span>
           </div>
+          <div className={styles.heroGrid}>
+          <div>
           <h1 id="plugin-title" className="plugin-hero-title">
             Ameno<br /><em className="font-editorial">Cotas.</em>
           </h1>
           <p className="plugin-hero-subtitle">
-            Gera cotas automaticamente por layer com render integrado.<br />
-            Compatível com 3ds Max 2024–2026 e Corona 12+.
+            Gera cotas automaticamente por layer com render integrado.
           </p>
+          <div className={styles.heroActions}>
+            <a href="#licenca" className="ameno-button ameno-button--primary">Obter o plugin <span aria-hidden="true">↗</span></a>
+            <span>A partir de {minLabel}<br />Pagamento único</span>
+          </div>
+          </div>
+          <div className={styles.heroVisual}><PluginDiagram /></div>
+          </div>
           <div className="plugin-hero-badges">
             <span className="plugin-badge">3ds Max 2024–2026</span>
             <span className="plugin-badge">Corona 12+</span>
             <span className="plugin-badge">Windows</span>
-            <span className="plugin-badge plugin-badge--red">Pay-what-you-want</span>
+            <span className="plugin-badge">Pay-what-you-want</span>
           </div>
         </div>
       </section>
@@ -94,9 +104,9 @@ export default function PluginsPage() {
             </p>
           </div>
           <div className="plugin-features-grid">
-            {FEATURES.map((f) => (
+            {FEATURES.map((f, index) => (
               <div key={f.title} className="plugin-feature-card">
-                <span className="plugin-feature-icon" aria-hidden="true">{f.icon}</span>
+                <span className="plugin-feature-icon" aria-hidden="true">0{index + 1}</span>
                 <h3>{f.title}</h3>
                 <p>{f.description}</p>
               </div>
@@ -153,7 +163,7 @@ export default function PluginsPage() {
       </section>
 
       {/* ── COMPRA + LICENÇA ────────────────────────────────── */}
-      <section className="plugin-section plugin-section--dark plugin-purchase-section" aria-labelledby="purchase-title">
+      <section id="licenca" className="plugin-section plugin-section--dark plugin-purchase-section" aria-labelledby="purchase-title">
         <div className="plugin-section-inner plugin-section-inner--split">
           {/* Explicação da licença */}
           <div className="plugin-license-info">
@@ -222,6 +232,6 @@ export default function PluginsPage() {
         </div>
       </section>
 
-    </main>
+    </div>
   )
 }

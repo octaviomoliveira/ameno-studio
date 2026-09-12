@@ -37,7 +37,6 @@ export default function PluginsTeaser() {
 
   return (
     <section ref={sectionRef} id="plugins-teaser" className="plugins-teaser" aria-labelledby="plugins-teaser-title">
-      <div className="plugins-teaser-mark" aria-hidden="true">O</div>
       <div className="plugins-teaser-inner">
         <div className="plugins-teaser-topline">
           <span>04 / FERRAMENTAS</span>
@@ -56,7 +55,7 @@ export default function PluginsTeaser() {
             <p className="plugins-teaser-product">Ameno Cotas</p>
             <p className="plugins-teaser-description">Cotas automáticas no 3ds Max para reduzir trabalho repetitivo e manter o foco na imagem.</p>
           </div>
-          <Link href="/plugins" className="plugins-teaser-cta ameno-button ameno-button--ink">
+          <Link href="/plugins" className="plugins-teaser-cta ameno-button ameno-button--secondary">
             Conhecer o Ameno Cotas <span aria-hidden="true">→</span>
           </Link>
         </div>

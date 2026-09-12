@@ -1,0 +1,17 @@
+.viewer { position: relative; overflow: hidden; background: var(--gray-dark); }
+.canvas { position: absolute; inset: 0; cursor: grab; }
+.canvas:active { cursor: grabbing; }
+.canvas:focus-visible { outline: 2px solid var(--off-white); outline-offset: -3px; }
+.canvas canvas { display: block; }
+.label { position: absolute; top: 1rem; left: 1rem; color: var(--off-white); font-family: var(--font-ibm-plex-mono), monospace; font-size: .625rem; letter-spacing: .12em; text-transform: uppercase; pointer-events: none; }
+.loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: .8rem; color: var(--off-white); font-family: var(--font-ibm-plex-mono), monospace; font-size: .65rem; }
+.loadingMark { width: .65rem; height: .65rem; border: 1px solid var(--off-white); animation: loading 1.5s linear infinite; }
+@keyframes loading { to { transform: rotate(180deg); } }
+.toolbar { position: absolute; bottom: 1rem; left: 50%; display: flex; transform: translateX(-50%); border: 1px solid var(--gray); background: var(--black); }
+.toolbar button { min-width: 2.75rem; min-height: 2.75rem; border: 0; background: none; color: var(--off-white); cursor: pointer; }
+.toolbar button:nth-child(2) { padding: .6rem .8rem; border-inline: 1px solid var(--border); font-family: var(--font-ibm-plex-mono), monospace; font-size: .6rem; white-space: nowrap; }
+.toolbar button:hover { color: var(--red); }
+.fallback { position: absolute; inset: 0; }
+.fallback p { position: absolute; inset: auto 0 0; padding: 1rem; color: var(--white); background: var(--black); font-size: .8rem; }
+.fallback p span { display: block; margin-top: .25rem; color: var(--off-white); font-size: .65rem; }
+@media (prefers-reduced-motion: reduce) { .loadingMark { animation: none; } }

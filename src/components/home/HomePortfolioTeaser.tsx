@@ -8,7 +8,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Projeto em destaque na home — troque pelo seu projeto autoría quando tiver
 const FEATURED = {
   title: 'Portfólio',
   subtitle: 'Arquitetura · Visualização · Assets 3D',
@@ -52,15 +51,17 @@ export default function HomePortfolioTeaser() {
       className="home-portfolio-teaser"
       aria-labelledby="home-portfolio-title"
     >
+      <div className="home-portfolio-topline">
+        <span>03 / PORTFÓLIO</span>
+        <span>AUTORAIS · ESTÚDIO · ASSETS 3D</span>
+      </div>
       <div className="home-portfolio-teaser-inner">
         {/* Texto */}
         <div className="home-portfolio-teaser-copy">
-          <div className="home-portfolio-topline" data-portfolio-teaser-text>
-            <span>03 / PORTFÓLIO</span>
-            <span>AUTORAIS · ESTÚDIO · ASSETS 3D</span>
-          </div>
           <h2 id="home-portfolio-title" data-portfolio-teaser-text>
-            {FEATURED.subtitle}
+            <span>Arquitetura.</span>
+            <em className="font-editorial">Visualização.</em>
+            <span>Assets 3D.</span>
           </h2>
           <p data-portfolio-teaser-text>{FEATURED.description}</p>
           <Link
@@ -84,7 +85,7 @@ export default function HomePortfolioTeaser() {
             src={FEATURED.coverUrl}
             alt={`${FEATURED.title} — ameno.studio`}
             fill
-            sizes="(max-width: 768px) 100vw, 55vw"
+            sizes="(max-width: 768px) 90vw, 52vw"
             className="object-cover"
           />
           <div className="home-portfolio-teaser-wash" aria-hidden="true" />

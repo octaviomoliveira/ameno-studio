@@ -1,0 +1,178 @@
+.page {
+  --page-gutter: clamp(1.25rem, 4vw, 5rem);
+  background: var(--black);
+}
+
+.intro,
+.story {
+  max-width: 1600px;
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+.intro {
+  padding-top: clamp(7.5rem, 11vw, 11rem);
+  padding-bottom: clamp(4rem, 7vw, 7rem);
+}
+
+.topline {
+  color: var(--off-white);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  margin-bottom: clamp(2.5rem, 5vw, 5rem);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+  grid-template-areas: 'heading portrait' 'introduction portrait';
+  column-gap: clamp(2rem, 6vw, 6rem);
+  row-gap: 3rem;
+  align-items: start;
+}
+
+.heading { grid-area: heading; }
+
+.label {
+  color: var(--off-white);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.13em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 2rem;
+  font-size: clamp(3rem, 5.8vw, 5.8rem);
+  font-weight: 700;
+  letter-spacing: -0.065em;
+  line-height: 1.02;
+}
+
+.title > span { display: block; }
+.title em { font-size: 1.08em; letter-spacing: -0.045em; }
+
+.portrait { grid-area: portrait; align-self: start; margin: 0; }
+.portraitFrame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--gray-dark);
+}
+.portraitImage { object-fit: cover; object-position: 50% 40%; }
+.portrait figcaption {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  color: var(--off-white);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.introduction {
+  grid-area: introduction;
+  max-width: 33rem;
+  align-self: end;
+  color: var(--off-white);
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.7;
+}
+.introduction p + p { margin-top: 1.25rem; }
+
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  border-top: 1px solid var(--border);
+  padding-block: clamp(4rem, 8vw, 8rem);
+}
+.storyRail { padding-top: 0.6rem; }
+.disciplines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.5rem;
+  max-width: 16rem;
+  margin-top: 2rem;
+  color: var(--off-white);
+  font-size: 0.8rem;
+}
+.storyContent { min-width: 0; }
+.statement {
+  max-width: 18ch;
+  font-size: clamp(2.25rem, 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.055em;
+}
+.statementCopy {
+  margin-top: 2rem;
+  max-width: 48ch;
+  color: var(--off-white);
+  font-size: clamp(1.125rem, 1.55vw, 1.4rem);
+  line-height: 1.65;
+}
+.bodyCopy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin-top: 3rem;
+  color: var(--off-white);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.contact { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.contact a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  width: fit-content;
+  max-width: 100%;
+  padding-block: 1rem;
+  color: var(--off-white);
+  font-size: clamp(1rem, 1.8vw, 1.6rem);
+  transition: color 180ms ease;
+}
+.contact a:hover { color: var(--red); }
+
+.method :global(.method-section) {
+  border-top: 1px solid var(--border);
+  background: var(--black);
+  padding: clamp(4rem, 7vw, 7rem) var(--page-gutter);
+}
+.method :global(.page-grid),
+.method :global(.method-wordwall),
+.method :global(.method-card-mark) { display: none; }
+.method :global(.page-topline),
+.method :global(.method-card-topline) {
+  color: var(--off-white);
+  font-family: var(--font-ibm-plex-mono), monospace;
+}
+.method :global(.text-red),
+.method :global(.method-card p),
+.method :global(.text-base) { color: var(--off-white); }
+.method :global(.text-display-sm) { font-size: clamp(2.2rem, 4.5vw, 4.5rem); line-height: 1.02; }
+.method :global(.method-principles) { border-left: 0; column-gap: clamp(1rem, 3vw, 3rem); }
+.method :global(.method-card) { min-height: auto; border-right: 0; padding: 1.5rem 0 2rem; }
+.method :global(.method-card h3) {
+  max-width: 16ch;
+  margin-top: 2rem;
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  line-height: 1.08;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'heading' 'portrait' 'introduction';
+    gap: 2.5rem;
+  }
+  .title { margin-top: 1.4rem; font-size: clamp(2.8rem, 10.5vw, 4.8rem); letter-spacing: -0.055em; }
+  .portrait { max-width: 30rem; }
+  .story { grid-template-columns: minmax(0, 1fr); }
+  .disciplines { max-width: none; margin-top: 1rem; }
+  .bodyCopy { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; margin-top: 2rem; }
+}
