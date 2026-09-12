@@ -25,19 +25,21 @@ export default function HomePortfolioTeaser() {
     if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      gsap.from('[data-portfolio-teaser-text]', {
-        yPercent: 30,
-        opacity: 0,
+      gsap.fromTo('[data-portfolio-teaser-text]', { yPercent: 20, opacity: 0 }, {
+        yPercent: 0,
+        opacity: 1,
         duration: 0.9,
         stagger: 0.12,
         ease: 'power3.out',
+        clearProps: 'opacity,transform',
         scrollTrigger: { trigger: section, start: 'top 70%', once: true },
       })
-      gsap.from('[data-portfolio-teaser-img]', {
-        scale: 1.05,
-        opacity: 0,
+      gsap.fromTo('[data-portfolio-teaser-img]', { scale: 1.05, opacity: 0 }, {
+        scale: 1,
+        opacity: 1,
         duration: 1.1,
         ease: 'power3.out',
+        clearProps: 'opacity,transform',
         scrollTrigger: { trigger: section, start: 'top 75%', once: true },
       })
     }, section)
@@ -64,13 +66,11 @@ export default function HomePortfolioTeaser() {
             <span>Assets 3D.</span>
           </h2>
           <p data-portfolio-teaser-text>{FEATURED.description}</p>
-          <Link
-            href={FEATURED.href}
-            className="ameno-button ameno-button--primary"
-            data-portfolio-teaser-text
-          >
-            {FEATURED.cta}
-          </Link>
+          <div data-portfolio-teaser-text>
+            <Link href={FEATURED.href} className="ameno-button ameno-button--primary">
+              {FEATURED.cta}
+            </Link>
+          </div>
         </div>
 
         {/* Imagem de destaque */}

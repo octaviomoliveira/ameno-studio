@@ -61,9 +61,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} ${instrumentSerif.variable}`}>
       <body>
-        <a href="#main-content" className="skip-link">Pular para o conteúdo</a>
         <SiteIntro />
         <div id="site-shell">
+          <a href="#main-content" className="skip-link">Pular para o conteúdo</a>
           <LenisProvider>
             <Cursor />
             <Navbar />

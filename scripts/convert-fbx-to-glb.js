@@ -16,10 +16,11 @@
  * Ou use o site: https://products.aspose.app/3d/conversion/fbx-to-glb
  */
 
-const path = require('path')
-const fs   = require('fs')
-
 async function main() {
+  const [{ default: path }, { default: fs }] = await Promise.all([
+    import('node:path'),
+    import('node:fs'),
+  ])
   const inputFile = process.argv[2]
   if (!inputFile) {
     console.error('Uso: node scripts/convert-fbx-to-glb.js arquivo.glb')

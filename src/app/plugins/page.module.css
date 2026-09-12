@@ -141,7 +141,11 @@
 .page :global(.plugin-license-list li) { font-size: 1rem; line-height: 1.65; }
 .page :global(.plugin-license-icon) { color: var(--off-white); }
 .page :global(.plugin-license-note) { color: var(--off-white); line-height: 1.65; }
-.page :global(.plugin-purchase-box) { padding: clamp(1.25rem, 2.5vw, 2.5rem); top: 6rem; }
+.page :global(.plugin-purchase-box) {
+  padding: clamp(1.25rem, 2.5vw, 2.5rem);
+  top: 6rem;
+  scroll-margin-top: 6rem;
+}
 .page :global(.plugin-purchase-product) { font-size: 1.5rem; }
 .page :global(.plugin-purchase-version),
 .page :global(.plugin-purchase-min),

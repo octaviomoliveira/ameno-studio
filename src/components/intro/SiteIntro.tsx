@@ -96,7 +96,7 @@ function HomeIntro() {
       document.body.style.overflow = previousOverflow
       const focusTarget = previousFocus?.isConnected && previousFocus !== document.body
         ? previousFocus
-        : shell?.querySelector<HTMLElement>('a[href]')
+        : shell?.querySelector<HTMLElement>('.site-navbar a[href="/"]')
       focusTarget?.focus({ preventScroll: true })
     }
   }, [dismiss, visible])

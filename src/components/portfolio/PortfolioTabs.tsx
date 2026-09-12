@@ -50,8 +50,16 @@ export default function PortfolioTabs({ studioprojects, autoraisProjects, assets
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     let cancelled = false
     let refreshFrame = 0
+    let indicatorX = button.offsetLeft
+    let indicatorWidth = button.offsetWidth
     const positionIndicator = (animate = false) => {
-      gsap.to(indicator, { x: button.offsetLeft, width: button.offsetWidth, duration: animate && !motion.matches ? 0.35 : 0, ease: 'power3.out', overwrite: true })
+      indicatorX = button.offsetLeft
+      indicatorWidth = button.offsetWidth
+      gsap.to(indicator, { x: indicatorX, width: indicatorWidth, duration: animate && !motion.matches ? 0.35 : 0, ease: 'power3.out', overwrite: true })
+    }
+    const updateIndicatorSize = () => {
+      // ResizeObserver fires on observe; keep the active tab tween unless its geometry changed.
+      if (button.offsetLeft !== indicatorX || button.offsetWidth !== indicatorWidth) positionIndicator()
     }
     const refreshLayout = () => {
       cancelAnimationFrame(refreshFrame)
@@ -67,13 +75,13 @@ export default function PortfolioTabs({ studioprojects, autoraisProjects, assets
       gsap.fromTo(content, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out', overwrite: true, clearProps: 'opacity,transform', onComplete: refreshLayout })
     }
     hasAnimated.current = true
-    const navObserver = new ResizeObserver(() => positionIndicator())
+    const navObserver = new ResizeObserver(updateIndicatorSize)
     navObserver.observe(nav)
     navObserver.observe(button)
     const contentObserver = new ResizeObserver(refreshLayout)
     contentObserver.observe(content)
     motion.addEventListener('change', onMotionChange)
-    void document.fonts.ready.then(() => { if (!cancelled) positionIndicator() })
+    void document.fonts.ready.then(() => { if (!cancelled) updateIndicatorSize() })
     refreshLayout()
     return () => {
       cancelled = true

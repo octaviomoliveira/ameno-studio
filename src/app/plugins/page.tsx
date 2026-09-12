@@ -10,17 +10,14 @@ export const metadata = {
 
 const FEATURES = [
   {
-    icon: '⌗',
     title: 'Cotas automáticas por layer',
     description: 'Selecione os objetos, escolha o layer e o plugin gera todas as cotas automaticamente, sem trabalho manual.',
   },
   {
-    icon: '◎',
     title: 'Render integrado',
     description: 'As cotas são geradas já preparadas para render — sem ajustes adicionais entre a modelagem e a entrega.',
   },
   {
-    icon: '▦',
     title: 'Compatível com seu fluxo',
     description: 'Funciona dentro do 3ds Max com Corona 12+. Não muda sua forma de trabalhar — apenas elimina o repetitivo.',
   },
@@ -69,19 +66,19 @@ export default function PluginsPage() {
             <span>PLUGIN PARA 3DS MAX</span>
           </div>
           <div className={styles.heroGrid}>
-          <div>
-          <h1 id="plugin-title" className="plugin-hero-title">
-            Ameno<br /><em className="font-editorial">Cotas.</em>
-          </h1>
-          <p className="plugin-hero-subtitle">
-            Gera cotas automaticamente por layer com render integrado.
-          </p>
-          <div className={styles.heroActions}>
-            <a href="#licenca" className="ameno-button ameno-button--primary">Obter o plugin <span aria-hidden="true">↗</span></a>
-            <span>A partir de {minLabel}<br />Pagamento único</span>
-          </div>
-          </div>
-          <div className={styles.heroVisual}><PluginDiagram /></div>
+            <div>
+              <h1 id="plugin-title" className="plugin-hero-title">
+                Ameno<br /><em className="font-editorial">Cotas.</em>
+              </h1>
+              <p className="plugin-hero-subtitle">
+                Gera cotas automaticamente por layer com render integrado.
+              </p>
+              <div className={styles.heroActions}>
+                <a href="#comprar" className="ameno-button ameno-button--primary">Obter o plugin <span aria-hidden="true">↗</span></a>
+                <span>A partir de {minLabel}<br />Pagamento único</span>
+              </div>
+            </div>
+            <div className={styles.heroVisual}><PluginDiagram /></div>
           </div>
           <div className="plugin-hero-badges">
             <span className="plugin-badge">3ds Max 2024–2026</span>
@@ -193,7 +190,7 @@ export default function PluginsPage() {
           </div>
 
           {/* Formulário de compra */}
-          <div className="plugin-purchase-box">
+          <div id="comprar" className="plugin-purchase-box" tabIndex={-1}>
             <div className="plugin-purchase-header">
               <p className="plugin-purchase-product">Ameno Cotas</p>
               <p className="plugin-purchase-version">Versão atual · Pagamento único</p>

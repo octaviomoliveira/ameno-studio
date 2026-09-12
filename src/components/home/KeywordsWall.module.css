@@ -1,0 +1,42 @@
+.wall { position: relative; width: 100%; padding: clamp(4rem, 7vw, 7rem) 5vw; overflow: hidden; background: var(--black); color: var(--off-white); }
+.cloud { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: .8rem clamp(1.5rem, 3vw, 3rem); max-width: 100rem; margin: auto; }
+.entry { display: inline-block; max-width: 100%; }
+.word { appearance: none; max-width: 100%; padding: .04em 0; border: 0; color: var(--off-white); background: none; text-align: left; line-height: .97; cursor: crosshair; transition: opacity .2s, color .2s; overflow-wrap: anywhere; }
+.word[data-active='true'] { color: var(--red); }
+.word[data-dimmed='true'] { opacity: .3; }
+.word:focus-visible { outline-offset: .08em; }
+.footer { display: flex; justify-content: space-between; align-items: center; gap: 2rem; max-width: 100rem; margin: 3.5rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--off-white); font-family: var(--font-ibm-plex-mono), monospace; font-size: .55rem; letter-spacing: .1em; }
+.mobile { display: none; }
+.preview { position: fixed; top: 0; left: 0; width: min(440px, calc(100vw - 32px), calc((100svh - 110px) * 1.6)); pointer-events: none; z-index: 80; opacity: 0; visibility: hidden; transition: opacity .16s, visibility .16s; }
+.preview[data-visible='true'] { opacity: 1; visibility: visible; }
+.previewCard { border: 1px solid var(--gray); overflow: hidden; background: var(--black); box-shadow: 0 1.5rem 4rem rgb(10 10 10 / .5); }
+.previewMedia { position: relative; aspect-ratio: 16 / 10; }
+.previewCaption { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem; border-top: 1px solid var(--border); font-family: var(--font-ibm-plex-mono), monospace; font-size: .6rem; }
+.previewCaption strong { color: var(--white); font-weight: 500; }
+.previewCaption span { color: var(--off-white); text-align: right; }
+@media (max-width: 767px), (hover: none) and (pointer: coarse) {
+  .wall { padding: 3rem 0 1rem; }
+  .desktop { display: none; }
+  .mobile { display: block; }
+  .mobileHeading { padding: 0 1.25rem; }
+  .mobileHeading > span, .cardIndex, .caption > span, .railFooter { font-family: var(--font-ibm-plex-mono), monospace; font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--off-white); }
+  .mobileHeading h2 { margin-top: 1.2rem; color: var(--white); font-size: clamp(3rem, 13vw, 4.5rem); font-weight: 700; letter-spacing: -.055em; line-height: .94; }
+  .mobileHeading p { max-width: 30ch; margin-top: 1.5rem; color: var(--off-white); font-size: .9rem; line-height: 1.6; }
+  .rail { display: flex; gap: .8rem; overflow-x: auto; overscroll-behavior-inline: contain; margin-top: 2.5rem; padding: 0 1.25rem .5rem; scroll-padding-inline: 1.25rem; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail:focus-visible { outline: 1px solid var(--off-white); outline-offset: -1px; }
+  .mobileCard { position: relative; flex: 0 0 min(82vw, 23rem); aspect-ratio: 4 / 5; overflow: hidden; background: var(--gray-dark); scroll-snap-align: start; }
+  .wash { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 10 10 / .08) 30%, rgb(10 10 10 / .92)); }
+  .cardIndex { position: absolute; top: 1rem; right: 1rem; }
+  .caption { position: absolute; inset: auto 1.1rem 1.2rem; }
+  .caption h3 { max-width: 11ch; margin-top: .6rem; color: var(--white); font-size: clamp(2.1rem, 9.5vw, 3rem); font-weight: 700; line-height: .98; letter-spacing: -.04em; overflow-wrap: anywhere; }
+  .caption p { margin-top: .7rem; color: var(--off-white); font-size: .75rem; }
+  .railFooter { display: flex; justify-content: space-between; align-items: center; margin: .4rem 1.25rem 0; border-bottom: 1px solid var(--border); }
+  .railControls { display: flex; gap: .25rem; }
+  .railControls button { width: 2.75rem; height: 2.75rem; border: 0; color: var(--off-white); background: none; font-size: 1.25rem; cursor: pointer; }
+  .railControls button:disabled { color: var(--gray); cursor: default; }
+  .railControls button:hover:not(:disabled) { color: var(--red); }
+  .expand { display: flex; width: calc(100% - 2.5rem); align-items: center; justify-content: space-between; gap: 1rem; margin: 1.1rem 1.25rem 0; padding: 1rem 0; border: 0; border-bottom: 1px solid var(--gray); color: var(--white); background: none; text-align: left; font-size: .85rem; cursor: pointer; }
+  .expand span { color: var(--red); font-size: 1.3rem; }
+}
+@media (prefers-reduced-motion: reduce) { .word, .preview { transition: none; } }

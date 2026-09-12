@@ -2728,7 +2728,7 @@ summary:focus-visible {
 
 .ameno-button--primary {
   border-color: var(--red);
-  color: var(--white);
+  color: var(--black);
   background: var(--red);
 }
 
@@ -2769,7 +2769,7 @@ summary:focus-visible {
 .auth-form .ameno-button--primary,
 .purchase-submit.ameno-button--primary {
   border-color: var(--red);
-  color: var(--white);
+  color: var(--black);
   background: var(--red);
 }
 
@@ -3372,8 +3372,8 @@ summary:focus-visible {
 
   .plugins-teaser-title {
     margin-top: 3.75rem;
-    font-size: clamp(3rem, 13.5vw, 4.8rem);
-    line-height: 1;
+    font-size: clamp(2.6rem, 10.8vw, 4rem);
+    line-height: 1.05;
   }
 
   .plugins-teaser-bottom {
