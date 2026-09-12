@@ -1,0 +1,33 @@
+{
+  "commit": "a738b38d5869a3d518ca64c713e6610017e11874",
+  "checkedAt": "2026-09-12T22:45:09.261Z",
+  "method": "Chromium CDP touch emulation, not physical iPhone",
+  "state": {
+    "url": "https://ameno.studio/",
+    "viewport": 390,
+    "width": 390,
+    "touch": 5,
+    "coarse": true,
+    "hover": false,
+    "videoSrc": null,
+    "posterWidth": 390,
+    "layers": [
+      "1",
+      "1",
+      "1"
+    ],
+    "cursor": "auto"
+  },
+  "menu": {
+    "opened": {
+      "expanded": "true",
+      "dialog": true,
+      "overflow": "hidden"
+    },
+    "closed": {
+      "expanded": "false",
+      "dialog": false,
+      "overflow": ""
+    }
+  }
+}
