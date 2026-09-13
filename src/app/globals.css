@@ -352,7 +352,7 @@ summary:focus-visible {
 .site-intro-title {
   display: grid;
   color: var(--off-white);
-  font-size: clamp(3.3rem, 9vw, 9.5rem);
+  font-size: clamp(2.8rem, 7.5vw, 8rem);
   font-weight: 700;
   letter-spacing: -0.075em;
   line-height: 0.82;
@@ -378,24 +378,26 @@ summary:focus-visible {
 }
 
 .site-intro-title em {
-  color: var(--red);
+  color: var(--off-white);
+  opacity: 0.7;
   font-style: normal;
   text-shadow: 0 0 1.15rem rgba(7, 7, 7, 0.98), 0 0 0.25rem rgba(7, 7, 7, 0.92);
 }
 
 .site-intro-hint {
   display: flex;
+  opacity: 0.5;
   align-items: center;
   gap: 0.9rem;
   margin-top: clamp(2rem, 5vw, 4rem);
-  animation: introReveal 900ms 520ms both cubic-bezier(0.22, 1, 0.36, 1);
+  animation: introHintReveal 900ms 520ms both cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .site-intro-hint i {
   display: block;
   width: 1.75rem;
   height: 1px;
-  background: rgba(230, 59, 46, 0.72);
+  background: rgba(232, 232, 224, 0.35);
   transition: width 220ms ease;
 }
 
@@ -419,6 +421,11 @@ summary:focus-visible {
 @keyframes introReveal {
   from { opacity: 0; transform: translateY(1.25rem); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes introHintReveal {
+  from { opacity: 0; transform: translateY(1.25rem); }
+  to { opacity: 0.5; transform: translateY(0); }
 }
 
 .cotas-svg {
@@ -4269,6 +4276,170 @@ summary:focus-visible {
 
 .portfolio-page {
   min-height: 100vh;
+}
+
+/* Assets 3D — seção dedicada ao viewer existente */
+.assets-section {
+  padding: clamp(4rem, 8vh, 7rem) clamp(1.25rem, 6vw, 6rem);
+  border-top: 1px solid var(--border);
+}
+
+.assets-section-header { max-width: 40rem; margin-bottom: 3rem; }
+.assets-section-header h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+.assets-section-header p { font-size: 0.875rem; color: var(--gray); }
+.assets-section .assets-grid { display: grid; grid-template-columns: 1fr; gap: 2px; margin-top: 0; }
+.assets-section .asset-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+}
+.asset-viewer-wrap { aspect-ratio: 4 / 3; background: var(--gray-dark); }
+.assets-section-viewer { width: 100%; height: 100%; }
+.asset-info {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+.asset-num {
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.asset-info h3 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -0.03em; }
+.asset-info p { font-size: 0.875rem; color: var(--gray); line-height: 1.65; }
+.assets-section .section-tag {
+  display: block;
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 1rem;
+}
+@media (max-width: 767px) {
+  .assets-section .asset-card { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assets-section .asset-viewer-skeleton::after { animation: none; }
+}
+
+/* Keywords Wall — pesos compactos e alternância editorial */
+.kw-bold {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+}
+
+.kw-italic {
+  font-family: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.2rem, 2.2vw, 1.65rem);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.kw-italic:not([data-active='true']) { color: rgba(232, 232, 224, 0.8); }
+
+/* Portfolio — projetos em sequência horizontal */
+.portfolio-header {
+  padding: clamp(6rem, 12vh, 10rem) clamp(1.25rem, 6vw, 6rem) clamp(2rem, 4vh, 3rem);
+  border-bottom: 1px solid var(--border);
+}
+
+.portfolio-heading {
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-top: 1.5rem;
+}
+
+.project-scroll-wrap {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.project-scroll-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+
+.project-scroll-slide {
+  position: relative;
+  flex: 0 0 80vw;
+  height: 100%;
+  margin-right: 2px;
+}
+
+.project-scroll-slide:last-child { margin-right: 0; }
+
+.project-scroll-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0) 55%);
+  pointer-events: none;
+}
+
+.project-scroll-meta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.project-scroll-num {
+  display: block;
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(232, 232, 224, 0.55);
+  margin-bottom: 0.5rem;
+}
+
+.project-scroll-title {
+  font-size: clamp(1.8rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.project-scroll-info {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(232, 232, 224, 0.6);
+}
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .project-scroll-wrap { height: auto; overflow: visible; }
+  .project-scroll-track {
+    flex-direction: column;
+    height: auto;
+    transform: none !important;
+    will-change: auto;
+  }
+  .project-scroll-slide {
+    flex: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin-right: 0;
+    margin-bottom: 2px;
+  }
 }
 
 .skip-link {

@@ -10,7 +10,7 @@ export default function Home() {
     <>
       {/* Cap. 1 — Hero 3D com scroll sincronizado */}
       <HeroVideo
-        videoSrc="/hero/hero-central-parque.webm"
+        videoSrc="/hero/hero-central-parque-scrub.webm"
         posterSrc="/hero/ameno-hero-concept-v1.webp"
         alt="Vista aérea do Central Parque — ameno.studio"
       />

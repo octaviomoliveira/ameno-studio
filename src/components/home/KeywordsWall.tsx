@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 type KeywordItem = {
   text: string
-  cls: string
+  cls: 'bold' | 'italic'
   img: string
   project: string
   type: string
@@ -19,28 +19,28 @@ type KeywordItem = {
 
 // 22 termos com correspondência 100% EXATA e literal com cada render real
 const KEYWORDS: KeywordItem[] = [
-  { text: 'ESTÚDIO BOLA', cls: 'font-sans font-black uppercase text-5xl sm:text-7xl md:text-8xl tracking-tight', img: '/renders/estudio-bola-fachada.webp', project: 'Estúdio Bola', type: 'Fachada Comercial' },
-  { text: 'Varanda Gourmet', cls: 'font-editorial italic text-5xl sm:text-6xl md:text-7xl', img: '/renders/central-parque-varanda.webp', project: 'Central Parque', type: 'Área Privativa' },
-  { text: 'PISCINA & DECK', cls: 'font-sans font-bold uppercase text-4xl sm:text-5xl md:text-6xl', img: '/renders/central-parque-piscina.webp', project: 'Central Parque', type: 'Lazer Aquático' },
-  { text: 'Iluminação Noturna', cls: 'font-editorial italic text-6xl sm:text-7xl md:text-8xl', img: '/renders/raizes-fachada-noite.webp', project: 'Raízes Capão Bonito', type: 'Cenografia Lumínica' },
-  { text: 'LIVING INTEGRADO', cls: 'font-mono uppercase text-3xl sm:text-4xl md:text-5xl tracking-wider', img: '/renders/central-parque-living.webp', project: 'Central Parque', type: 'Design de Interiores' },
-  { text: 'CENTRAL PARQUE', cls: 'font-sans font-black uppercase text-6xl sm:text-8xl md:text-[6.5rem] tracking-tighter', img: '/renders/central-parque-fachada.webp', project: 'Central Parque', type: 'Fachada Residencial' },
-  { text: 'Adega & Vinhoteca', cls: 'font-editorial italic text-5xl sm:text-6xl md:text-7xl', img: '/renders/espaco-novo-adega.webp', project: 'Espaço Novo Mercato', type: 'Varejo Especializado' },
-  { text: 'BEACH TENNIS', cls: 'font-sans font-black uppercase text-4xl sm:text-5xl md:text-6xl tracking-widest', img: '/renders/moradas-beachtennis.webp', project: 'Moradas do Bosque', type: 'Complexo Esportivo' },
-  { text: 'Garden Privativo', cls: 'font-editorial italic text-5xl sm:text-6xl md:text-7xl', img: '/renders/central-parque-garden.webp', project: 'Central Parque', type: 'Apartamento Garden' },
-  { text: 'GOLDEN HOUR', cls: 'font-mono uppercase text-3xl sm:text-4xl md:text-5xl', img: '/renders/raizes-fachada-dia.webp', project: 'Raízes Capão Bonito', type: 'Luz Entardecer' },
-  { text: 'MERCATO VAREJO', cls: 'font-sans font-bold uppercase text-4xl sm:text-5xl md:text-6xl tracking-tight', img: '/renders/espaco-novo-comercial.webp', project: 'Espaço Novo Mercato', type: 'Espaço Comercial' },
-  { text: 'Churrasqueira Gourmet', cls: 'font-editorial italic text-5xl sm:text-6xl md:text-7xl', img: '/renders/raizes-gourmet.webp', project: 'Raízes Gourmet', type: 'Área Social' },
-  { text: 'MORADAS DO BOSQUE', cls: 'font-sans font-black uppercase text-5xl sm:text-7xl md:text-8xl tracking-tight', img: '/renders/moradas-piscina.webp', project: 'Moradas do Bosque', type: 'Condomínio Fechado' },
-  { text: 'Salão de Jogos', cls: 'font-editorial italic text-4xl sm:text-5xl md:text-6xl', img: '/renders/salao-jogos.webp', project: 'Goya Residencial', type: 'Área de Convivência' },
-  { text: 'HOME OFFICE & DETALHE', cls: 'font-mono uppercase text-2xl sm:text-3xl md:text-4xl tracking-widest', img: '/renders/instagram-escritorio.webp', project: 'Escritório Autoral', type: 'Macro Detalhamento' },
-  { text: 'ESPAÇO GOURMET', cls: 'font-sans font-bold uppercase text-4xl sm:text-5xl md:text-6xl', img: '/renders/goya-gourmet.webp', project: 'Goya Residencial', type: 'Gourmet & Festas' },
-  { text: 'Quadra Poliesportiva', cls: 'font-editorial italic text-5xl sm:text-6xl md:text-7xl', img: '/renders/quadra-esportes.webp', project: 'Central Parque', type: 'Esportes & Lazer' },
-  { text: 'PRAÇA EXTERNA', cls: 'font-mono uppercase text-3xl sm:text-4xl md:text-5xl', img: '/renders/praca-externa.webp', project: 'Raízes Capão Bonito', type: 'Paisagismo & Convivência' },
-  { text: 'Salão de Festas', cls: 'font-editorial italic text-5xl sm:text-6xl md:text-7xl', img: '/renders/salao-festas.webp', project: 'Goya Residencial', type: 'Social & Eventos' },
-  { text: 'BRINQUEDOTECA', cls: 'font-sans font-bold uppercase text-3xl sm:text-4xl md:text-5xl tracking-widest', img: '/renders/brinquedoteca.webp', project: 'Frederico Jacobi', type: 'Espaço Kids' },
-  { text: 'Área Externa', cls: 'font-editorial italic text-5xl sm:text-6xl md:text-7xl', img: '/renders/goya-externa.webp', project: 'Goya Residencial', type: 'Deck & Paisagismo' },
-  { text: 'BICICLETÁRIO', cls: 'font-mono uppercase text-2xl sm:text-3xl md:text-4xl tracking-widest', img: '/renders/bicicletario.webp', project: 'Central Parque', type: 'Mobilidade Urbana' },
+  { text: 'ESTÚDIO BOLA', cls: 'bold', img: '/renders/estudio-bola-fachada.webp', project: 'Estúdio Bola', type: 'Fachada Comercial' },
+  { text: 'Varanda Gourmet', cls: 'italic', img: '/renders/central-parque-varanda.webp', project: 'Central Parque', type: 'Área Privativa' },
+  { text: 'PISCINA & DECK', cls: 'bold', img: '/renders/central-parque-piscina.webp', project: 'Central Parque', type: 'Lazer Aquático' },
+  { text: 'Iluminação Noturna', cls: 'italic', img: '/renders/raizes-fachada-noite.webp', project: 'Raízes Capão Bonito', type: 'Cenografia Lumínica' },
+  { text: 'LIVING INTEGRADO', cls: 'bold', img: '/renders/central-parque-living.webp', project: 'Central Parque', type: 'Design de Interiores' },
+  { text: 'CENTRAL PARQUE', cls: 'bold', img: '/renders/central-parque-fachada.webp', project: 'Central Parque', type: 'Fachada Residencial' },
+  { text: 'Adega & Vinhoteca', cls: 'italic', img: '/renders/espaco-novo-adega.webp', project: 'Espaço Novo Mercato', type: 'Varejo Especializado' },
+  { text: 'BEACH TENNIS', cls: 'bold', img: '/renders/moradas-beachtennis.webp', project: 'Moradas do Bosque', type: 'Complexo Esportivo' },
+  { text: 'Garden Privativo', cls: 'italic', img: '/renders/central-parque-garden.webp', project: 'Central Parque', type: 'Apartamento Garden' },
+  { text: 'GOLDEN HOUR', cls: 'bold', img: '/renders/raizes-fachada-dia.webp', project: 'Raízes Capão Bonito', type: 'Luz Entardecer' },
+  { text: 'MERCATO VAREJO', cls: 'bold', img: '/renders/espaco-novo-comercial.webp', project: 'Espaço Novo Mercato', type: 'Espaço Comercial' },
+  { text: 'Churrasqueira Gourmet', cls: 'italic', img: '/renders/raizes-gourmet.webp', project: 'Raízes Gourmet', type: 'Área Social' },
+  { text: 'MORADAS DO BOSQUE', cls: 'bold', img: '/renders/moradas-piscina.webp', project: 'Moradas do Bosque', type: 'Condomínio Fechado' },
+  { text: 'Salão de Jogos', cls: 'italic', img: '/renders/salao-jogos.webp', project: 'Goya Residencial', type: 'Área de Convivência' },
+  { text: 'HOME OFFICE & DETALHE', cls: 'bold', img: '/renders/instagram-escritorio.webp', project: 'Escritório Autoral', type: 'Macro Detalhamento' },
+  { text: 'ESPAÇO GOURMET', cls: 'bold', img: '/renders/goya-gourmet.webp', project: 'Goya Residencial', type: 'Gourmet & Festas' },
+  { text: 'Quadra Poliesportiva', cls: 'italic', img: '/renders/quadra-esportes.webp', project: 'Central Parque', type: 'Esportes & Lazer' },
+  { text: 'PRAÇA EXTERNA', cls: 'bold', img: '/renders/praca-externa.webp', project: 'Raízes Capão Bonito', type: 'Paisagismo & Convivência' },
+  { text: 'Salão de Festas', cls: 'italic', img: '/renders/salao-festas.webp', project: 'Goya Residencial', type: 'Social & Eventos' },
+  { text: 'BRINQUEDOTECA', cls: 'bold', img: '/renders/brinquedoteca.webp', project: 'Frederico Jacobi', type: 'Espaço Kids' },
+  { text: 'Área Externa', cls: 'italic', img: '/renders/goya-externa.webp', project: 'Goya Residencial', type: 'Deck & Paisagismo' },
+  { text: 'BICICLETÁRIO', cls: 'bold', img: '/renders/bicicletario.webp', project: 'Central Parque', type: 'Mobilidade Urbana' },
 ]
 
 const MOBILE_FEATURED_INDEXES = [0, 5, 3, 12, 6, 18]
@@ -192,7 +192,7 @@ export default function KeywordsWall() {
             {KEYWORDS.map((item, index) => (
               <span key={item.text} className={styles.entry} data-keyword-entry>
                 <button type="button" ref={(element) => { wordsRef.current[index] = element }}
-                  className={`${item.cls} ${styles.word}`} data-active={activeIndex === index}
+                  className={`${item.cls === 'bold' ? 'kw-bold' : 'kw-italic'} ${styles.word}`} data-active={activeIndex === index}
                   data-dimmed={activeIndex !== null && activeIndex !== index}
                   aria-describedby={`${previewId}-${index}`} onFocus={() => focusWord(index)} onClick={() => focusWord(index)}>
                   {item.text}
