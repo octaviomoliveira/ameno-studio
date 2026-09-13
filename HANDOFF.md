@@ -2,6 +2,8 @@
 
 Este documento é o briefing completo para continuar a implementação do site `ameno.studio`. Leia tudo antes de tocar em qualquer arquivo.
 
+As regras operacionais revisadas para novas execuções estão em [`ESPECIFICACAO_EXECUCAO_REVISADA.md`](./ESPECIFICACAO_EXECUCAO_REVISADA.md). Use-as para resolver ambiguidades de escopo, carrossel horizontal, build, validação e commit sem alterar as decisões visuais já aprovadas.
+
 > Para qualquer trabalho de direção de arte ou reorganização da home, seguir primeiro o `PLANO_VISUAL.md`, que contém a narrativa em oito capítulos e as referências visuais aprovadas.
 
 ---
