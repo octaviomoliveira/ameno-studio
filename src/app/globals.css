@@ -152,7 +152,7 @@ summary:focus-visible {
   top: 0;
 }
 
-/* SeleÃ§Ã£o */
+/* Seleção */
 ::selection {
   background: var(--red);
   color: var(--white);
@@ -178,7 +178,7 @@ summary:focus-visible {
   letter-spacing: -0.03em;
 }
 
-/* A primeira dobra funciona como uma prancha tÃ©cnica em movimento. */
+/* A primeira dobra funciona como uma prancha técnica em movimento. */
 .hero-section {
   isolation: isolate;
   background:
@@ -352,7 +352,7 @@ summary:focus-visible {
 .site-intro-title {
   display: grid;
   color: var(--off-white);
-  font-size: clamp(2.8rem, 7.5vw, 8rem);
+  font-size: clamp(3.3rem, 9vw, 9.5rem);
   font-weight: 700;
   letter-spacing: -0.075em;
   line-height: 0.82;
@@ -378,9 +378,8 @@ summary:focus-visible {
 }
 
 .site-intro-title em {
-  color: var(--off-white);
+  color: var(--red);
   font-style: normal;
-  opacity: 0.72;
   text-shadow: 0 0 1.15rem rgba(7, 7, 7, 0.98), 0 0 0.25rem rgba(7, 7, 7, 0.92);
 }
 
@@ -390,21 +389,19 @@ summary:focus-visible {
   gap: 0.9rem;
   margin-top: clamp(2rem, 5vw, 4rem);
   animation: introReveal 900ms 520ms both cubic-bezier(0.22, 1, 0.36, 1);
-  opacity: 0.5;
 }
 
 .site-intro-hint i {
   display: block;
   width: 1.75rem;
   height: 1px;
-  background: rgba(232, 232, 224, 0.4);
+  background: rgba(230, 59, 46, 0.72);
   transition: width 220ms ease;
 }
 
 .site-intro-action:hover .site-intro-hint i {
   width: 2.5rem;
 }
-
 
 .site-intro-symbol {
   position: absolute;
@@ -446,7 +443,7 @@ summary:focus-visible {
   letter-spacing: 0.08em;
 }
 
-/* UtilitÃ¡rios */
+/* Utilitários */
 .off-white { color: var(--off-white); }
 .text-red { color: var(--red); }
 .border-red { border-color: var(--red); }
@@ -497,7 +494,7 @@ summary:focus-visible {
   background-size: auto, 28px 28px;
 }
 
-/* SequÃªncia de projetos: cada painel fica preso enquanto a imagem atravessa o viewport. */
+/* Sequência de projetos: cada painel fica preso enquanto a imagem atravessa o viewport. */
 .project-sequence {
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -1554,7 +1551,7 @@ summary:focus-visible {
   }
 }
 
-/* DireÃ§Ã£o narrativa v3 â€” espetÃ¡culo na entrada, clareza no conteÃºdo. */
+/* Direção narrativa v3 — espetáculo na entrada, clareza no conteúdo. */
 .narrative-hero {
   position: relative;
   isolation: isolate;
@@ -2391,7 +2388,7 @@ summary:focus-visible {
   }
 }
 
-/* AutenticaÃ§Ã£o e Ã¡rea do cliente. */
+/* Autenticação e área do cliente. */
 .auth-card {
   min-height: 31rem;
 }
@@ -2698,7 +2695,7 @@ summary:focus-visible {
   }
 }
 
-/* Sistema de aÃ§Ãµes e responsividade v4. */
+/* Sistema de ações e responsividade v4. */
 .ameno-button {
   display: inline-flex;
   min-height: 3.25rem;
@@ -3457,13 +3454,13 @@ summary:focus-visible {
   }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   HERO VIDEO â€” scroll cinemÃ¡tico com camadas de texto
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ═══════════════════════════════════════════════════════════
+   HERO VIDEO — scroll cinemático com camadas de texto
+   ═══════════════════════════════════════════════════════════ */
 
 .hero-video-section {
   position: relative;
-  height: 360svh;
+  height: 200svh;
 }
 
 .hero-video-sticky {
@@ -3569,9 +3566,9 @@ summary:focus-visible {
   .hero-video-scroll { right: 1.25rem; }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ═══════════════════════════════════════════════════════════
    HOME PORTFOLIO TEASER
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   ═══════════════════════════════════════════════════════════ */
 
 .home-portfolio-teaser {
   padding: clamp(4rem, 8vw, 8rem) 6vw;
@@ -3669,9 +3666,9 @@ summary:focus-visible {
   .home-portfolio-teaser-hover-label { opacity: 1; transform: none; }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ═══════════════════════════════════════════════════════════
    PORTFOLIO TABS
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   ═══════════════════════════════════════════════════════════ */
 
 .portfolio-tabs-section {
   padding-top: clamp(5rem, 10vw, 8rem);
@@ -3825,9 +3822,9 @@ summary:focus-visible {
   100% { transform: translateX(100%); }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ═══════════════════════════════════════════════════════════
    ASSET VIEWER (Three.js)
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   ═══════════════════════════════════════════════════════════ */
 
 .asset-viewer {
   position: relative;
@@ -3898,9 +3895,9 @@ summary:focus-visible {
   overflow: hidden;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   PLUGIN PAGE â€” pÃ¡gina de produto expandida
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ═══════════════════════════════════════════════════════════
+   PLUGIN PAGE — página de produto expandida
+   ═══════════════════════════════════════════════════════════ */
 
 .plugin-page {
   padding-top: 0;
@@ -4288,261 +4285,4 @@ summary:focus-visible {
 .skip-link:focus { transform: translateY(0); }
 .site-mobile-menu { overscroll-behavior: contain; }
 .site-mobile-menu-links a[aria-current='page'] strong { color: var(--red); }
-
-
-/* â”€â”€â”€ PORTFOLIO PAGE (nova estrutura sem abas) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-.portfolio-header {
-  padding: clamp(6rem, 12vh, 10rem) clamp(1.25rem, 6vw, 6rem) clamp(3rem, 6vh, 5rem);
-  border-bottom: 1px solid var(--border);
-}
-
-.portfolio-heading {
-  font-size: clamp(2.8rem, 7vw, 7rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-top: 1.5rem;
-}
-
-.portfolio-section-tag {
-  display: block;
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin-bottom: 1.25rem;
-}
-
-/* â”€â”€â”€ PROJECT CAROUSEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-.portfolio-carousel-section {
-  padding: clamp(3rem, 6vh, 5rem) 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.project-carousel {
-  position: relative;
-  outline: none;
-}
-
-.project-carousel-overflow {
-  overflow: hidden;
-  cursor: grab;
-  user-select: none;
-}
-
-.project-carousel-overflow:active {
-  cursor: grabbing;
-}
-
-.project-carousel-track {
-  display: flex;
-  will-change: transform;
-}
-
-.project-carousel-slide {
-  flex: 0 0 100%;
-  width: 100%;
-  position: relative;
-}
-
-.project-carousel-media {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-}
-
-@media (max-width: 767px) {
-  .project-carousel-media {
-    aspect-ratio: 4 / 3;
-  }
-}
-
-.project-carousel-wash {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.1) 55%);
-  pointer-events: none;
-}
-
-.project-carousel-meta {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: clamp(1.5rem, 4vw, 3rem);
-}
-
-.project-carousel-num {
-  display: block;
-  font-size: 0.625rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(232, 232, 224, 0.55);
-  margin-bottom: 0.5rem;
-}
-
-.project-carousel-title {
-  font-size: clamp(1.8rem, 5vw, 4rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  margin-bottom: 0.5rem;
-}
-
-.project-carousel-info {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  color: rgba(232, 232, 224, 0.6);
-  text-transform: uppercase;
-}
-
-.project-carousel-dots {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1.5rem;
-}
-
-.project-carousel-dot {
-  width: 2rem;
-  height: 2px;
-  background: var(--border);
-  border: none;
-  cursor: pointer;
-  transition: background 200ms ease, width 200ms ease;
-  padding: 0;
-}
-
-.project-carousel-dot.is-active {
-  background: var(--off-white);
-  width: 3rem;
-}
-
-/* â”€â”€â”€ KEYWORDS FLOW (estilo elephant skin) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-.portfolio-flow-section {
-  padding: clamp(4rem, 8vh, 7rem) clamp(1.25rem, 6vw, 6rem);
-  border-bottom: 1px solid var(--border);
-}
-
-.portfolio-flow-header {
-  margin-bottom: 2rem;
-}
-
-.keywords-flow {
-  max-width: 100%;
-}
-
-.keywords-flow-text {
-  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
-  line-height: 1.65;
-  color: var(--off-white);
-}
-
-.keywords-flow-bold {
-  font-family: var(--font-sans);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-}
-
-.keywords-flow-italic {
-  font-size: 1.15em;
-  font-style: italic;
-  font-weight: 400;
-  color: rgba(232, 232, 224, 0.75);
-}
-
-.keywords-flow-sep {
-  color: var(--border);
-  padding: 0 0.1em;
-}
-
-/* â”€â”€â”€ PORTFOLIO ASSETS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-.portfolio-assets-section {
-  padding: clamp(4rem, 8vh, 7rem) clamp(1.25rem, 6vw, 6rem);
-}
-
-.portfolio-assets-header {
-  max-width: 42rem;
-  margin-bottom: clamp(3rem, 6vh, 5rem);
-}
-
-.portfolio-assets-header h2 {
-  font-size: clamp(2rem, 4.5vw, 3.5rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.05;
-  margin-bottom: 1.25rem;
-}
-
-.portfolio-assets-header p {
-  font-size: clamp(0.875rem, 1.4vw, 1rem);
-  color: var(--gray);
-  line-height: 1.7;
-}
-
-.portfolio-assets-grid {
-  display: grid;
-  gap: 2px;
-}
-
-.portfolio-asset-card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px;
-  border: 1px solid var(--border);
-}
-
-@media (max-width: 767px) {
-  .portfolio-asset-card {
-    grid-template-columns: 1fr;
-  }
-}
-
-.portfolio-asset-viewer {
-  aspect-ratio: 4 / 3;
-  background: var(--gray-dark);
-}
-
-.portfolio-asset-info {
-  padding: clamp(1.5rem, 4vw, 3rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.75rem;
-}
-
-.portfolio-asset-num {
-  font-size: 0.625rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gray);
-}
-
-.portfolio-asset-name {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
-}
-
-.portfolio-asset-desc {
-  font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
-  color: var(--gray);
-  line-height: 1.7;
-}
-
-.portfolio-assets-empty {
-  padding: 5rem 0;
-  text-align: center;
-  color: var(--gray);
-  font-size: 0.875rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 

@@ -54,7 +54,7 @@ export default function HomePortfolioTeaser() {
       aria-labelledby="home-portfolio-title"
     >
       <div className="home-portfolio-topline">
-        <span>PORTFÓLIO</span>
+        <span>03 / PORTFÓLIO</span>
         <span>AUTORAIS · ESTÚDIO · ASSETS 3D</span>
       </div>
       <div className="home-portfolio-teaser-inner">
