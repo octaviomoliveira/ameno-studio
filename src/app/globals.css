@@ -4300,7 +4300,7 @@ summary:focus-visible {
   gap: 0;
   border: 1px solid var(--border);
 }
-.asset-viewer-wrap { aspect-ratio: 1 / 1; background: var(--gray-dark); position: relative; }
+.asset-viewer-wrap { aspect-ratio: 3 / 4; background: var(--gray-dark); position: relative; }
 .assets-section-viewer { width: 100%; height: 100%; }
 
 /* Tag discreta no canto do viewer */
@@ -4409,8 +4409,8 @@ summary:focus-visible {
 @media (max-width: 767px) {
   .assets-section .asset-card { grid-template-columns: 1fr; }
   .asset-render-panel { border-left: none; border-top: 1px solid var(--border); }
-  .asset-viewer-wrap { aspect-ratio: 1 / 1; }
-  .asset-render-frame { aspect-ratio: 1 / 1; flex: none; }
+  .asset-viewer-wrap { aspect-ratio: 3 / 4; }
+  .asset-render-frame { aspect-ratio: 3 / 4; flex: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .assets-section .asset-viewer-skeleton::after { animation: none; }
