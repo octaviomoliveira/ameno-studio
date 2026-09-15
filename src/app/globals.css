@@ -4409,8 +4409,8 @@ summary:focus-visible {
 @media (max-width: 767px) {
   .assets-section .asset-card { grid-template-columns: 1fr; }
   .asset-render-panel { border-left: none; border-top: 1px solid var(--border); }
-  .asset-viewer-wrap { aspect-ratio: 3 / 4; }
-  .asset-render-frame { aspect-ratio: 3 / 4; flex: none; }
+  .asset-viewer-wrap { aspect-ratio: 4 / 3; }
+  .asset-render-frame { aspect-ratio: 4 / 3; flex: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .assets-section .asset-viewer-skeleton::after { animation: none; }
