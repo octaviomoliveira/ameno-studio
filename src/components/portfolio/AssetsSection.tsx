@@ -36,51 +36,58 @@ const ASSETS: Asset3D[] = [
   },
 ]
 
-function RenderCarousel({ renders, name }: { renders: Asset3D['renders']; name: string }) {
-  const [index, setIndex] = useState(0)
-  const total = renders.length
-  const prev = () => setIndex((i) => (i - 1 + total) % total)
-  const next = () => setIndex((i) => (i + 1) % total)
+function AssetCard({ asset, index }: { asset: Asset3D; index: number }) {
+  const [ri, setRi] = useState(0)
+  const total = asset.renders.length
+  const prev = () => setRi((i) => (i - 1 + total) % total)
+  const next = () => setRi((i) => (i + 1) % total)
 
   return (
-    <div className="asset-carousel" aria-label={`Renders de ${name}`}>
-      <div className="asset-carousel-frame">
-        <Image
-          key={renders[index].src}
-          src={renders[index].src}
-          alt={renders[index].alt}
-          fill
-          className="object-cover asset-carousel-img"
-          sizes="(max-width: 767px) 100vw, 50vw"
+    <article className="asset-card">
+
+      {/* ── Esquerda: viewer 3D interativo ── */}
+      <div className="asset-viewer-wrap">
+        <AssetViewer
+          src={asset.glbSrc}
+          fallbackImg={asset.fallbackImg}
+          label={asset.name}
+          className="assets-section-viewer"
         />
-      </div>
-
-      <div className="asset-carousel-controls">
-        <button
-          type="button"
-          className="asset-carousel-btn"
-          onClick={prev}
-          aria-label="Render anterior"
-        >
-          ←
-        </button>
-
-        <span className="asset-carousel-count">
-          {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+        <span className="asset-viewer-tag">
+          {String(index + 1).padStart(2, '0')} / MODELO 3D — EXPLORE COM O CURSOR
         </span>
-
-        <button
-          type="button"
-          className="asset-carousel-btn"
-          onClick={next}
-          aria-label="Próximo render"
-        >
-          →
-        </button>
       </div>
 
-      <p className="asset-carousel-hint">RENDERS DO MODELO</p>
-    </div>
+      {/* ── Direita: render com texto overlay + nav ── */}
+      <div className="asset-render-panel">
+        <div className="asset-render-frame">
+          {asset.renders.map((r, i) => (
+            <Image
+              key={r.src}
+              src={r.src}
+              alt={r.alt}
+              fill
+              className={`object-cover asset-render-img${i === ri ? ' asset-render-img--active' : ''}`}
+              sizes="(max-width: 767px) 100vw, 50vw"
+              priority={i === 0}
+            />
+          ))}
+          <div className="asset-render-overlay">
+            <h3 className="asset-render-name">{asset.name}</h3>
+            <p className="asset-render-desc">{asset.description}</p>
+          </div>
+        </div>
+
+        {total > 1 && (
+          <nav className="asset-render-nav" aria-label={`Renders de ${asset.name}`}>
+            <button type="button" className="asset-carousel-btn" onClick={prev} aria-label="Render anterior">←</button>
+            <span className="asset-carousel-count">{String(ri + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
+            <button type="button" className="asset-carousel-btn" onClick={next} aria-label="Próximo render">→</button>
+          </nav>
+        )}
+      </div>
+
+    </article>
   )
 }
 
@@ -95,31 +102,8 @@ export default function AssetsSection() {
         </h2>
         <p>Produzidas no 3ds Max. Prontas para SketchUp e Enscape.</p>
       </div>
-
       <div className="assets-grid">
-        {ASSETS.map((asset, index) => (
-          <article key={asset.slug} className="asset-card">
-
-            {/* Coluna esquerda — viewer 3D interativo */}
-            <div className="asset-viewer-wrap">
-              <AssetViewer src={asset.glbSrc} fallbackImg={asset.fallbackImg} label={asset.name} className="assets-section-viewer" />
-            </div>
-
-            {/* Coluna direita — info + carrossel de renders */}
-            <div className="asset-right">
-              <div className="asset-info">
-                <span className="asset-num">{String(index + 1).padStart(2, '0')} / MODELO 3D</span>
-                <h3>{asset.name}</h3>
-                <p>{asset.description}</p>
-              </div>
-
-              {asset.renders.length > 0 && (
-                <RenderCarousel renders={asset.renders} name={asset.name} />
-              )}
-            </div>
-
-          </article>
-        ))}
+        {ASSETS.map((asset, i) => <AssetCard key={asset.slug} asset={asset} index={i} />)}
       </div>
     </section>
   )
