@@ -160,7 +160,7 @@ function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
       const size = box.getSize(new THREE.Vector3())
       const maxDimension = Math.max(size.x, size.y, size.z)
       if (!Number.isFinite(maxDimension) || maxDimension <= 0) { setStatus('error'); teardown(); return }
-      const scale = 2.15 / maxDimension
+      const scale = 2.4 / maxDimension
       model.scale.setScalar(scale)
       model.position.sub(center.multiplyScalar(scale))
       scene.add(model)
