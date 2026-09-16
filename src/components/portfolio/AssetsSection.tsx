@@ -2,7 +2,11 @@
 
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const AssetViewer = dynamic(() => import('./AssetViewer'), {
   ssr: false,
@@ -90,30 +94,56 @@ function RenderCarousel({ renders, name, description }: {
   )
 }
 
-/* ── Seção principal — cada modelo é uma tela completa ──────────────── */
+/* ── Seção principal — GSAP horizontal scroll por slide ─────────────── */
 export default function AssetsSection() {
-  const stripRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const stripRef  = useRef<HTMLDivElement>(null)
   const [current, setCurrent] = useState(1)
   const total = ASSETS.length
 
-  const onScroll = useCallback(() => {
-    const el = stripRef.current
-    if (!el) return
-    const idx = Math.round(el.scrollLeft / el.clientWidth)
-    setCurrent(idx + 1)
-  }, [])
-
   useEffect(() => {
-    const el = stripRef.current
-    if (!el) return
-    el.addEventListener('scroll', onScroll, { passive: true })
-    return () => el.removeEventListener('scroll', onScroll)
-  }, [onScroll])
+    if (total <= 1) return
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia()
+
+      /* Desktop: GSAP pina e arrasta horizontalmente */
+      mm.add('(min-width: 768px)', () => {
+        const section = sectionRef.current
+        const strip   = stripRef.current
+        if (!section || !strip) return
+
+        gsap.to(strip, {
+          x: () => -((total - 1) * window.innerWidth),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            pin: true,
+            pinSpacing: true,
+            scrub: 1,
+            start: 'top top',
+            end: () => `+=${(total - 1) * window.innerWidth}`,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              setCurrent(Math.round(self.progress * (total - 1)) + 1)
+            },
+          },
+        })
+      })
+
+      /* Mobile: scroll snap nativo, sem GSAP */
+      mm.add('(max-width: 767px)', () => {
+        // scroll snap via CSS, nada a fazer no JS
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [total])
 
   return (
-    <section className="assets-section" aria-labelledby="assets-title">
+    <section ref={sectionRef} className="assets-section" aria-labelledby="assets-title">
 
-      {/* Header acima do strip */}
+      {/* Header com contador */}
       <div className="assets-section-header">
         <div className="assets-section-header-left">
           <span className="section-tag">ASSETS 3D</span>
@@ -123,18 +153,16 @@ export default function AssetsSection() {
           </h2>
           <p>Produzidas no 3ds Max. Prontas para SketchUp e Enscape.</p>
         </div>
-        {/* Contador estilo lircle — top right */}
         <span className="assets-slide-counter" aria-live="polite">
           {String(current).padStart(2, '0')}
           <span className="assets-slide-counter-total"> / {String(total).padStart(2, '0')}</span>
         </span>
       </div>
 
-      {/* Strip fullscreen — escapa o container do portfolio */}
-      <div className="assets-strip" ref={stripRef}>
+      {/* Strip — desktop: GSAP move via transform; mobile: overflow-x snap */}
+      <div ref={stripRef} className="assets-strip">
         {ASSETS.map(asset => (
           <article key={asset.slug} className="asset-slide">
-            {/* Esquerda — viewer 3D */}
             <div className="asset-viewer-wrap">
               <AssetViewer
                 src={asset.glbSrc}
@@ -143,8 +171,11 @@ export default function AssetsSection() {
                 className="assets-section-viewer"
               />
             </div>
-            {/* Direita — renders com overlay */}
-            <RenderCarousel renders={asset.renders} name={asset.name} description={asset.description} />
+            <RenderCarousel
+              renders={asset.renders}
+              name={asset.name}
+              description={asset.description}
+            />
           </article>
         ))}
       </div>

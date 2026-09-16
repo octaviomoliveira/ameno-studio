@@ -4278,11 +4278,11 @@ summary:focus-visible {
   min-height: 100vh;
 }
 
-/* ── Assets 3D — slider fullscreen horizontal ──────────────────────── */
+/* ── Assets 3D — slider horizontal com GSAP ScrollTrigger ──────────── */
 .assets-section {
-  padding-top: clamp(4rem, 8vh, 7rem);
+  padding-top: 0;
   border-top: 1px solid var(--border);
-  overflow-x: clip; /* impede scrollbar horizontal na página */
+  overflow: hidden; /* GSAP pina e move o strip — sem overflow visível */
 }
 
 /* Header: título à esquerda, contador à direita */
@@ -4290,8 +4290,7 @@ summary:focus-visible {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 0 clamp(1.25rem, 6vw, 6rem);
-  margin-bottom: 2.5rem;
+  padding: clamp(2rem, 5vh, 4rem) clamp(1.25rem, 6vw, 6rem) clamp(1.25rem, 3vh, 2rem);
 }
 .assets-section-header-left { max-width: 40rem; }
 .assets-section-header h2 {
@@ -4327,33 +4326,22 @@ summary:focus-visible {
   font-size: 0.9em;
 }
 
-/* Strip fullscreen — escapa o padding do container */
+/* Strip — desktop: GSAP move com transform; mobile: scroll snap nativo */
 .assets-strip {
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  /* Escapa o padding lateral da section e vai de borda a borda */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  will-change: transform;
+  /* largura total = N slides de 100vw */
 }
-.assets-strip::-webkit-scrollbar { display: none; }
 
-/* Cada slide = tela cheia com borda */
+/* Cada slide = uma tela completa */
 .asset-slide {
+  width: 100vw;
+  flex-shrink: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  flex: 0 0 100vw;
-  scroll-snap-align: start;
   border-top: 1px solid var(--border);
-  min-height: clamp(420px, 60vh, 680px);
-}
-
-/* Padding interno alinhado com o resto do site */
-.asset-slide .asset-viewer-wrap,
-.asset-slide .asset-render-panel {
-  /* herda altura do slide */
+  /* Altura: preenche o espaço abaixo do header dentro da seção pinada */
+  height: calc(100vh - var(--assets-header-h, 210px));
 }
 
 .asset-viewer-wrap {
@@ -4457,12 +4445,24 @@ summary:focus-visible {
   color: var(--gray);
 }
 
-/* Mobile: empilha viewer e render */
+/* Mobile: scroll snap nativo — sem GSAP */
 @media (max-width: 767px) {
+  .assets-section { overflow-x: hidden; }
   .assets-section-header { align-items: flex-start; flex-direction: column; gap: 1.5rem; }
   .assets-slide-counter { padding-left: 0; }
-  .asset-slide { grid-template-columns: 1fr; min-height: auto; }
-  .asset-slide .asset-viewer-wrap { aspect-ratio: 3 / 4; }
+  .assets-strip {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .assets-strip::-webkit-scrollbar { display: none; }
+  .asset-slide {
+    scroll-snap-align: start;
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .asset-slide .asset-viewer-wrap { aspect-ratio: 3 / 4; height: auto; }
   .asset-render-panel { border-left: none; border-top: 1px solid var(--border); }
   .asset-render-frame { aspect-ratio: 3 / 4; flex: none; }
 }
