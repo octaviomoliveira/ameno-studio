@@ -50,6 +50,7 @@ function RenderCarousel({ renders, name }: { renders: Asset3D['renders']; name: 
             src={r.src}
             alt={r.alt}
             fill
+            quality={90}
             className={`object-cover asset-render-img${i === ri ? ' asset-render-img--active' : ''}`}
             sizes="(max-width: 767px) 100vw, 50vw"
             priority={i === 0}
