@@ -4300,8 +4300,10 @@ summary:focus-visible {
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  gap: 0;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
   width: min(960px, 100%);
+  padding-right: 15%;
+  box-sizing: content-box;
 }
 .assets-strip::-webkit-scrollbar { display: none; }
 .assets-section .asset-card {
@@ -4309,7 +4311,7 @@ summary:focus-visible {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 0;
   border: 1px solid var(--border);
-  flex: 0 0 100%;
+  flex: 0 0 85%;
   scroll-snap-align: start;
 }
 .asset-viewer-wrap { aspect-ratio: 3 / 4; background: var(--gray-dark); position: relative; }
