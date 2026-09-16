@@ -61,7 +61,7 @@ function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
     container.appendChild(renderer.domElement)
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100)
-    camera.position.set(0, 1.2, 5.0)
+    camera.position.set(0, 1.2, 4.2)
     scene.add(new THREE.AmbientLight(0xffffff, 0.6))
     const keyLight = new THREE.DirectionalLight(0xffffff, 1.2)
     keyLight.position.set(3, 5, 3)
@@ -160,7 +160,7 @@ function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
       const size = box.getSize(new THREE.Vector3())
       const maxDimension = Math.max(size.x, size.y, size.z)
       if (!Number.isFinite(maxDimension) || maxDimension <= 0) { setStatus('error'); teardown(); return }
-      const scale = 1.8 / maxDimension
+      const scale = 2.15 / maxDimension
       model.scale.setScalar(scale)
       model.position.sub(center.multiplyScalar(scale))
       scene.add(model)
