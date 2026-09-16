@@ -107,14 +107,17 @@ export default function AssetsSection() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia()
 
-      /* Desktop: GSAP pina e arrasta horizontalmente */
+      /* Desktop: GSAP pina e move por largura de card */
       mm.add('(min-width: 768px)', () => {
         const section = sectionRef.current
         const strip   = stripRef.current
         if (!section || !strip) return
 
+        // Lê a largura real do primeiro slide (definida via CSS em 75vw)
+        const getCardW = () => (strip.children[0] as HTMLElement)?.offsetWidth ?? window.innerWidth
+
         gsap.to(strip, {
-          x: () => -((total - 1) * window.innerWidth),
+          x: () => -((total - 1) * getCardW()),
           ease: 'none',
           scrollTrigger: {
             trigger: section,
@@ -122,18 +125,13 @@ export default function AssetsSection() {
             pinSpacing: true,
             scrub: 1,
             start: 'top top',
-            end: () => `+=${(total - 1) * window.innerWidth}`,
+            end: () => `+=${(total - 1) * getCardW()}`,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
               setCurrent(Math.round(self.progress * (total - 1)) + 1)
             },
           },
         })
-      })
-
-      /* Mobile: scroll snap nativo, sem GSAP */
-      mm.add('(max-width: 767px)', () => {
-        // scroll snap via CSS, nada a fazer no JS
       })
     }, sectionRef)
 
@@ -159,25 +157,28 @@ export default function AssetsSection() {
         </span>
       </div>
 
-      {/* Strip — desktop: GSAP move via transform; mobile: overflow-x snap */}
-      <div ref={stripRef} className="assets-strip">
-        {ASSETS.map(asset => (
-          <article key={asset.slug} className="asset-slide">
-            <div className="asset-viewer-wrap">
-              <AssetViewer
-                src={asset.glbSrc}
-                fallbackImg={asset.fallbackImg}
-                label={asset.name}
-                className="assets-section-viewer"
+      {/* Clip wrapper — 100vw, escapa o container, oculta overflow horizontal */}
+      <div className="assets-strip-clip">
+        {/* Strip — GSAP move via translateX */}
+        <div ref={stripRef} className="assets-strip">
+          {ASSETS.map(asset => (
+            <article key={asset.slug} className="asset-slide">
+              <div className="asset-viewer-wrap">
+                <AssetViewer
+                  src={asset.glbSrc}
+                  fallbackImg={asset.fallbackImg}
+                  label={asset.name}
+                  className="assets-section-viewer"
+                />
+              </div>
+              <RenderCarousel
+                renders={asset.renders}
+                name={asset.name}
+                description={asset.description}
               />
-            </div>
-            <RenderCarousel
-              renders={asset.renders}
-              name={asset.name}
-              description={asset.description}
-            />
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </div>
 
     </section>

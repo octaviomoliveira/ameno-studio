@@ -4282,7 +4282,6 @@ summary:focus-visible {
 .assets-section {
   padding-top: 0;
   border-top: 1px solid var(--border);
-  overflow: hidden; /* GSAP pina e move o strip — sem overflow visível */
 }
 
 /* Header: título à esquerda, contador à direita */
@@ -4326,22 +4325,29 @@ summary:focus-visible {
   font-size: 0.9em;
 }
 
-/* Strip — desktop: GSAP move com transform; mobile: scroll snap nativo */
+/* Clip wrapper — 100vw, oculta overflow horizontal sem afetar a página */
+.assets-strip-clip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+}
+
+/* Strip — desktop: GSAP move via translateX; mobile: scroll snap */
 .assets-strip {
   display: flex;
   will-change: transform;
-  /* largura total = N slides de 100vw */
 }
 
-/* Cada slide = uma tela completa */
+/* Cada slide: 75vw → 25vw do próximo fica visível como peek */
 .asset-slide {
-  width: 100vw;
+  width: 75vw;
   flex-shrink: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid var(--border);
-  /* Quadrado: cada coluna 50vw × 50vw. Cap em viewport - header pra não cortar */
-  height: min(50vw, calc(100vh - 220px));
+  border-right: 1px solid var(--border);
+  /* Altura: cada coluna fica ~37.5vw × 50vw (≈ 3/4). Cap em 100vh-200px pra não cortar */
+  height: min(50vw, calc(100vh - 200px));
 }
 
 .asset-viewer-wrap {
@@ -4447,17 +4453,13 @@ summary:focus-visible {
 
 /* Mobile: scroll snap nativo — sem GSAP */
 @media (max-width: 767px) {
-  .assets-section { overflow-x: hidden; }
   .assets-section-header { align-items: flex-start; flex-direction: column; gap: 1.5rem; }
   .assets-slide-counter { padding-left: 0; }
-  .assets-strip {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .assets-strip::-webkit-scrollbar { display: none; }
+  .assets-strip-clip { margin-left: 0; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .assets-strip-clip::-webkit-scrollbar { display: none; }
+  .assets-strip { transform: none !important; } /* cancela qualquer transform residual do GSAP */
   .asset-slide {
+    width: 100vw;
     scroll-snap-align: start;
     grid-template-columns: 1fr;
     height: auto;
