@@ -4340,8 +4340,8 @@ summary:focus-visible {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid var(--border);
-  /* Altura: preenche o espaço abaixo do header dentro da seção pinada */
-  height: calc(100vh - var(--assets-header-h, 210px));
+  /* Quadrado: cada coluna 50vw × 50vw. Cap em viewport - header pra não cortar */
+  height: min(50vw, calc(100vh - 220px));
 }
 
 .asset-viewer-wrap {
