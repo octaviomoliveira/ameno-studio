@@ -62,6 +62,17 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-pelicano/poltrona-pelicano-render-04.webp', alt: 'Poltrona Pelicano — detalhe do espaldar' },
     ],
   },
+  {
+    slug: 'cadeira-archi',
+    name: 'Cadeira Archi',
+    description: 'Ergonomia e caráter. Encosto bimatéria com tecido e couro, braços em madeira maciça e base estrela de cinco pontas com rodízios. Modelagem pronta para ambientes corporativos e residenciais de alto padrão.',
+    glbSrc: '/assets/3d/cadeira-archi/cadeira-archi.glb',
+    fallbackImg: '/assets/3d/cadeira-archi/cadeira-archi-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-archi/cadeira-archi-render-01.webp', alt: 'Cadeira Archi — vista frontal' },
+      { src: '/assets/3d/cadeira-archi/cadeira-archi-render-02.webp', alt: 'Cadeira Archi — vista traseira' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
