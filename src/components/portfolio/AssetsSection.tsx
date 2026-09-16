@@ -48,7 +48,7 @@ const ASSETS: Asset3D[] = [
 ]
 
 /* ── Carrossel de renders de um único asset ─────────────────────────── */
-function RenderCarousel({ renders, name }: { renders: Asset3D['renders']; name: string }) {
+function RenderCarousel({ renders, name, description }: { renders: Asset3D['renders']; name: string; description: string }) {
   const [ri, setRi] = useState(0)
   const total = renders.length
   return (
@@ -68,9 +68,7 @@ function RenderCarousel({ renders, name }: { renders: Asset3D['renders']; name: 
         ))}
         <div className="asset-render-overlay">
           <h3 className="asset-render-name">{name}</h3>
-          <p className="asset-render-desc">
-            {ASSETS.find(a => a.name === name)?.description}
-          </p>
+          <p className="asset-render-desc">{description}</p>
         </div>
       </div>
 
@@ -87,12 +85,8 @@ function RenderCarousel({ renders, name }: { renders: Asset3D['renders']; name: 
   )
 }
 
-/* ── Seção principal com carrossel de assets ─────────────────────────── */
+/* ── Seção principal — strip horizontal com scroll snap ─────────────── */
 export default function AssetsSection() {
-  const [ai, setAi] = useState(0)
-  const total = ASSETS.length
-  const asset = ASSETS[ai]
-
   return (
     <section className="assets-section" aria-labelledby="assets-title">
       <div className="assets-section-header">
@@ -104,32 +98,23 @@ export default function AssetsSection() {
         <p>Produzidas no 3ds Max. Prontas para SketchUp e Enscape.</p>
       </div>
 
-      {/* Navegação entre assets — visível só se houver mais de 1 */}
-      {total > 1 && (
-        <div className="assets-nav">
-          <button type="button" className="asset-carousel-btn"
-            onClick={() => setAi(i => (i - 1 + total) % total)} aria-label="Asset anterior">←</button>
-          <span className="asset-carousel-count">{String(ai + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
-          <button type="button" className="asset-carousel-btn"
-            onClick={() => setAi(i => (i + 1) % total)} aria-label="Próximo asset">→</button>
-        </div>
-      )}
+      <div className="assets-strip">
+        {ASSETS.map(asset => (
+          <article key={asset.slug} className="asset-card">
+            {/* Esquerda — viewer 3D */}
+            <div className="asset-viewer-wrap">
+              <AssetViewer
+                src={asset.glbSrc}
+                fallbackImg={asset.fallbackImg}
+                label={asset.name}
+                className="assets-section-viewer"
+              />
+            </div>
 
-      <div className="assets-grid">
-        <article key={asset.slug} className="asset-card">
-          {/* Esquerda — viewer 3D (label já renderizado pelo AssetViewer) */}
-          <div className="asset-viewer-wrap">
-            <AssetViewer
-              src={asset.glbSrc}
-              fallbackImg={asset.fallbackImg}
-              label={asset.name}
-              className="assets-section-viewer"
-            />
-          </div>
-
-          {/* Direita — renders com overlay */}
-          <RenderCarousel renders={asset.renders} name={asset.name} />
-        </article>
+            {/* Direita — renders com overlay */}
+            <RenderCarousel renders={asset.renders} name={asset.name} description={asset.description} />
+          </article>
+        ))}
       </div>
     </section>
   )
