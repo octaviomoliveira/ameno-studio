@@ -176,13 +176,7 @@ export default function AssetsSection() {
         <div ref={stripRef} className="assets-strip">
           {ASSETS.map(asset => (
             <article key={asset.slug} className="asset-slide">
-              {/* Esquerda — render (foto) começa na borda esquerda */}
-              <RenderCarousel
-                renders={asset.renders}
-                name={asset.name}
-                description={asset.description}
-              />
-              {/* Direita — viewer 3D */}
+              {/* Esquerda — viewer 3D */}
               <div className="asset-viewer-wrap">
                 <AssetViewer
                   src={asset.glbSrc}
@@ -191,6 +185,12 @@ export default function AssetsSection() {
                   className="assets-section-viewer"
                 />
               </div>
+              {/* Direita — render (foto) + descrição */}
+              <RenderCarousel
+                renders={asset.renders}
+                name={asset.name}
+                description={asset.description}
+              />
             </article>
           ))}
         </div>
