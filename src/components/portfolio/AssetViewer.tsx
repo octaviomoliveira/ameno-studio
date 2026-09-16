@@ -163,6 +163,7 @@ function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
       const scale = 2.4 / maxDimension
       model.scale.setScalar(scale)
       model.position.sub(center.multiplyScalar(scale))
+      model.position.y += 0.3  // levanta o modelo — menos espaço vazio abaixo
       scene.add(model)
       setStatus('ready')
     }, undefined, () => {
