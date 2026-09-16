@@ -1,17 +1,56 @@
-.viewer { position: relative; overflow: hidden; background: var(--gray-dark); }
-.canvas { position: absolute; inset: 0; cursor: grab; }
+﻿/* Viewer container — flex column: canvas flex:1, toolbar na base */
+.viewer { position: relative; overflow: hidden; background: var(--gray-dark); display: flex; flex-direction: column; }
+
+/* Canvas preenche tudo acima da toolbar */
+.canvas { flex: 1; min-height: 0; position: relative; cursor: grab; overflow: hidden; }
 .canvas:active { cursor: grabbing; }
 .canvas:focus-visible { outline: 2px solid var(--off-white); outline-offset: -3px; }
 .canvas canvas { display: block; }
-.label { position: absolute; top: 1rem; left: 1rem; color: var(--off-white); font-family: var(--font-ibm-plex-mono), monospace; font-size: .625rem; letter-spacing: .12em; text-transform: uppercase; pointer-events: none; }
+
+/* Label do modelo no topo */
+.label { position: absolute; top: 1rem; left: 1rem; color: var(--off-white); font-family: var(--font-ibm-plex-mono), monospace; font-size: .625rem; letter-spacing: .12em; text-transform: uppercase; pointer-events: none; z-index: 2; }
+
+/* Loading overlay */
 .loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: .8rem; color: var(--off-white); font-family: var(--font-ibm-plex-mono), monospace; font-size: .65rem; }
 .loadingMark { width: .65rem; height: .65rem; border: 1px solid var(--off-white); animation: loading 1.5s linear infinite; }
 @keyframes loading { to { transform: rotate(180deg); } }
-.toolbar { position: absolute; bottom: 1rem; left: 50%; display: flex; transform: translateX(-50%); border: 1px solid var(--gray); background: var(--black); }
-.toolbar button { min-width: 2.75rem; min-height: 2.75rem; border: 0; background: none; color: var(--off-white); cursor: pointer; }
-.toolbar button:nth-child(2) { padding: .6rem .8rem; border-inline: 1px solid var(--border); font-family: var(--font-ibm-plex-mono), monospace; font-size: .6rem; white-space: nowrap; }
-.toolbar button:hover { color: var(--red); }
+
+/* Toolbar — barra fixa na base, mesma altura e estilo do asset-render-nav */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  height: 3.25rem;
+  padding: 0 clamp(1rem, 3vw, 1.75rem);
+  border-top: 1px solid var(--border);
+  background: var(--black);
+}
+.toolbar button {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--off-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.toolbar button:nth-child(2) {
+  padding: .6rem .8rem;
+  border-inline: 1px solid var(--border);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: .6rem;
+  white-space: nowrap;
+}
+.toolbar button:hover { background: var(--off-white); color: var(--black); border-color: var(--off-white); }
+.toolbar button:active { background: var(--red); border-color: var(--red); color: var(--white); }
+
+/* Fallback quando WebGL indisponivel */
 .fallback { position: absolute; inset: 0; }
 .fallback p { position: absolute; inset: auto 0 0; padding: 1rem; color: var(--white); background: var(--black); font-size: .8rem; }
 .fallback p span { display: block; margin-top: .25rem; color: var(--off-white); font-size: .65rem; }
+
 @media (prefers-reduced-motion: reduce) { .loadingMark { animation: none; } }
