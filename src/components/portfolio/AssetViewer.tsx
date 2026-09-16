@@ -61,7 +61,7 @@ function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
     container.appendChild(renderer.domElement)
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100)
-    camera.position.set(0, 1.2, 4.2)
+    camera.position.set(0, 0.7, 4.2)
     scene.add(new THREE.AmbientLight(0xffffff, 0.6))
     const keyLight = new THREE.DirectionalLight(0xffffff, 1.2)
     keyLight.position.set(3, 5, 3)
