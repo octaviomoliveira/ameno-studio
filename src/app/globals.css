@@ -4346,8 +4346,8 @@ summary:focus-visible {
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid var(--border);
   border-right: 1px solid var(--border);
-  /* Altura: cada coluna fica ~37.5vw × 50vw (≈ 3/4). Cap em 100vh-200px pra não cortar */
-  height: min(50vw, calc(100vh - 200px));
+  /* dvh desconta barra do browser; 260px = header + folga pra ver os controles */
+  height: min(50vw, calc(100dvh - 260px));
 }
 
 .asset-viewer-wrap {
