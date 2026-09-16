@@ -4353,7 +4353,7 @@ summary:focus-visible {
 .asset-viewer-wrap {
   position: relative;
   background: var(--gray-dark);
-  /* altura controlada pelo grid do slide */
+  border-left: 1px solid var(--border); /* render à esquerda, viewer à direita */
 }
 .assets-section-viewer { width: 100%; height: 100%; }
 
@@ -4371,11 +4371,10 @@ summary:focus-visible {
   pointer-events: none;
 }
 
-/* Coluna direita: render frame + nav embaixo */
+/* Coluna esquerda: render frame + nav embaixo */
 .asset-render-panel {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--border);
 }
 .asset-render-frame {
   position: relative;
