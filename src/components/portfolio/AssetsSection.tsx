@@ -49,6 +49,19 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-axis/cadeira-axis-render-02.webp', alt: 'Cadeira Axis — vista traseira renderizada' },
     ],
   },
+  {
+    slug: 'poltrona-pelicano',
+    name: 'Poltrona Pelicano',
+    description: 'Espaldar em leque com fusos torneados à mão, braços escultóricos e assento em palhinha. Modelagem fiel ao original brasileiro — cada curva da madeira preservada no arquivo.',
+    glbSrc: '/assets/3d/poltrona-pelicano/poltrona-pelicano.glb',
+    fallbackImg: '/assets/3d/poltrona-pelicano/poltrona-pelicano-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-pelicano/poltrona-pelicano-render-01.webp', alt: 'Poltrona Pelicano — vista em perspectiva' },
+      { src: '/assets/3d/poltrona-pelicano/poltrona-pelicano-render-02.webp', alt: 'Poltrona Pelicano — vista frontal' },
+      { src: '/assets/3d/poltrona-pelicano/poltrona-pelicano-render-03.webp', alt: 'Poltrona Pelicano — vista lateral' },
+      { src: '/assets/3d/poltrona-pelicano/poltrona-pelicano-render-04.webp', alt: 'Poltrona Pelicano — detalhe do espaldar' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
