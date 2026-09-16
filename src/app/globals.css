@@ -4278,13 +4278,22 @@ summary:focus-visible {
   min-height: 100vh;
 }
 
-/* Assets 3D — seção dedicada ao viewer existente */
+/* ── Assets 3D — slider fullscreen horizontal ──────────────────────── */
 .assets-section {
-  padding: clamp(4rem, 8vh, 7rem) clamp(1.25rem, 6vw, 6rem);
+  padding-top: clamp(4rem, 8vh, 7rem);
   border-top: 1px solid var(--border);
+  overflow-x: clip; /* impede scrollbar horizontal na página */
 }
 
-.assets-section-header { max-width: 40rem; margin-bottom: 3rem; }
+/* Header: título à esquerda, contador à direita */
+.assets-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 clamp(1.25rem, 6vw, 6rem);
+  margin-bottom: 2.5rem;
+}
+.assets-section-header-left { max-width: 40rem; }
 .assets-section-header h2 {
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 700;
@@ -4293,28 +4302,65 @@ summary:focus-visible {
   margin-bottom: 1rem;
 }
 .assets-section-header p { font-size: 0.875rem; color: var(--gray); }
-/* Strip horizontal com scroll snap — arrasta pra navegar entre modelos */
+.assets-section .section-tag {
+  display: block;
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 1rem;
+}
+
+/* Contador "01 / 02" — canto direito do header */
+.assets-slide-counter {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--off-white);
+  line-height: 1;
+  flex-shrink: 0;
+  padding-left: 2rem;
+}
+.assets-slide-counter-total {
+  color: var(--gray);
+  font-size: 0.9em;
+}
+
+/* Strip fullscreen — escapa o padding do container */
 .assets-strip {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  gap: clamp(0.75rem, 2vw, 1.25rem);
-  width: min(960px, 100%);
-  padding-right: 15%;
-  box-sizing: content-box;
+  /* Escapa o padding lateral da section e vai de borda a borda */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
 .assets-strip::-webkit-scrollbar { display: none; }
-.assets-section .asset-card {
+
+/* Cada slide = tela cheia com borda */
+.asset-slide {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 0;
-  border: 1px solid var(--border);
-  flex: 0 0 85%;
+  grid-template-columns: 1fr 1fr;
+  flex: 0 0 100vw;
   scroll-snap-align: start;
+  border-top: 1px solid var(--border);
+  min-height: clamp(420px, 60vh, 680px);
 }
-.asset-viewer-wrap { aspect-ratio: 3 / 4; background: var(--gray-dark); position: relative; }
+
+/* Padding interno alinhado com o resto do site */
+.asset-slide .asset-viewer-wrap,
+.asset-slide .asset-render-panel {
+  /* herda altura do slide */
+}
+
+.asset-viewer-wrap {
+  position: relative;
+  background: var(--gray-dark);
+  /* altura controlada pelo grid do slide */
+}
 .assets-section-viewer { width: 100%; height: 100%; }
 
 /* Tag discreta no canto do viewer */
@@ -4331,7 +4377,7 @@ summary:focus-visible {
   pointer-events: none;
 }
 
-/* Coluna direita: render frame ocupa toda a altura, nav fica fixo embaixo */
+/* Coluna direita: render frame + nav embaixo */
 .asset-render-panel {
   display: flex;
   flex-direction: column;
@@ -4343,10 +4389,7 @@ summary:focus-visible {
   min-height: 0;
   overflow: hidden;
 }
-.asset-render-img {
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
+.asset-render-img { opacity: 0; transition: opacity 0.35s ease; }
 .asset-render-img--active { opacity: 1; }
 
 .asset-render-overlay {
@@ -4380,6 +4423,7 @@ summary:focus-visible {
   max-width: 34ch;
 }
 
+/* Nav de renders (dentro de cada slide) */
 .asset-render-nav {
   display: flex;
   align-items: center;
@@ -4412,22 +4456,17 @@ summary:focus-visible {
   letter-spacing: 0.15em;
   color: var(--gray);
 }
-.assets-section .section-tag {
-  display: block;
-  font-size: 0.625rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin-bottom: 1rem;
-}
+
+/* Mobile: empilha viewer e render */
 @media (max-width: 767px) {
-  .assets-section .asset-card { grid-template-columns: 1fr; }
+  .assets-section-header { align-items: flex-start; flex-direction: column; gap: 1.5rem; }
+  .assets-slide-counter { padding-left: 0; }
+  .asset-slide { grid-template-columns: 1fr; min-height: auto; }
+  .asset-slide .asset-viewer-wrap { aspect-ratio: 3 / 4; }
   .asset-render-panel { border-left: none; border-top: 1px solid var(--border); }
-  .asset-viewer-wrap { aspect-ratio: 3 / 4; }
   .asset-render-frame { aspect-ratio: 3 / 4; flex: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .assets-section .asset-viewer-skeleton::after { animation: none; }
   .asset-render-img { transition: none; }
 }
 

@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 const AssetViewer = dynamic(() => import('./AssetViewer'), {
   ssr: false,
@@ -48,8 +48,12 @@ const ASSETS: Asset3D[] = [
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
-/* ── Carrossel de renders de um único asset ─────────────────────────── */
-function RenderCarousel({ renders, name, description }: { renders: Asset3D['renders']; name: string; description: string }) {
+/* ── Carrossel de renders dentro de um slide ────────────────────────── */
+function RenderCarousel({ renders, name, description }: {
+  renders: Asset3D['renders']
+  name: string
+  description: string
+}) {
   const [ri, setRi] = useState(0)
   const total = renders.length
   return (
@@ -86,22 +90,50 @@ function RenderCarousel({ renders, name, description }: { renders: Asset3D['rend
   )
 }
 
-/* ── Seção principal — strip horizontal com scroll snap ─────────────── */
+/* ── Seção principal — cada modelo é uma tela completa ──────────────── */
 export default function AssetsSection() {
+  const stripRef = useRef<HTMLDivElement>(null)
+  const [current, setCurrent] = useState(1)
+  const total = ASSETS.length
+
+  const onScroll = useCallback(() => {
+    const el = stripRef.current
+    if (!el) return
+    const idx = Math.round(el.scrollLeft / el.clientWidth)
+    setCurrent(idx + 1)
+  }, [])
+
+  useEffect(() => {
+    const el = stripRef.current
+    if (!el) return
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [onScroll])
+
   return (
     <section className="assets-section" aria-labelledby="assets-title">
+
+      {/* Header acima do strip */}
       <div className="assets-section-header">
-        <span className="section-tag">ASSETS 3D</span>
-        <h2 id="assets-title">
-          Modelagens prontas para<br />
-          <em className="font-editorial">quem entrega detalhe.</em>
-        </h2>
-        <p>Produzidas no 3ds Max. Prontas para SketchUp e Enscape.</p>
+        <div className="assets-section-header-left">
+          <span className="section-tag">ASSETS 3D</span>
+          <h2 id="assets-title">
+            Modelagens prontas para<br />
+            <em className="font-editorial">quem entrega detalhe.</em>
+          </h2>
+          <p>Produzidas no 3ds Max. Prontas para SketchUp e Enscape.</p>
+        </div>
+        {/* Contador estilo lircle — top right */}
+        <span className="assets-slide-counter" aria-live="polite">
+          {String(current).padStart(2, '0')}
+          <span className="assets-slide-counter-total"> / {String(total).padStart(2, '0')}</span>
+        </span>
       </div>
 
-      <div className="assets-strip">
+      {/* Strip fullscreen — escapa o container do portfolio */}
+      <div className="assets-strip" ref={stripRef}>
         {ASSETS.map(asset => (
-          <article key={asset.slug} className="asset-card">
+          <article key={asset.slug} className="asset-slide">
             {/* Esquerda — viewer 3D */}
             <div className="asset-viewer-wrap">
               <AssetViewer
@@ -111,12 +143,12 @@ export default function AssetsSection() {
                 className="assets-section-viewer"
               />
             </div>
-
             {/* Direita — renders com overlay */}
             <RenderCarousel renders={asset.renders} name={asset.name} description={asset.description} />
           </article>
         ))}
       </div>
+
     </section>
   )
 }
