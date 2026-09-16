@@ -4300,8 +4300,8 @@ summary:focus-visible {
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  gap: 2px;
-  max-width: 960px;
+  gap: 0;
+  width: min(960px, 100%);
 }
 .assets-strip::-webkit-scrollbar { display: none; }
 .assets-section .asset-card {
