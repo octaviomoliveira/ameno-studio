@@ -30,8 +30,8 @@ const ASSETS: Asset3D[] = [
     glbSrc: '/assets/3d/cadeira-raia.glb',
     fallbackImg: '/projects/interior-stair.webp',
     renders: [
-      { src: '/assets/3d/cadeira-raia-render-front.jpg', alt: 'Cadeira Raia — vista frontal renderizada' },
-      { src: '/assets/3d/cadeira-raia-render-back.jpg',  alt: 'Cadeira Raia — vista traseira renderizada' },
+      { src: '/assets/3d/cadeira-raia-render-front.webp', alt: 'Cadeira Raia — vista frontal renderizada' },
+      { src: '/assets/3d/cadeira-raia-render-back.webp',  alt: 'Cadeira Raia — vista traseira renderizada' },
     ],
   },
   // Para adicionar novos assets: copiar o bloco acima com glbSrc, renders, etc.
