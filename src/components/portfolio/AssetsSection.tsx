@@ -41,7 +41,7 @@ const ASSETS: Asset3D[] = [
     glbSrc: '/assets/3d/cadeira-axis/model.glb',
     fallbackImg: '/projects/interior-stair.webp',
     renders: [
-      // renders a adicionar: cadeira-axis/render-01.webp, render-02.webp
+      { src: '/assets/3d/cadeira-axis/render-01.webp', alt: 'Cadeira Axis — vista renderizada' },
     ],
   },
   // Para adicionar novos assets: criar public/assets/3d/<slug>/ com model.glb e render-0N.webp
