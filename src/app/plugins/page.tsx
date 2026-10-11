@@ -79,7 +79,7 @@ export default function PluginsPage() {
             <div className={styles.heroVisual}><PluginDiagram /></div>
           </div>
           <div className="plugin-hero-badges">
-            <span className="plugin-badge">Meta: 3ds Max 2021–2027</span>
+            <span className="plugin-badge">Primeiro lançamento: Max 2026</span>
             <span className="plugin-badge">Corona e V-Ray em validação</span>
             <span className="plugin-badge">Windows</span>
             <span className="plugin-badge">Valor livre planejado</span>
@@ -139,7 +139,7 @@ export default function PluginsPage() {
           <dl className="plugin-req-grid">
             <div className="plugin-req-item">
               <dt>Software</dt>
-              <dd>Meta: 3ds Max 2021 a 2027; homologação pendente</dd>
+              <dd>Primeiro lançamento planejado: 3ds Max 2026; demais versões em etapa posterior</dd>
             </div>
             <div className="plugin-req-item">
               <dt>Render</dt>
