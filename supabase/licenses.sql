@@ -1,4 +1,6 @@
--- Apply after schema.sql, then apply auth.sql before accepting purchases.
+-- Baseline: apply after schema.sql, then auth.sql. For the paid release,
+-- also apply migrations/20261011162549_l4_d1a_payment_event_guards.sql
+-- afterward; this baseline alone does not handle refund/dispute events.
 -- Server-only RPCs; one license per paid Checkout session.
 CREATE TABLE IF NOT EXISTS public.licenses (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),

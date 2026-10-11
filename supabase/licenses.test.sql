@@ -1,4 +1,6 @@
--- Transactional integration test: synthetic data is always rolled back.
+-- Transactional integration test after schema.sql, licenses.sql, auth.sql,
+-- and migrations/20261011162549_l4_d1a_payment_event_guards.sql.
+-- Synthetic data is always rolled back.
 BEGIN;
 DO $$
 DECLARE
@@ -16,15 +18,20 @@ DECLARE
   v_user_a_email text := 'provisional+' || gen_random_uuid()::text || '@example.invalid';
   v_user_b_email text := 'buyer+' || gen_random_uuid()::text || '@example.invalid';
   v_refunded_purchase uuid;
+  v_paid_marker timestamptz;
   v_result jsonb;
   v_count integer;
 BEGIN
   v_first := public.fulfill_plugin_purchase(v_session, 'pi_original', 2900, 'brl', 'first@example.invalid', 'ameno-cotas', v_token);
-  v_repeat := public.fulfill_plugin_purchase(v_session, 'pi_replay', 3900, 'brl', 'changed@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
+  SELECT paid_confirmed_at INTO v_paid_marker FROM public.purchases
+    WHERE stripe_session_id = v_session;
+  ASSERT v_paid_marker IS NOT NULL, 'paid purchase lacks finalization marker';
+  v_repeat := public.fulfill_plugin_purchase(v_session, 'pi_original', 3900, 'brl', 'changed@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
   ASSERT v_first = v_repeat, 'duplicate webhook created another license';
   ASSERT (SELECT token = v_token FROM public.licenses WHERE id = v_first), 'retry rotated token';
   ASSERT (SELECT stripe_payment_intent = 'pi_original' AND amount = 2900
     AND customer_email = 'first@example.invalid' AND status = 'completed'
+    AND paid_confirmed_at = v_paid_marker
     FROM public.purchases WHERE stripe_session_id = v_session), 'retry changed purchase identity';
   ASSERT public.verify_plugin_license(v_token, 'pc-a') = '{"valid":true}'::jsonb, 'first activation failed';
   ASSERT public.verify_plugin_license(v_token, 'pc-a') = '{"valid":true}'::jsonb, 'same machine rejected';
@@ -97,7 +104,7 @@ BEGIN
   ASSERT (SELECT user_id = v_user_b FROM public.purchases WHERE id = v_pending_purchase),
     'paid checkout not owned by verified buyer';
   v_repeat := public.fulfill_plugin_purchase(v_pending_session,
-    'pi_replay', 3900, 'brl', 'changed@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
+    'pi_paid', 3900, 'brl', 'changed@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
   ASSERT v_repeat = v_pending_license, 'paid pending replay changed license';
   ASSERT (SELECT stripe_payment_intent = 'pi_paid' AND amount = 3000
     AND customer_email = v_user_b_email AND status = 'completed'
@@ -109,7 +116,7 @@ BEGIN
   -- Neither the purchase state nor an inactive license may be resurrected.
   UPDATE public.purchases SET status = 'refunded' WHERE stripe_session_id = v_session;
   UPDATE public.licenses SET active = false WHERE id = v_first;
-  v_repeat := public.fulfill_plugin_purchase(v_session, 'pi_replay', 3900, 'brl',
+  v_repeat := public.fulfill_plugin_purchase(v_session, 'pi_original', 3900, 'brl',
     'changed@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
   ASSERT v_repeat = v_first, 'refunded replay changed license id';
   ASSERT (SELECT status = 'refunded' AND stripe_payment_intent = 'pi_original'
@@ -119,7 +126,7 @@ BEGIN
     'refunded replay reactivated or replaced license';
 
   UPDATE public.purchases SET status = 'suspended' WHERE stripe_session_id = v_session;
-  v_repeat := public.fulfill_plugin_purchase(v_session, 'pi_replay', 3900, 'brl',
+  v_repeat := public.fulfill_plugin_purchase(v_session, 'pi_original', 3900, 'brl',
     'changed@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
   ASSERT v_repeat = v_first, 'suspended replay changed license id';
   ASSERT (SELECT status = 'suspended' FROM public.purchases WHERE stripe_session_id = v_session),
@@ -127,17 +134,24 @@ BEGIN
   ASSERT (SELECT token = v_token AND NOT active FROM public.licenses WHERE id = v_first),
     'suspended replay reactivated or replaced license';
 
-  -- If a refund was recorded before fulfillment, a late paid-session event
-  -- must not create an active license either.
+  -- A pre-existing terminal row without a d1a block or licensed/paid marker
+  -- is of unknown provenance: refuse the paid event pending reconciliation.
   INSERT INTO public.purchases (stripe_session_id, status)
     VALUES (v_refunded_session, 'refunded') RETURNING id INTO v_refunded_purchase;
-  v_repeat := public.fulfill_plugin_purchase(v_refunded_session, 'pi_late', 2900, 'brl',
-    'first@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
-  ASSERT v_repeat IS NULL, 'late replay minted a license for refunded purchase';
+  BEGIN
+    PERFORM public.fulfill_plugin_purchase(v_refunded_session, 'pi_late', 2900, 'brl',
+      'first@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
+    RAISE EXCEPTION 'expected unknown-terminal refusal';
+  EXCEPTION WHEN others THEN
+    IF SQLERRM <> 'Unconfirmed terminal purchase requires manual reconciliation' THEN
+      RAISE;
+    END IF;
+  END;
   ASSERT NOT EXISTS (SELECT 1 FROM public.licenses WHERE purchase_id = v_refunded_purchase),
-    'late replay stored a license for refunded purchase';
-  ASSERT (SELECT status = 'refunded' FROM public.purchases WHERE id = v_refunded_purchase),
-    'late replay changed refunded purchase status';
+    'unknown terminal purchase stored a license';
+  ASSERT (SELECT status = 'refunded' AND stripe_payment_intent IS NULL
+    AND paid_confirmed_at IS NULL FROM public.purchases WHERE id = v_refunded_purchase),
+    'unknown terminal purchase absorbed paid metadata';
 END;
 $$;
 -- Exercising invoker rights catches a missing auth.users grant that tests
