@@ -9,6 +9,11 @@
 > `verified_at` UTC emitido pelo servidor, sem conceder prazo a respostas de
 > recusa. A integração do cache local ainda está na branch de desenvolvimento
 > do plugin e não autoriza reabrir o checkout.
+> Uma atualização isolada do lockfile removeu mais um alerta transitivo de
+> desenvolvimento (`brace-expansion`): após `npm ci`, ainda há cinco alertas
+> altos no ramo de lint (`braces`), sem correção upstream disponível; a
+> auditoria das dependências de produção permanece em zero. Isso não equivale
+> a uma certificação completa de segurança.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
