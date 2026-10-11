@@ -2,6 +2,19 @@
 
 Status: direção visual publicada em `ameno.studio` em 2026-09-10; conteúdo definitivo ainda pendente.
 
+## Revisão de rolagem e touch — 2026-10-11
+
+Esta seção registra a implementação atual e prevalece sobre os capítulos históricos abaixo nos pontos de interação. A home atual usa `HeroVideo`, com o portfólio completo em `/portfolio`.
+
+- Hero: vídeo e três linhas de texto compartilham uma única sequência suavizada. A mesma narrativa responde ao mouse e ao scroll nativo por toque, inclusive ao voltar para cima.
+- Touch: MP4 H.264 específico, quadro sticky de `100svh`, sequência de `230svh` e composição adaptada ao celular na horizontal. Desktop mantém WebM e sequência de `260svh`.
+- Movimento reduzido: imagem e texto visíveis, sem carregar o vídeo nem prender a rolagem.
+- Portfólio: trilho GSAP apenas acima de 1024 px com mouse/hover; celular e tablet touch usam projetos verticais com parallax discreto. A escolha evita captura do gesto e se aplica também a tablets touch largos, por decisão desta revisão.
+- Assets 3D: cards ajustados à largura disponível, trilho nativo com contador/setas no touch e modelos carregados apenas perto da tela. O canvas deixa a página rolar; giro do objeto disponível nos botões.
+- Navegação: `?intro=0` pula a entrada; `?intro=1` força sua exibição. Menu/entrada suspendem o Lenis, e a navbar reage também à rolagem lenta.
+- Regressão: `scripts/verify-motion.cjs`, com Playwright e Chrome disponíveis, testa gestos, vídeo, menu, trilho 3D, rotas e overflow. Usar `BASE_URL` para apontar ao build local ou publicado e `CHROME_PATH` para outro executável.
+- Limite da validação: emulação Chrome não substitui teste físico de Safari/iPhone, barra dinâmica e modo de economia de energia. Compra e autenticação reais não fazem parte desta revisão visual.
+
 Referências principais:
 
 - Elephant Skin: impacto, capítulos visuais e scroll cinematográfico.

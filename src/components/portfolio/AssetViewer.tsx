@@ -34,7 +34,22 @@ function disposeModel(model: THREE.Object3D) {
 }
 
 export default function AssetViewer(props: Props) {
-  return <AssetScene key={props.src} {...props} />
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); observer.disconnect() }
+    }, { rootMargin: '200px' })
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
+  return <div ref={containerRef} className={props.className}>
+    {visible ? <AssetScene key={props.src} {...props} /> : <div className={styles.viewer} style={{ height: '100%' }}>
+      <Image src={props.fallbackImg} alt={props.label} fill sizes="(max-width: 1024px) 90vw, 38vw" className="object-cover" />
+    </div>}
+  </div>
 }
 
 function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
@@ -78,6 +93,16 @@ function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
     controls.autoRotateSpeed = 0.6
     controls.minPolarAngle = Math.PI / 4
     controls.maxPolarAngle = Math.PI / 1.8
+    // OrbitControls sets touch-action:none. On touch screens keep page swipes
+    // available; rotation remains accessible through the three toolbar buttons.
+    const touch = window.matchMedia('(pointer: coarse)')
+    const syncInput = () => {
+      controls.disconnect()
+      if (!touch.matches) controls.connect(renderer.domElement)
+      else renderer.domElement.style.touchAction = 'auto'
+    }
+    syncInput()
+    touch.addEventListener('change', syncInput)
     const grayMaterial = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.75, metalness: 0.05 })
     const dracoLoader = new DRACOLoader()
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/')
@@ -128,6 +153,7 @@ function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
       document.removeEventListener('visibilitychange', updatePlayback)
       renderer.domElement.removeEventListener('webglcontextlost', onContextLost)
       controls.dispose()
+      touch.removeEventListener('change', syncInput)
       controlsRef.current = null
       dracoLoader.dispose()
       if (model) disposeModel(model)
@@ -193,7 +219,7 @@ function AssetScene({ src, fallbackImg, label, className = '' }: Props) {
   return (
     <div className={`${styles.viewer} ${className}`} role="group" aria-label={`Modelo 3D interativo — ${label}`}>
       <div ref={canvasRef} className={styles.canvas} tabIndex={status === 'ready' ? 0 : -1}
-        role="group" aria-label="Arraste ou use as setas esquerda e direita para girar o modelo" onKeyDown={handleKeyDown} />
+        role="group" aria-label="Use os botões de giro ou as setas do teclado para girar o modelo" onKeyDown={handleKeyDown} />
       {status === 'loading' && <div className={styles.loading} role="status"><span className={styles.loadingMark} aria-hidden="true" />Carregando modelo 3D</div>}
       {status === 'error' && <div className={styles.fallback}>
         <Image src={fallbackImg} alt="Imagem de referência de arquitetura" fill className="object-cover" sizes="(max-width: 767px) 90vw, 55vw" />

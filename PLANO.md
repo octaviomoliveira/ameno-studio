@@ -9,6 +9,8 @@
 > **Repo:** github.com/octaviomoliveira/ameno-studio
 > **Atualizado em:** 2026-09-10 — estado publicado no commit `35cc71b` e pendências reconciliadas.
 
+> **Revisão técnica em 2026-10-11:** animação do hero ativada no scroll touch, sincronização vídeo/texto, MP4 para celular, enquadramento horizontal, correções de menu/entrada e portfólio 3D. Detalhes atuais em “Revisão de rolagem e touch” no `PLANO_VISUAL.md`; as descrições visuais antigas abaixo são históricas onde divergirem do código. Sem alteração de pagamentos, licenças ou autenticação.
+
 ---
 
 ## Objetivos e prioridade aprovados

@@ -40,7 +40,7 @@ body {
   color: var(--white);
   font-family: var(--font-space-grotesk), 'Space Grotesk', 'Helvetica Neue', sans-serif;
   font-weight: 400;
-  overflow-x: hidden;
+  overflow-x: clip;
   cursor: none;
 }
 
@@ -3467,14 +3467,14 @@ summary:focus-visible {
 
 .hero-video-section {
   position: relative;
-  height: 200svh;
+  height: 260svh;
 }
 
 .hero-video-sticky {
   position: sticky;
   top: 0;
   height: 100svh;
-  min-height: 38rem;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -3493,6 +3493,7 @@ summary:focus-visible {
   opacity: 0;
 }
 
+.hero-video-el { transition: opacity 450ms ease; }
 .hero-video-el[data-ready='true'] { opacity: 1; }
 
 .hero-video-wash {
@@ -3558,19 +3559,30 @@ summary:focus-visible {
   background: var(--red);
 }
 
-@media (max-width: 768px), (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .hero-video-section { height: auto; }
   .hero-video-sticky { position: relative; }
   .hero-video-media { will-change: auto; }
 }
 
-@media (max-width: 768px) {
-  .hero-video-sticky { min-height: 36rem; }
+@media (max-width: 768px), (pointer: coarse) {
+  .hero-video-section { height: 230svh; }
   .hero-video-layers { padding: 7rem 1.25rem 5rem; }
   .hero-video-layers h1 { font-size: clamp(2.5rem, 10.6vw, 5rem); }
   .hero-video-kicker { font-size: 0.5625rem; letter-spacing: 0.12em; }
   .hero-video-signature { font-size: 0.5625rem; letter-spacing: 0.1em; }
   .hero-video-scroll { right: 1.25rem; }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-video-layers { padding: 5rem 6vw 2rem; }
+  .hero-video-layers h1 { font-size: clamp(2rem, 9svh, 3.5rem); }
+  .hero-video-kicker { margin-bottom: 1rem; }
+  .hero-video-signature { margin-top: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video-section { height: auto; }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -4452,21 +4464,26 @@ summary:focus-visible {
 }
 
 /* Mobile: scroll snap nativo — sem GSAP */
-@media (max-width: 767px) {
+.assets-touch-controls { display: none; }
+@media (max-width: 1024px), (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
   .assets-section-header { align-items: flex-start; flex-direction: column; gap: 1.5rem; }
   .assets-slide-counter { padding-left: 0; }
   .assets-strip-clip { margin-left: 0; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .assets-strip-clip::-webkit-scrollbar { display: none; }
-  .assets-strip { transform: none !important; } /* cancela qualquer transform residual do GSAP */
+  .assets-strip { transform: none !important; will-change: auto; }
   .asset-slide {
-    width: 100vw;
+    width: 100%;
+    min-width: 0;
     scroll-snap-align: start;
     grid-template-columns: 1fr;
     height: auto;
   }
-  .asset-slide .asset-viewer-wrap { aspect-ratio: 3 / 4; height: auto; }
+  .asset-slide .asset-viewer-wrap { aspect-ratio: 1; height: auto; }
   .asset-render-panel { border-left: none; border-top: 1px solid var(--border); }
-  .asset-render-frame { aspect-ratio: 3 / 4; flex: none; }
+  .asset-render-frame { aspect-ratio: 4 / 5; flex: none; }
+  .assets-touch-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1rem; font-family: monospace; font-size: .625rem; }
+  .assets-touch-controls button:disabled { opacity: .35; cursor: default; }
+  .asset-carousel-btn { min-width: 2.75rem; min-height: 2.75rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .asset-render-img { transition: none; }
@@ -4507,7 +4524,7 @@ summary:focus-visible {
 
 .project-scroll-wrap {
   width: 100%;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
 }
 
@@ -4519,6 +4536,7 @@ summary:focus-visible {
 
 .project-scroll-slide {
   position: relative;
+  overflow: hidden;
   flex: 0 0 80vw;
   height: 100%;
   margin-right: 2px;
@@ -4564,7 +4582,7 @@ summary:focus-visible {
   color: rgba(232, 232, 224, 0.6);
 }
 
-@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+@media (max-width: 1024px), (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
   .project-scroll-wrap { height: auto; overflow: visible; }
   .project-scroll-track {
     flex-direction: column;

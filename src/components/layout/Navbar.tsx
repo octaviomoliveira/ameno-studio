@@ -36,13 +36,14 @@ export default function Navbar() {
 
       if (currentY <= 80) {
         setHidden(false)
+        lastY.current = currentY
       } else if (diff > 8) {
         setHidden(true)
+        lastY.current = currentY
       } else if (diff < -8) {
         setHidden(false)
+        lastY.current = currentY
       }
-
-      lastY.current = currentY
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })

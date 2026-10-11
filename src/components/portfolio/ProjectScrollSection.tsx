@@ -29,7 +29,7 @@ export default function ProjectScrollSection() {
     const getDistance = () => track.scrollWidth - trackWrap.clientWidth
     const mm = gsap.matchMedia()
 
-    mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+    mm.add('(min-width: 1025px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
       const anim = gsap.to(track, { x: () => -getDistance(), ease: 'none' })
       const st = ScrollTrigger.create({
         trigger: section,
@@ -61,6 +61,20 @@ export default function ProjectScrollSection() {
       }
     }, section)
 
+    mm.add({
+      narrow: '(max-width: 1024px)',
+      touch: '(pointer: coarse), (hover: none)',
+      motion: '(prefers-reduced-motion: no-preference)',
+    }, (context) => {
+      if (!context.conditions?.motion || !(context.conditions.narrow || context.conditions.touch)) return
+      section.querySelectorAll<HTMLElement>('.project-scroll-slide').forEach(slide => {
+        gsap.fromTo(slide.querySelector('img'), { scale: 1.08, yPercent: -3 }, {
+          scale: 1.08, yPercent: 3, ease: 'none',
+          scrollTrigger: { trigger: slide, start: 'top bottom', end: 'bottom top', scrub: .3 },
+        })
+      })
+    }, section)
+
     return () => mm.revert()
   }, [])
 
@@ -71,7 +85,7 @@ export default function ProjectScrollSection() {
           {PROJECTS.map((project, index) => (
             <article id={project.slug} key={project.slug} className="project-scroll-slide" aria-label={project.title}>
               <Image src={project.cover_url} alt={project.title} fill
-                sizes="(max-width: 767px) 100vw, (prefers-reduced-motion: reduce) 100vw, 80vw"
+                sizes="(max-width: 1024px) 100vw, (prefers-reduced-motion: reduce) 100vw, 80vw"
                 className="object-cover" preload={index === 0} />
               <div className="project-scroll-wash" aria-hidden="true" />
               <div className="project-scroll-meta">

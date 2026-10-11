@@ -93,10 +93,9 @@ function RenderCarousel({ renders, name, description }: {
             src={r.src}
             alt={r.alt}
             fill
-            quality={90}
             className={`object-cover asset-render-img${i === ri ? ' asset-render-img--active' : ''}`}
             sizes="(max-width: 767px) 100vw, 50vw"
-            priority={i === 0}
+            aria-hidden={i !== ri}
           />
         ))}
         <div className="asset-render-overlay">
@@ -122,6 +121,7 @@ function RenderCarousel({ renders, name, description }: {
 export default function AssetsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const stripRef  = useRef<HTMLDivElement>(null)
+  const clipRef = useRef<HTMLDivElement>(null)
   const [current, setCurrent] = useState(1)
   const total = ASSETS.length
 
@@ -132,7 +132,7 @@ export default function AssetsSection() {
       const mm = gsap.matchMedia()
 
       /* Desktop: GSAP pina e move por largura de card */
-      mm.add('(min-width: 768px)', () => {
+      mm.add('(min-width: 1025px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
         const section = sectionRef.current
         const strip   = stripRef.current
         if (!section || !strip) return
@@ -162,6 +162,18 @@ export default function AssetsSection() {
     return () => ctx.revert()
   }, [total])
 
+  const moveSlide = (direction: number) => {
+    const clip = clipRef.current
+    if (!clip) return
+    clip.scrollBy({ left: direction * clip.clientWidth,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+  }
+
+  const updateCurrent = () => {
+    const clip = clipRef.current
+    if (clip && clip.clientWidth) setCurrent(Math.min(total, Math.round(clip.scrollLeft / clip.clientWidth) + 1))
+  }
+
   return (
     <section ref={sectionRef} className="assets-section" aria-labelledby="assets-title">
 
@@ -182,7 +194,7 @@ export default function AssetsSection() {
       </div>
 
       {/* Clip wrapper — 100vw, escapa o container, oculta overflow horizontal */}
-      <div className="assets-strip-clip">
+      <div ref={clipRef} className="assets-strip-clip" onScroll={updateCurrent}>
         {/* Strip — GSAP move via translateX */}
         <div ref={stripRef} className="assets-strip">
           {ASSETS.map(asset => (
@@ -207,6 +219,11 @@ export default function AssetsSection() {
         </div>
       </div>
 
+      <nav className="assets-touch-controls" aria-label="Modelos 3D">
+        <button type="button" className="asset-carousel-btn" onClick={() => moveSlide(-1)} disabled={current === 1} aria-label="Modelo anterior">←</button>
+        <span>Deslize para explorar · {current} / {total}</span>
+        <button type="button" className="asset-carousel-btn" onClick={() => moveSlide(1)} disabled={current === total} aria-label="Próximo modelo">→</button>
+      </nav>
     </section>
   )
 }

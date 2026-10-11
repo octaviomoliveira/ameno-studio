@@ -40,7 +40,8 @@ function HomeIntro() {
   }, [])
 
   useEffect(() => {
-    const forceIntro = new URLSearchParams(window.location.search).has('intro')
+    const introParam = new URLSearchParams(window.location.search).get('intro')
+    const forceIntro = introParam === '1'
     let hasSeenIntro = introSeenInMemory
     try {
       hasSeenIntro ||= window.sessionStorage.getItem(INTRO_STORAGE_KEY) === 'true'
@@ -49,7 +50,7 @@ function HomeIntro() {
     }
 
     let frame: number | undefined
-    if (forceIntro || !hasSeenIntro) {
+    if (introParam !== '0' && (forceIntro || !hasSeenIntro)) {
       document.documentElement.setAttribute('data-intro-active', 'true')
       frame = window.requestAnimationFrame(() => setVisible(true))
     } else {

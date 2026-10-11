@@ -6,6 +6,7 @@
 .canvas:active { cursor: grabbing; }
 .canvas:focus-visible { outline: 2px solid var(--off-white); outline-offset: -3px; }
 .canvas canvas { display: block; }
+@media (pointer: coarse) { .canvas, .canvas:active { cursor: auto; } }
 
 /* Label do modelo no topo-esquerdo */
 .label { position: absolute; top: 1rem; left: 1rem; color: var(--off-white); font-family: var(--font-ibm-plex-mono), monospace; font-size: .625rem; letter-spacing: .12em; text-transform: uppercase; pointer-events: none; z-index: 2; }
@@ -29,8 +30,8 @@
   z-index: 3;
 }
 .toolbar button {
-  min-width: 2.5rem;
-  min-height: 2.5rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   border: 1px solid var(--border);
   background: none;
   color: var(--off-white);

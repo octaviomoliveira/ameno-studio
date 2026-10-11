@@ -11,11 +11,12 @@ const LAYERS = ['Arquitetura.', 'Visualização.', 'Ferramentas.']
 
 type Props = {
   videoSrc?: string
+  touchVideoSrc?: string
   posterSrc: string
   alt?: string
 }
 
-export default function HeroVideo({ videoSrc, posterSrc, alt = 'Cena de projeto ameno.studio' }: Props) {
+export default function HeroVideo({ videoSrc, touchVideoSrc, posterSrc, alt = 'Cena de projeto ameno.studio' }: Props) {
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -24,9 +25,26 @@ export default function HeroVideo({ videoSrc, posterSrc, alt = 'Cena de projeto 
     if (!section) return
 
     const media = gsap.matchMedia()
-    media.add('(min-width: 769px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+    media.add({
+      motion: '(prefers-reduced-motion: no-preference)',
+      compact: '(max-width: 768px), (pointer: coarse)',
+    }, (context) => {
+      if (!context.conditions?.motion) return
+      const compact = context.conditions.compact
       const layers = section.querySelectorAll<HTMLElement>('[data-hero-layer]')
       const signature = section.querySelector('[data-hero-signature]')
+      const video = videoRef.current
+      const playhead = { progress: 0 }
+      let disposed = false
+      let unlockAttempted = false
+
+      // Seek only after the previous frame is decoded. Text and video share
+      // the same smoothed playhead, including native touch scrolling.
+      const seek = () => {
+        if (disposed || !video || video.seeking || video.readyState < 2 || !Number.isFinite(video.duration)) return
+        const time = playhead.progress * Math.max(0, video.duration - 1 / 24)
+        if (Math.abs(video.currentTime - time) > 1 / 48) video.currentTime = time
+      }
       gsap.set([...Array.from(layers).slice(1), signature], { autoAlpha: 0, y: 24 })
 
       // Fit the complete story inside the distance travelled by the sticky frame.
@@ -35,54 +53,46 @@ export default function HeroVideo({ videoSrc, posterSrc, alt = 'Cena de projeto 
           trigger: section,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 0.45,
+          scrub: compact ? 0.3 : 0.65,
           invalidateOnRefresh: true,
         },
       })
       timeline
-        .to('[data-hero-media]', { scale: 1.06, duration: 1, ease: 'none' }, 0)
-        .to(layers[1], { autoAlpha: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.12)
-        .to(layers[2], { autoAlpha: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.4)
-        .to(signature, { autoAlpha: 1, y: 0, duration: 0.18 }, 0.7)
+        .to(playhead, { progress: 1, duration: 1, ease: 'none', onUpdate: seek }, 0)
+        .to('[data-hero-media]', { scale: compact ? 1.025 : 1.045, duration: 1, ease: 'none' }, 0)
+        .to(layers[1], { autoAlpha: 1, y: 0, duration: 0.28, ease: 'power1.out' }, 0.12)
+        .to(layers[2], { autoAlpha: 1, y: 0, duration: 0.28, ease: 'power1.out' }, 0.38)
+        .to(signature, { autoAlpha: 1, y: 0, duration: 0.22, ease: 'power1.out' }, 0.7)
         .to('[data-hero-scroll]', { opacity: 0, duration: 0.12 }, 0)
 
-      const video = videoRef.current
       if (!video || !videoSrc) return
-
-      let targetTime = 0
-      const seek = () => {
-        if (!Number.isFinite(video.duration) || video.seeking || video.readyState < 1) return
-        const time = Math.min(targetTime, Math.max(0, video.duration - 0.05))
-        if (Math.abs(video.currentTime - time) > 0.04) video.currentTime = time
-      }
-      const sync = (progress: number) => {
-        if (!Number.isFinite(video.duration)) return
-        targetTime = progress * video.duration
-        seek()
-      }
-      const videoTrigger = ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: 'bottom bottom',
-        onUpdate: self => sync(self.progress),
-        onRefresh: self => sync(self.progress),
-      })
-      const onMetadata = () => sync(videoTrigger.progress)
-      const onReady = () => { video.dataset.ready = 'true' }
+      const onReady = () => { video.dataset.ready = 'true'; seek() }
       const onError = () => { delete video.dataset.ready }
+      // iOS may require a user gesture before it will decode scrubbed frames.
+      const unlock = () => {
+        if (unlockAttempted || disposed) return
+        unlockAttempted = true
+        void video.play().then(() => { if (!disposed) { video.pause(); seek() } }).catch(() => { unlockAttempted = false })
+      }
 
-      video.addEventListener('loadedmetadata', onMetadata)
       video.addEventListener('loadeddata', onReady)
+      video.addEventListener('canplay', onReady)
       video.addEventListener('seeked', seek)
       video.addEventListener('error', onError)
-      video.src = videoSrc
+      section.addEventListener('touchstart', unlock, { passive: true })
+      window.addEventListener('ameno:intro-dismiss', unlock)
+      const supportsWebm = video.canPlayType('video/webm; codecs="vp9"') !== ''
+      video.src = touchVideoSrc && (compact || !supportsWebm) ? touchVideoSrc : videoSrc
       video.load()
 
       return () => {
-        video.removeEventListener('loadedmetadata', onMetadata)
+        disposed = true
         video.removeEventListener('loadeddata', onReady)
+        video.removeEventListener('canplay', onReady)
         video.removeEventListener('seeked', seek)
         video.removeEventListener('error', onError)
+        section.removeEventListener('touchstart', unlock)
+        window.removeEventListener('ameno:intro-dismiss', unlock)
         video.pause()
         video.removeAttribute('src')
         delete video.dataset.ready
@@ -91,7 +101,7 @@ export default function HeroVideo({ videoSrc, posterSrc, alt = 'Cena de projeto 
     }, section)
 
     return () => media.revert()
-  }, [videoSrc])
+  }, [videoSrc, touchVideoSrc])
 
   return (
     <section ref={sectionRef} className="hero-video-section" aria-labelledby="hero-video-title">

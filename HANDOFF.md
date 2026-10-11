@@ -31,7 +31,13 @@ stripe 22 (server)
 @stripe/stripe-js 9 (client)
 ```
 
-## Estado atual — 2026-09-08
+## Revisão atual — 2026-10-11
+
+Revisão de bugs e movimento do site existente, sem redesenho ou alterações comerciais. Hero em vídeo agora acompanha a rolagem nativa do celular e o mouse com a mesma timeline; MP4 H.264 adicionado em `public/hero/hero-central-parque-touch.mp4`. Corrigidos `?intro=0`, trava do Lenis durante menu/entrada, reação da navbar a gestos lentos, enquadramento dos assets e captura de toque pelo canvas 3D. Viewers carregam perto da tela. Projetos touch usam fluxo vertical com parallax e assets usam trilho nativo com contador/setas; desktop com mouse mantém trilhos GSAP.
+
+`npm run check` passou (lint, 3 testes das rotas e build/TypeScript). Regressão de navegador em `scripts/verify-motion.cjs`; validar também o build de produção, não apenas `next dev`. Pendentes: teste em Safari/iPhone físico e compra/login reais, que não foram autorizados nesta revisão visual. Consultar a revisão datada no topo de `PLANO_VISUAL.md` antes das descrições históricas abaixo.
+
+## Histórico — 2026-09-08
 
 O checkout, o formulário de `/plugins`, a home editorial em cinco capítulos, `/sobre`, `/conta`, o schema de licenças, `POST /api/verify` e o webhook já foram implementados. O hero combina grid, cotas e um campo abstrato de interferência; o portfólio tem índice e painéis fullbleed. `npm run build`, lint e os testes locais das rotas passam. O site está publicado em `https://ameno.studio` via Vercel, com as variáveis de produção configuradas. O webhook de teste para `checkout.session.completed` foi criado no Stripe e uma entrega de teste respondeu HTTP `200`. A `SUPABASE_SERVICE_ROLE_KEY` já está no `.env.local` (não exibir, commitar ou enviar esta chave); a verificação local alcançou o banco e respondeu `not_found` para um token fictício.
 
