@@ -46,6 +46,11 @@
 > validar a migration:** `/conta` consulta as novas colunas e ocultaria as
 > compras existentes se o esquema antigo estivesse em produção. O webhook
 > futuro precisa preencher escopo/livemode a partir do evento Stripe assinado.
+> O contrato da integração do webhook pago, estornos/disputas, escopo live e
+> ativação está em `docs/l4-d1b-webhook-entitlement.md`; é apenas plano, sem
+> handler novo ou migração aplicada. O antigo `/api/verify` ainda não filtra
+> escopo live, portanto nenhum token legado deve ser considerado licença
+> comercial pronta.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 

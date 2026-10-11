@@ -78,6 +78,7 @@ O webhook L4-d ainda precisa preencher os campos a partir do evento assinado.
 ### L4-d — estorno, disputa, replay e ordem dos eventos
 
 Contrato incremental detalhado em `docs/l4-d1-payment-event-guards.md`.
+Integração do webhook e do escopo comercial: `docs/l4-d1b-webhook-entitlement.md`.
 
 1. Registrar IDs de eventos Stripe de modo idempotente. Não presumir ordem
    entre confirmação, reembolso e disputa; manter bloqueio por PaymentIntent.
