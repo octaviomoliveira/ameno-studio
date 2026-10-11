@@ -60,6 +60,13 @@
 > executar os testes SQL/transacionais e de concorrência em PostgreSQL
 > isolado, conferir papéis/RLS, integrar o webhook assinado d1b e verificar
 > o banco real antes de qualquer implantação.
+> Uma auditoria **somente de leitura** do Supabase correto em 2026-10-11
+> confirmou que produção ainda usa o esquema/RPCs legados, não possui bucket
+> de download e contém compras anteriores ao escopo `first-paid`. Elas exigem
+> classificação individual antes da migração; não fazer backfill automático
+> nem implantar a nova `/conta` sobre o esquema antigo. Nenhuma migration ou
+> mutação de dados foi executada. O projeto foi reativado com autorização do
+> proprietário para esta auditoria.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
