@@ -122,14 +122,17 @@ BEGIN
       OR v_receipt.paid_payload_sha256 IS DISTINCT FROM v_digest THEN
       RAISE EXCEPTION 'Stripe event identity collision';
     END IF;
-    SELECT id INTO v_purchase_id FROM public.purchases
+    SELECT id, status INTO v_purchase_id, v_status FROM public.purchases
       WHERE stripe_payment_intent = p_payment_intent
         AND stripe_session_id = p_session_id FOR UPDATE;
     IF v_purchase_id IS NULL THEN
       RAISE EXCEPTION 'Paid event receipt has no purchase';
     END IF;
+    -- A paid event replay after a refund/dispute must not signal an active
+    -- entitlement to the webhook's optional account-attachment step.
+    IF v_status IS DISTINCT FROM 'completed' THEN RETURN NULL; END IF;
     SELECT id INTO v_license_id FROM public.licenses
-      WHERE purchase_id = v_purchase_id;
+      WHERE purchase_id = v_purchase_id AND active = true;
     RETURN v_license_id;
   END IF;
 
@@ -248,7 +251,9 @@ BEGIN
     p_payment_intent, 'paid', p_livemode,
     CASE WHEN v_status = 'completed' THEN 'paid_active' ELSE 'paid_blocked' END,
     v_digest);
-  SELECT id INTO v_license_id FROM public.licenses WHERE purchase_id = v_purchase_id;
+  IF v_status IS DISTINCT FROM 'completed' THEN RETURN NULL; END IF;
+  SELECT id INTO v_license_id FROM public.licenses
+    WHERE purchase_id = v_purchase_id AND active = true;
   RETURN v_license_id;
 END;
 $$;

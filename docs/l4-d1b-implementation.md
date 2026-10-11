@@ -40,8 +40,11 @@ HTTP 503 e nenhum artefato foi publicado.
   live, BRL, valor >= 1000 centavos, PI não vazio e produto correto. O
   download ainda exige usuário e e-mail confirmado iguais ao comprador.
 - A anexação opcional da compra à conta permanece após o RPC pago, em
-  operação separada. Falha devolve 5xx para retry; a operação SQL paga
-  idempotente não troca token. Nenhum token aparece no webhook.
+  operação separada, apenas quando o RPC confirma licença ainda ativa.
+  Compra bloqueada antes do pagamento, ou replay após bloqueio, retorna
+  `NULL` e não tenta anexação impossível. Falha real de anexação devolve
+  5xx para retry; a operação SQL paga idempotente não troca token. Nenhum
+  token aparece no webhook.
 
 ## Verificações feitas
 

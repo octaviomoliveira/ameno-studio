@@ -71,7 +71,9 @@ function load(overrides = {}) {
         rpc: async (name, args) => {
           calls.rpc.push({ name, args })
           return {
-            data: name === 'attach_purchase_to_user' ? (overrides.attachResult ?? true) : null,
+            data: name === 'attach_purchase_to_user' ? (overrides.attachResult ?? true)
+              : name === 'fulfill_plugin_purchase_v2' && !overrides.blockedPaid
+                ? 'd532795d-9572-4f57-b6ef-b06b0d9e93b1' : null,
             error: overrides.rpcFails ? { message: 'private SQL detail' } : null,
           }
         },
@@ -130,6 +132,9 @@ test('live paid snapshot and succeeded PI enter v2 RPC; ownership is separate an
   assert.equal((await failed.route.POST(failed.request('checkout.session.completed', paid))).status, 500)
   assert.equal(failed.calls.rpc[0].name, 'fulfill_plugin_purchase_v2')
   assert.equal(failed.calls.rpc[1].name, 'attach_purchase_to_user')
+  const blocked = load({ blockedPaid: true })
+  assert.equal((await blocked.route.POST(blocked.request('checkout.session.completed', paid))).status, 200)
+  assert.deepEqual(blocked.calls.rpc.map((call) => call.name), ['fulfill_plugin_purchase_v2'])
 })
 
 test('historical/test/other product sessions are not elevated by a replay', async () => {

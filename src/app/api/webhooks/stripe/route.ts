@@ -86,7 +86,7 @@ async function handlePaid(event: Stripe.Event, session: Stripe.Checkout.Session)
   }
 
   const admin = getSupabaseAdmin()
-  const { error } = await admin.rpc('fulfill_plugin_purchase_v2', {
+  const { data: licenseId, error } = await admin.rpc('fulfill_plugin_purchase_v2', {
     p_event_id: event.id,
     p_event_type: event.type,
     p_session_id: session.id,
@@ -100,9 +100,14 @@ async function handlePaid(event: Stripe.Event, session: Stripe.Checkout.Session)
     p_token: randomUUID(),
   })
   if (error) throw new Error('Paid event transaction failed')
+  if (licenseId !== null && typeof licenseId !== 'string') {
+    throw new Error('Unexpected paid entitlement result')
+  }
 
   const userId = session.metadata?.user_id
-  if (userId && session.client_reference_id === userId) {
+  // A prior refund/dispute makes the paid RPC return no license. Do not
+  // retry forever trying to attach a suspended/refunded purchase to a user.
+  if (licenseId && userId && session.client_reference_id === userId) {
     const { data, error: attachError } = await admin.rpc('attach_purchase_to_user', {
       p_session_id: session.id, p_user_id: userId, p_email: email,
     })

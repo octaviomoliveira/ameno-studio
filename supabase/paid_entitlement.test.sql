@@ -10,7 +10,7 @@ DECLARE
   paid_event text;
   partial_event text;
   full_event text;
-  token text := gen_random_uuid()::text;
+  v_token text := gen_random_uuid()::text;
   license_id uuid;
   repeat_id uuid;
   purchase_id uuid;
@@ -38,13 +38,13 @@ BEGIN
   license_id := public.fulfill_plugin_purchase_v2(paid_event,
     'checkout.session.completed', live_session, live_pi,
     3000, 'brl', 'buyer@example.invalid', 'ameno-cotas',
-    'ameno-cotas-first-paid', true, token);
+    'ameno-cotas-first-paid', true, v_token);
   ASSERT license_id IS NOT NULL, 'live paid event did not create license';
   ASSERT (SELECT status = 'completed'
     AND entitlement_scope = 'ameno-cotas-first-paid'
     AND stripe_livemode = true FROM public.purchases
     WHERE stripe_session_id = live_session), 'paid commercial markers missing';
-  ASSERT (public.verify_plugin_license(token, 'machine-a')->>'valid')::boolean,
+  ASSERT (public.verify_plugin_license(v_token, 'machine-a')->>'valid')::boolean,
     'eligible live license did not verify';
   repeat_id := public.fulfill_plugin_purchase_v2(paid_event,
     'checkout.session.completed', live_session, live_pi,
@@ -79,13 +79,17 @@ BEGIN
     'partial refund was not recorded';
   ASSERT (SELECT status = 'suspended' FROM public.purchases
     WHERE stripe_session_id = live_session), 'partial refund did not suspend';
-  ASSERT NOT (public.verify_plugin_license(token, 'machine-a')->>'valid')::boolean,
+  ASSERT NOT (public.verify_plugin_license(v_token, 'machine-a')->>'valid')::boolean,
     'partial refund did not revoke activation';
   repeat_id := public.fulfill_plugin_purchase_v2(paid_event,
     'checkout.session.completed', live_session, live_pi,
     3000, 'brl', 'buyer@example.invalid', 'ameno-cotas',
     'ameno-cotas-first-paid', true, gen_random_uuid()::text);
-  ASSERT repeat_id = license_id, 'paid replay changed revoked token';
+  ASSERT repeat_id IS NULL,
+    'paid replay after partial refund signaled an active entitlement';
+  ASSERT (SELECT l.id = license_id AND l.token = v_token
+    FROM public.licenses l WHERE l.id = license_id),
+    'paid replay changed stored revoked license';
   ASSERT (SELECT status = 'suspended' FROM public.purchases
     WHERE stripe_session_id = live_session), 'paid replay reactivated partial refund';
   ASSERT public.record_plugin_payment_block(full_event, 'charge.refunded',
