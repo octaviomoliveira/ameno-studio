@@ -168,10 +168,15 @@ export default async function ContaPage({
           <div className="account-purchases" aria-label="Suas compras">
             {purchases.map((purchase, index) => {
               const license = getLicense(purchase)
+              const sameEmail = purchase.customer_email?.trim().toLowerCase() === user.email!.trim().toLowerCase()
+              const licenseUsable = sameEmail && purchase.status === 'completed' && license?.active === true
               const canDownload = purchase.product === 'ameno-cotas' &&
-                purchase.status === 'completed' && license?.active === true &&
-                purchase.customer_email?.trim().toLowerCase() === user.email!.trim().toLowerCase() &&
-                artifact !== null
+                licenseUsable && artifact !== null
+              const licenseMessage = purchase.status === 'suspended'
+                ? 'Licença suspensa para revisão'
+                : !sameEmail ? 'E-mail da compra não corresponde a esta conta'
+                : license?.active === false ? 'Licença indisponível'
+                  : 'Aguardando confirmação do pagamento'
               return (
                 <article className="account-purchase-card" key={purchase.id}>
                   <div className="account-purchase-topline">
@@ -183,16 +188,16 @@ export default async function ContaPage({
                       <p>{purchase.product === 'ameno-cotas' ? 'Ameno Cotas' : purchase.product}</p>
                       <small>{formatAmount(purchase.amount, purchase.currency)} / pagamento único</small>
                     </div>
-                    <span className={purchase.status === 'completed' && license?.active ? 'is-active' : ''}>
-                      {purchase.status === 'completed' && license?.active ? 'ATIVA' : 'INDISPONÍVEL'}
+                    <span className={licenseUsable ? 'is-active' : ''}>
+                      {licenseUsable ? 'ATIVA' : purchase.status === 'suspended' ? 'SUSPENSA' : 'INDISPONÍVEL'}
                     </span>
                   </div>
                   <dl className="account-license-data">
                     <div>
                       <dt>Licença</dt>
                       <dd className="account-license-token">
-                        <span>{license?.token ?? 'Aguardando confirmação do pagamento'}</span>
-                        {license?.token ? <CopyLicenseButton token={license.token} /> : null}
+                        <span>{licenseUsable ? license.token : licenseMessage}</span>
+                        {licenseUsable ? <CopyLicenseButton token={license.token} /> : null}
                       </dd>
                     </div>
                     <div><dt>Computador</dt><dd>{maskMachineId(license?.machine_id ?? null)}</dd></div>

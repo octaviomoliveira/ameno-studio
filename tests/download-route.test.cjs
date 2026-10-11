@@ -141,6 +141,7 @@ test('guest not claimed, different email, pending/refunded purchase and inactive
     { ...basePurchase, customer_email: 'other@example.invalid' },
     { ...basePurchase, status: 'pending' },
     { ...basePurchase, status: 'refunded' },
+    { ...basePurchase, status: 'suspended' },
     { ...basePurchase, licenses: [{ active: false, product: 'ameno-cotas' }] },
     { ...basePurchase, licenses: [{ active: true, product: 'other-product' }] },
   ]
@@ -186,5 +187,8 @@ test('account UI only links through the authenticated route and shows a digest',
   assert.match(page, /href=\{`\/api\/download\/\$\{artifact\.id\}`\}/)
   assert.match(page, /artifact\.sha256/)
   assert.match(page, /purchase\.status === 'completed'/)
+  assert.match(page, /purchase\.status === 'suspended'/)
+  assert.match(page, /licenseUsable \? license\.token : licenseMessage/)
+  assert.match(page, /licenseUsable \? <CopyLicenseButton/)
   assert.doesNotMatch(page, /createSignedUrl/)
 })

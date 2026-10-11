@@ -43,7 +43,8 @@ Na branch `feature/l4-account-download`, sem deploy/merge/publicação:
   UUID do release. Um URL já assinado pode continuar funcionando até expirar.
 - `/conta` mostra versão, tamanho e SHA-256 e um link para essa rota somente
   se a compra e a licença estiverem elegíveis. A URL assinada não entra no HTML;
-  é criada no clique. O checksum é informativo; o instalador ainda não o
+  é criada no clique. Compras `suspended` exibem “SUSPENSA”, sem token nem
+  download. O checksum é informativo; o instalador ainda não o
   verifica automaticamente.
 - Testes locais de rota negam outro usuário, e-mail divergente, convidado não
   reivindicado, compra pendente/estornada, licença inativa, release
