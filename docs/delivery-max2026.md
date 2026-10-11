@@ -45,6 +45,18 @@ Nenhum ZIP foi publicado nem pagamento realizado nesta etapa.
    O link é gerado no clique, não na renderização da página. Gate: usuários
    diferentes, convidado não reivindicado e licença inativa recebem recusa.
 
+Implementação isolada: `feature/l4-account-download` (`fcb59e3`, sem merge ou
+deploy). O predicado de acesso também exige `entitlement_scope` comercial,
+`stripe_livemode=true`, valor inteiro de pelo menos 1000 centavos, `brl` e
+PaymentIntent não vazio. Os dois novos campos de compra são nullable, sem
+default nem backfill: registros antigos ficam fechados até auditoria manual.
+Testes de rota 9/9, lint, TypeScript e build passaram. A migration e o bucket
+privado ainda não foram validados em Supabase real. **Sequência obrigatória:**
+validar/aplicar a migration antes de implantar o código da branch; implantar
+primeiro o código faria a consulta `/conta` falhar e esconder compras/licenças
+existentes. A rota de download falha fechada, mas isso não torna o deploy seguro.
+O webhook L4-d ainda precisa preencher os campos a partir do evento assinado.
+
 ### L4-c — compra convidada e e-mail
 
 1. Manter compra sem cadastro. Após o pagamento, orientar acesso com o mesmo

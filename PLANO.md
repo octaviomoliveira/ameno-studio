@@ -36,6 +36,16 @@
 > reembolso parcial suspende o acesso para revisão manual, mesmo com saldo
 > restante de R$ 10 ou mais; o procedimento de reativação auditável segue
 > pendente antes da abertura da loja.
+> A área de download privada L4-a/b está isolada na branch
+> `feature/l4-account-download` (`fcb59e3`), publicada no GitHub sem merge ou
+> deploy. Ela exige compra live, escopo comercial explícito, mínimo R$ 10 em
+> BRL, PaymentIntent, titularidade e licença ativa; compras antigas/teste ficam
+> bloqueadas. Testes de rota (9/9), TypeScript, lint e build passaram, mas a
+> migration de artefatos/entitlement e o Storage ainda não foram validados em
+> PostgreSQL/Supabase. **Não mesclar/deployar o código antes de aplicar e
+> validar a migration:** `/conta` consulta as novas colunas e ocultaria as
+> compras existentes se o esquema antigo estivesse em produção. O webhook
+> futuro precisa preencher escopo/livemode a partir do evento Stripe assinado.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
