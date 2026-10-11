@@ -4,50 +4,50 @@ import styles from './page.module.css'
 
 export const metadata = {
   title: 'Ameno Cotas — Plugin para 3ds Max',
-  description: 'Gera cotas automaticamente por layer com render integrado. Compatível com 3ds Max 2024–2026 e Corona 12+.',
+  description: 'Ameno Cotas para 3ds Max em preparação. Compatibilidade e licenciamento ainda em validação.',
 }
 
 const FEATURES = [
   {
-    title: 'Cotas automáticas por layer',
-    description: 'Selecione os objetos, escolha o layer e o plugin gera todas as cotas automaticamente, sem trabalho manual.',
+    title: 'Cotas em layer dedicado',
+    description: 'Organize as cotas separadamente da geometria para revisar a planta com clareza.',
   },
   {
-    title: 'Render integrado',
-    description: 'As cotas são geradas já preparadas para render — sem ajustes adicionais entre a modelagem e a entrega.',
+    title: 'Editor de estilos',
+    description: 'Ajuste texto, linhas, terminais e cores das cotas antes da entrega.',
   },
   {
-    title: 'Compatível com seu fluxo',
-    description: 'Funciona dentro do 3ds Max com Corona 12+. Não muda sua forma de trabalhar — apenas elimina o repetitivo.',
+    title: 'Render das cotas',
+    description: 'O fluxo de render com Corona e V-Ray está em validação para o lançamento.',
   },
 ]
 
 const STEPS = [
-  { num: '01', title: 'Selecione os objetos', body: 'Selecione os objetos que deseja cotar dentro do 3ds Max. Podem ser paredes, móveis, fachadas — qualquer elemento organizado por layer.' },
-  { num: '02', title: 'Execute o plugin', body: 'Abra o Ameno Cotas pelo menu de scripts. Escolha o plano de cota (planta, fachada ou corte) e configure as preferências de estilo.' },
-  { num: '03', title: 'Cotas geradas automaticamente', body: 'O plugin analisa os objetos selecionados, calcula as distâncias e posiciona as cotas no espaço 3D com precisão. Pronto para render.' },
+  { num: '01', title: 'Marque os pontos', body: 'Indique na viewport os pontos que definem a medida.' },
+  { num: '02', title: 'Ajuste o estilo', body: 'Configure fonte, linhas, terminais e cores no editor de estilos.' },
+  { num: '03', title: 'Revise a saída', body: 'Confira os valores e a aparência das cotas no layer dedicado antes da entrega.' },
 ]
 
 const FAQ = [
   {
     q: 'Posso usar em mais de um computador?',
-    a: 'Cada compra gera uma licença para um computador. O plugin vincula a licença na primeira vez que é usado. Para trocar de máquina, entre em contato.',
+    a: 'A política planejada é uma licença por compra, vinculada a um computador. A ativação ainda está em implementação.',
   },
   {
     q: 'O que acontece se eu reinstalar o Windows?',
-    a: 'Se precisar trocar de máquina ou reinstalar o sistema, entre em contato para fazer o reset da licença. Por enquanto o processo é manual e sem custo.',
+    a: 'A transferência manual e gratuita está prevista, mas o procedimento será confirmado antes da abertura das vendas.',
   },
   {
     q: 'Funciona sem internet?',
-    a: 'O plugin tolera até 7 dias sem conexão. Após esse período, ele precisa de uma verificação online para continuar funcionando.',
+    a: 'A meta é permitir até 7 dias offline após a verificação online. Esse comportamento ainda está em implementação.',
   },
   {
     q: 'Atualizações estão incluídas?',
-    a: 'A compra garante a versão atual e suas correções de bugs. Versões com funcionalidades novas significativas poderão ter custo adicional — você sempre será avisado.',
+    a: 'As condições de atualização serão publicadas antes da abertura das vendas.',
   },
   {
     q: 'Posso pedir reembolso?',
-    a: 'Por se tratar de software digital com entrega imediata, não há reembolso após a ativação da licença. Em caso de dúvidas antes da compra, entre em contato.',
+    a: 'A política de reembolso será publicada antes da abertura das vendas. No momento não aceitamos pagamentos.',
   },
 ]
 
@@ -70,7 +70,7 @@ export default function PluginsPage() {
                 Ameno<br /><em className="font-editorial">Cotas.</em>
               </h1>
               <p className="plugin-hero-subtitle">
-                Gera cotas automaticamente por layer com render integrado.
+                Ferramenta de cotas para 3ds Max. Lançamento em preparação.
               </p>
               <div className={styles.heroActions}>
                 <span>Em preparação<br />Compra temporariamente indisponível</span>
@@ -79,10 +79,10 @@ export default function PluginsPage() {
             <div className={styles.heroVisual}><PluginDiagram /></div>
           </div>
           <div className="plugin-hero-badges">
-            <span className="plugin-badge">3ds Max 2024–2026</span>
-            <span className="plugin-badge">Corona 12+</span>
+            <span className="plugin-badge">Meta: 3ds Max 2021–2027</span>
+            <span className="plugin-badge">Corona e V-Ray em validação</span>
             <span className="plugin-badge">Windows</span>
-            <span className="plugin-badge">Pay-what-you-want</span>
+            <span className="plugin-badge">Valor livre planejado</span>
           </div>
         </div>
       </section>
@@ -95,7 +95,7 @@ export default function PluginsPage() {
             <h2 id="features-title">Um plugin que devolve tempo.</h2>
             <p>
               Cotar desenhos técnicos no 3ds Max é um processo manual e repetitivo.
-              O Ameno Cotas automatiza essa etapa — você configura uma vez e entrega cotas consistentes sempre.
+              O Ameno Cotas organiza medidas e estilos em um fluxo próprio. O produto ainda está em validação para venda.
             </p>
           </div>
           <div className="plugin-features-grid">
@@ -139,19 +139,19 @@ export default function PluginsPage() {
           <dl className="plugin-req-grid">
             <div className="plugin-req-item">
               <dt>Software</dt>
-              <dd>3ds Max 2024, 2025 ou 2026</dd>
+              <dd>Meta: 3ds Max 2021 a 2027; homologação pendente</dd>
             </div>
             <div className="plugin-req-item">
               <dt>Render</dt>
-              <dd>Corona Renderer 12 ou superior</dd>
+              <dd>Corona e V-Ray; integração em validação</dd>
             </div>
             <div className="plugin-req-item">
               <dt>Sistema</dt>
-              <dd>Windows 10 / 11 (64-bit)</dd>
+              <dd>Windows 64-bit; homologação pendente</dd>
             </div>
             <div className="plugin-req-item">
               <dt>Licença</dt>
-              <dd>1 computador por compra</dd>
+              <dd>1 computador por compra; política planejada</dd>
             </div>
           </dl>
         </div>
@@ -163,31 +163,32 @@ export default function PluginsPage() {
           {/* Explicação da licença */}
           <div className="plugin-license-info">
             <span className="plugin-section-tag">LICENCIAMENTO</span>
-            <h2 id="purchase-title">Como funciona a licença</h2>
+            <h2 id="purchase-title">Licenciamento planejado</h2>
+            <p className="plugin-license-note">Estas condições serão confirmadas antes da abertura das vendas.</p>
             <ul className="plugin-license-list">
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span><strong>1 compra = 1 licença = 1 computador.</strong> Sem compartilhamento.</span>
+                <span><strong>Meta: 1 compra = 1 licença = 1 computador.</strong> Ativação ainda em implementação.</span>
               </li>
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span>Na primeira vez que você usa o plugin, ele pede um token e vincula à sua máquina automaticamente.</span>
+                <span>Está prevista a verificação de um token e o vínculo à máquina na primeira ativação.</span>
               </li>
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span>A verificação acontece online ao abrir o 3ds Max. O plugin tolera até <strong>7 dias offline</strong>.</span>
+                <span>Meta: verificação online com tolerância de até <strong>7 dias offline</strong>.</span>
               </li>
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span>Para trocar de computador, entre em contato — o processo de reset é manual e gratuito.</span>
+                <span>Está prevista a transferência manual e gratuita da licença para outro computador.</span>
               </li>
             </ul>
             <p className="plugin-license-note">
-              Pagamento único por versão. Sem assinatura. Sem cadastro obrigatório.
+              Planejamos pagamento único com valor livre a partir de R$ 10,00. As condições finais serão publicadas antes da venda.
             </p>
           </div>
 
-          {/* Formulário de compra */}
+          {/* Aviso de venda suspensa */}
           <div id="comprar" className="plugin-purchase-box" tabIndex={-1}>
             <div className="plugin-purchase-header">
               <p className="plugin-purchase-product">Ameno Cotas</p>
