@@ -26,15 +26,21 @@ Na branch `feature/l4-account-download`, sem deploy/merge/publicação:
 
 - Migration Supabase gerada via CLI em
   `supabase/migrations/20261011161301_release_artifacts_private_download.sql`:
-  tabela `release_artifacts` com RLS, concessão exclusiva ao `service_role`,
-  metadados de ZIP/commit/SHA-256 e bucket privado. Não insere release nem
+  adiciona `purchases.entitlement_scope` e `purchases.stripe_livemode` nulos,
+  **sem default nem backfill**, além da tabela `release_artifacts` com RLS,
+  concessão exclusiva ao `service_role`, metadados de ZIP/commit/SHA-256 e
+  bucket privado. Não insere release nem
   arquivo. Ela pressupõe o bootstrap existente (`schema.sql`, `licenses.sql`,
   `auth.sql`) e **não foi aplicada nem validada em um banco real**.
 - O escopo interno `ameno-cotas-first-paid` limita a entrega à primeira versão
-  comercial. Hoje `purchases` não registra a versão comprada; portanto uma
-  futura versão paga exige migration de entitlement em compra/licença, nova
-  regra de autorização e decisão comercial explícita. O ano Max 2026 não é
-  a versão comercial da licença.
+  comercial. A compra também precisa ter esse escopo, `stripe_livemode=true`,
+  valor ≥ R$ 10, moeda BRL, PaymentIntent não vazio e licença ativa. Registros
+  antigos e de teste não recebem acesso automaticamente. O webhook L4-d1
+  deverá preencher escopo e livemode somente a partir de evento Stripe
+  autenticado e pago. Recuperação de compra antiga exige auditoria individual
+  antes de um backfill manual; não há backfill automático. Uma futura versão
+  paga exige novo escopo e regra de autorização. O ano Max 2026 não é a
+  versão comercial da licença.
 - Rota `GET /api/download/[releaseId]` consulta Auth via `getUser()`, e-mail
   confirmado, compra pertencente ao usuário com mesmo e-mail e status
   `completed`, licença ativa e release `published` do produto/Max 2026. Só
@@ -42,12 +48,14 @@ Na branch `feature/l4-account-download`, sem deploy/merge/publicação:
   caminho do objeto vem exclusivamente do banco; o cliente envia apenas o ID
   UUID do release. Um URL já assinado pode continuar funcionando até expirar.
 - `/conta` mostra versão, tamanho e SHA-256 e um link para essa rota somente
-  se a compra e a licença estiverem elegíveis. A URL assinada não entra no HTML;
-  é criada no clique. Compras `suspended` exibem “SUSPENSA”, sem token nem
-  download. O checksum é informativo; o instalador ainda não o
+  se a compra e a licença estiverem elegíveis pelos mesmos gates. A URL
+  assinada não entra no HTML; é criada no clique. Compras `suspended` exibem
+  “SUSPENSA”, e `refunded` exibem “ESTORNADA”, sem token nem download. O
+  checksum é informativo; o instalador ainda não o
   verifica automaticamente.
 - Testes locais de rota negam outro usuário, e-mail divergente, convidado não
-  reivindicado, compra pendente/estornada, licença inativa, release
+  reivindicado, compra pendente/estornada/suspensa, compra legada sem escopo,
+  modo teste, valor/PaymentIntent inválidos, licença inativa, release
   `staged`/`withdrawn`/outro ano, ID malformado e falhas de Storage. Build
   passou com variáveis fictícias; nenhum teste atingiu Supabase ou Stripe reais.
 

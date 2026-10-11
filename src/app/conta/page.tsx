@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getSupabaseAdmin } from '@/lib/supabase-admin'
+import { FIRST_PAID_SCOPE, isFirstPaidPurchaseEligible } from '@/lib/purchase-entitlement'
 import CopyLicenseButton from './copy-license-button'
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export const dynamic = 'force-dynamic'
 
 type License = {
   token: string
+  product: string
   machine_id: string | null
   machine_bound_at: string | null
   last_verified_at: string | null
@@ -22,11 +24,15 @@ type License = {
 
 type Purchase = {
   id: string
+  user_id: string | null
   amount: number | null
   currency: string | null
   customer_email: string | null
   product: string | null
   status: string | null
+  entitlement_scope: string | null
+  stripe_livemode: boolean | null
+  stripe_payment_intent: string | null
   created_at: string
   licenses: License[] | License | null
 }
@@ -105,7 +111,7 @@ export default async function ContaPage({
 
   const { data, error: purchasesError } = await admin
     .from('purchases')
-    .select('id, amount, currency, customer_email, product, status, created_at, licenses(token, machine_id, machine_bound_at, last_verified_at, active)')
+    .select('id, user_id, amount, currency, customer_email, product, status, entitlement_scope, stripe_livemode, stripe_payment_intent, created_at, licenses(token, product, machine_id, machine_bound_at, last_verified_at, active)')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
@@ -113,7 +119,7 @@ export default async function ContaPage({
     .from('release_artifacts')
     .select('id, release_version, max_year, sha256, size_bytes')
     .eq('product', 'ameno-cotas')
-    .eq('entitlement_scope', 'ameno-cotas-first-paid')
+    .eq('entitlement_scope', FIRST_PAID_SCOPE)
     .eq('max_year', 2026)
     .eq('status', 'published')
     .order('published_at', { ascending: false })
@@ -169,14 +175,20 @@ export default async function ContaPage({
             {purchases.map((purchase, index) => {
               const license = getLicense(purchase)
               const sameEmail = purchase.customer_email?.trim().toLowerCase() === user.email!.trim().toLowerCase()
-              const licenseUsable = sameEmail && purchase.status === 'completed' && license?.active === true
-              const canDownload = purchase.product === 'ameno-cotas' &&
-                licenseUsable && artifact !== null
+              const licenseUsable = isFirstPaidPurchaseEligible(purchase, user.id, user.email!)
+              const canDownload = licenseUsable && artifact !== null
               const licenseMessage = purchase.status === 'suspended'
                 ? 'Licença suspensa para revisão'
+                : purchase.status === 'refunded' ? 'Compra estornada'
                 : !sameEmail ? 'E-mail da compra não corresponde a esta conta'
                 : license?.active === false ? 'Licença indisponível'
-                  : 'Aguardando confirmação do pagamento'
+                : purchase.status === 'pending' ? 'Aguardando confirmação do pagamento'
+                  : 'Licença indisponível para esta compra'
+              const statusLabel = licenseUsable ? 'ATIVA'
+                : purchase.status === 'suspended' ? 'SUSPENSA'
+                : purchase.status === 'refunded' ? 'ESTORNADA'
+                : purchase.status === 'disputed' ? 'EM DISPUTA'
+                : purchase.status === 'pending' ? 'PROCESSANDO' : 'INDISPONÍVEL'
               return (
                 <article className="account-purchase-card" key={purchase.id}>
                   <div className="account-purchase-topline">
@@ -189,15 +201,15 @@ export default async function ContaPage({
                       <small>{formatAmount(purchase.amount, purchase.currency)} / pagamento único</small>
                     </div>
                     <span className={licenseUsable ? 'is-active' : ''}>
-                      {licenseUsable ? 'ATIVA' : purchase.status === 'suspended' ? 'SUSPENSA' : 'INDISPONÍVEL'}
+                      {statusLabel}
                     </span>
                   </div>
                   <dl className="account-license-data">
                     <div>
                       <dt>Licença</dt>
                       <dd className="account-license-token">
-                        <span>{licenseUsable ? license.token : licenseMessage}</span>
-                        {licenseUsable ? <CopyLicenseButton token={license.token} /> : null}
+                        <span>{licenseUsable && license ? license.token : licenseMessage}</span>
+                        {licenseUsable && license ? <CopyLicenseButton token={license.token} /> : null}
                       </dd>
                     </div>
                     <div><dt>Computador</dt><dd>{maskMachineId(license?.machine_id ?? null)}</dd></div>

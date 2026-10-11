@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getSupabaseAdmin } from '@/lib/supabase-admin'
+import { FIRST_PAID_SCOPE, isFirstPaidPurchaseEligible, type PaidPurchase } from '@/lib/purchase-entitlement'
 
 export const dynamic = 'force-dynamic'
 
 const PRODUCT = 'ameno-cotas'
-const FIRST_PAID_SCOPE = 'ameno-cotas-first-paid'
 const MAX_YEAR = 2026
 const PRIVATE_BUCKET = 'ameno-private-releases'
 const SIGNED_URL_SECONDS = 60
@@ -15,22 +15,6 @@ const PRIVATE_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
 }
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-
-type Purchase = {
-  customer_email: string | null
-  licenses: { active: boolean; product: string }[] | { active: boolean; product: string } | null
-}
-
-function sameConfirmedEmail(purchase: Purchase, email: string) {
-  return purchase.customer_email?.trim().toLowerCase() === email.trim().toLowerCase()
-}
-
-function hasActiveLicense(purchase: Purchase) {
-  const licenses = Array.isArray(purchase.licenses)
-    ? purchase.licenses
-    : purchase.licenses ? [purchase.licenses] : []
-  return licenses.some((license) => license.active === true && license.product === PRODUCT)
-}
 
 function denied(status: number, error: string) {
   return NextResponse.json({ error }, { status, headers: PRIVATE_HEADERS })
@@ -55,13 +39,15 @@ export async function GET(
     const admin = getSupabaseAdmin()
     const { data: purchases, error: purchaseError } = await admin
       .from('purchases')
-      .select('customer_email, licenses(active, product)')
+      .select('user_id, customer_email, product, status, entitlement_scope, stripe_livemode, amount, currency, stripe_payment_intent, licenses(active, product)')
       .eq('user_id', user.id)
       .eq('status', 'completed')
       .eq('product', PRODUCT)
+      .eq('entitlement_scope', FIRST_PAID_SCOPE)
+      .eq('stripe_livemode', true)
     if (purchaseError) throw new Error('Purchase lookup failed')
-    const entitled = ((purchases ?? []) as Purchase[]).some(
-      (purchase) => sameConfirmedEmail(purchase, user.email!) && hasActiveLicense(purchase),
+    const entitled = ((purchases ?? []) as PaidPurchase[]).some(
+      (purchase) => isFirstPaidPurchaseEligible(purchase, user.id, user.email!),
     )
     if (!entitled) return denied(404, 'Release indisponível')
 

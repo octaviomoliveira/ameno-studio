@@ -1,11 +1,16 @@
 -- L4-a: metadata is server-only; ZIP bytes live in private Supabase Storage.
 -- Apply only after the existing schema.sql, licenses.sql and auth.sql bootstrap.
 -- No release is published and no object is uploaded by this migration.
+-- No backfill: legacy/test purchases must remain ineligible until individually
+-- audited. The signed Stripe webhook will populate these on new live purchases.
+ALTER TABLE public.purchases
+  ADD COLUMN IF NOT EXISTS entitlement_scope text,
+  ADD COLUMN IF NOT EXISTS stripe_livemode boolean;
+
 CREATE TABLE public.release_artifacts (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   product text NOT NULL CHECK (product = 'ameno-cotas'),
-  -- Existing purchases have product but no commercial-version entitlement.
-  -- Only the first paid scope is sellable until purchase schema is versioned.
+  -- Only the first paid scope is sellable until future purchase editions exist.
   entitlement_scope text NOT NULL DEFAULT 'ameno-cotas-first-paid'
     CHECK (entitlement_scope = 'ameno-cotas-first-paid'),
   release_version text NOT NULL CHECK (release_version ~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$'),
@@ -43,7 +48,8 @@ DO $$
 BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM storage.buckets
-    WHERE id = 'ameno-private-releases' AND public = false
+    WHERE id = 'ameno-private-releases'
+      AND name = 'ameno-private-releases' AND public = false
   ) THEN
     RAISE EXCEPTION 'Ameno release bucket exists but is public or missing';
   END IF;

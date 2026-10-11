@@ -12,6 +12,11 @@ const basePurchase = {
   customer_email: 'buyer@example.invalid',
   product: 'ameno-cotas',
   status: 'completed',
+  entitlement_scope: 'ameno-cotas-first-paid',
+  stripe_livemode: true,
+  amount: 3000,
+  currency: 'brl',
+  stripe_payment_intent: 'pi_live_example',
   licenses: [{ active: true, product: 'ameno-cotas' }],
 }
 const baseRelease = {
@@ -69,6 +74,11 @@ function loadDownloadRoute(overrides = {}) {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
   }).outputText
   const exports = {}
+  const entitlementExports = {}
+  const entitlementSource = fs.readFileSync('src/lib/purchase-entitlement.ts', 'utf8')
+  vm.runInNewContext(ts.transpileModule(entitlementSource, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+  }).outputText, { exports: entitlementExports }, { filename: 'purchase-entitlement.ts' })
   const sandbox = {
     exports, Response, Request, URL, console,
     process: { env: { NEXT_PUBLIC_SUPABASE_URL: 'https://project.supabase.co' } },
@@ -85,6 +95,7 @@ function loadDownloadRoute(overrides = {}) {
         }) } }),
       }
       if (name === '@/lib/supabase-admin') return { getSupabaseAdmin: () => admin }
+      if (name === '@/lib/purchase-entitlement') return entitlementExports
       throw new Error(`Unexpected import: ${name}`)
     },
   }
@@ -113,6 +124,10 @@ test('only a confirmed buyer with completed purchase and active license receives
   }])
   assert.ok(calls.queries.some(({ table, filters }) => table === 'purchases' &&
     filters.some(([key, value]) => key === 'status' && value === 'completed')))
+  assert.ok(calls.queries.some(({ table, filters }) => table === 'purchases' &&
+    filters.some(([key, value]) => key === 'entitlement_scope' && value === 'ameno-cotas-first-paid')))
+  assert.ok(calls.queries.some(({ table, filters }) => table === 'purchases' &&
+    filters.some(([key, value]) => key === 'stripe_livemode' && value === true)))
   assert.ok(calls.queries.some(({ table, filters }) => table === 'release_artifacts' &&
     filters.some(([key, value]) => key === 'status' && value === 'published')))
 })
@@ -134,7 +149,7 @@ test('missing session, unconfirmed email and malformed IDs never sign', async ()
   assert.equal(malformed.calls.signs.length, 0)
 })
 
-test('guest not claimed, different email, pending/refunded purchase and inactive license are refused', async () => {
+test('guest, mismatched email, unqualified payment and inactive license are refused', async () => {
   const ineligible = [
     { ...basePurchase, user_id: null },
     { ...basePurchase, user_id: '7caec8ca-a156-4cc7-9551-99cff5ed315d' },
@@ -142,6 +157,15 @@ test('guest not claimed, different email, pending/refunded purchase and inactive
     { ...basePurchase, status: 'pending' },
     { ...basePurchase, status: 'refunded' },
     { ...basePurchase, status: 'suspended' },
+    { ...basePurchase, entitlement_scope: null },
+    { ...basePurchase, entitlement_scope: 'other-edition' },
+    { ...basePurchase, stripe_livemode: null },
+    { ...basePurchase, stripe_livemode: false },
+    { ...basePurchase, amount: null },
+    { ...basePurchase, amount: 999 },
+    { ...basePurchase, currency: 'usd' },
+    { ...basePurchase, stripe_payment_intent: null },
+    { ...basePurchase, stripe_payment_intent: ' ' },
     { ...basePurchase, licenses: [{ active: false, product: 'ameno-cotas' }] },
     { ...basePurchase, licenses: [{ active: true, product: 'other-product' }] },
   ]
@@ -186,9 +210,9 @@ test('account UI only links through the authenticated route and shows a digest',
   const page = fs.readFileSync('src/app/conta/page.tsx', 'utf8')
   assert.match(page, /href=\{`\/api\/download\/\$\{artifact\.id\}`\}/)
   assert.match(page, /artifact\.sha256/)
-  assert.match(page, /purchase\.status === 'completed'/)
   assert.match(page, /purchase\.status === 'suspended'/)
-  assert.match(page, /licenseUsable \? license\.token : licenseMessage/)
-  assert.match(page, /licenseUsable \? <CopyLicenseButton/)
+  assert.match(page, /isFirstPaidPurchaseEligible\(purchase, user\.id, user\.email!\)/)
+  assert.match(page, /licenseUsable && license \? license\.token : licenseMessage/)
+  assert.match(page, /licenseUsable && license \? <CopyLicenseButton/)
   assert.doesNotMatch(page, /createSignedUrl/)
 })
