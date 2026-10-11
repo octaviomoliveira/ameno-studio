@@ -2670,6 +2670,26 @@ summary:focus-visible {
   text-transform: uppercase;
 }
 
+.account-download {
+  display: grid;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.account-download .ameno-button {
+  width: fit-content;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.65rem;
+}
+
+.account-download small,
+.account-download code {
+  overflow-wrap: anywhere;
+  color: var(--gray);
+  font-size: 0.65rem;
+}
+
 @media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
   .account-dashboard-header {
     align-items: stretch;

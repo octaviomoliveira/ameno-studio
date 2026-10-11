@@ -20,6 +20,44 @@ Nenhum ZIP foi publicado nem pagamento realizado nesta etapa.
 
 ## Incrementos com gates
 
+### Implementação isolada L4-a/L4-b (2026-10-11)
+
+Na branch `feature/l4-account-download`, sem deploy/merge/publicação:
+
+- Migration Supabase gerada via CLI em
+  `supabase/migrations/20261011161301_release_artifacts_private_download.sql`:
+  tabela `release_artifacts` com RLS, concessão exclusiva ao `service_role`,
+  metadados de ZIP/commit/SHA-256 e bucket privado. Não insere release nem
+  arquivo. Ela pressupõe o bootstrap existente (`schema.sql`, `licenses.sql`,
+  `auth.sql`) e **não foi aplicada nem validada em um banco real**.
+- O escopo interno `ameno-cotas-first-paid` limita a entrega à primeira versão
+  comercial. Hoje `purchases` não registra a versão comprada; portanto uma
+  futura versão paga exige migration de entitlement em compra/licença, nova
+  regra de autorização e decisão comercial explícita. O ano Max 2026 não é
+  a versão comercial da licença.
+- Rota `GET /api/download/[releaseId]` consulta Auth via `getUser()`, e-mail
+  confirmado, compra pertencente ao usuário com mesmo e-mail e status
+  `completed`, licença ativa e release `published` do produto/Max 2026. Só
+  então emite redirect `no-store` para URL assinada por 60 segundos. O
+  caminho do objeto vem exclusivamente do banco; o cliente envia apenas o ID
+  UUID do release. Um URL já assinado pode continuar funcionando até expirar.
+- `/conta` mostra versão, tamanho e SHA-256 e um link para essa rota somente
+  se a compra e a licença estiverem elegíveis. A URL assinada não entra no HTML;
+  é criada no clique. O checksum é informativo; o instalador ainda não o
+  verifica automaticamente.
+- Testes locais de rota negam outro usuário, e-mail divergente, convidado não
+  reivindicado, compra pendente/estornada, licença inativa, release
+  `staged`/`withdrawn`/outro ano, ID malformado e falhas de Storage. Build
+  passou com variáveis fictícias; nenhum teste atingiu Supabase ou Stripe reais.
+
+Ainda são gates obrigatórios: aplicar e testar SQL em ambiente de teste;
+verificar políticas globais de `storage.objects` e que acesso anônimo ao ZIP
+é negado; gerar e auditar o ZIP protegido, subir ao bucket privado, comparar
+hash/tamanho/commit com os metadados e só então marcar `published`; exercitar
+login/compra/revogação em ambiente controlado. A branch L4-d0 para
+estorno/replay e correção de vínculo de compra também deve ser integrada e
+testada antes de usar este caminho em produção. Checkout permanece 503.
+
 ### L4-a — artefato e armazenamento, sem liberação pública
 
 1. Aceitar somente ZIP Max 2026 gerado do build protegido aprovado: nome
