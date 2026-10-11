@@ -44,19 +44,27 @@
 > migration de artefatos/entitlement e o Storage ainda não foram validados em
 > PostgreSQL/Supabase. **Não mesclar/deployar o código antes de aplicar e
 > validar a migration:** `/conta` consulta as novas colunas e ocultaria as
-> compras existentes se o esquema antigo estivesse em produção. O webhook
-> futuro precisa preencher escopo/livemode a partir do evento Stripe assinado.
+> compras existentes se o esquema antigo estivesse em produção. A branch
+> integrada d1b preenche escopo/livemode a partir do evento Stripe assinado.
 > O contrato da integração do webhook pago, estornos/disputas, escopo live e
-> ativação está em `docs/l4-d1b-webhook-entitlement.md`; é apenas plano, sem
-> handler novo ou migração aplicada. O antigo `/api/verify` ainda não filtra
-> escopo live, portanto nenhum token legado deve ser considerado licença
-> comercial pronta.
+> ativação está em `docs/l4-d1b-webhook-entitlement.md`. A implementação
+> integrada está somente na branch `feature/l4-webhook-entitlement`
+> (`70dde25`, publicada no GitHub, sem merge, migração ou deploy).
+> Ela usa eventos Stripe assinados, bloqueia reembolso parcial/integral e
+> disputa, e só vincula a conta quando a confirmação devolve licença ativa.
+> A revisão independente não encontrou P0/P1; testes de rota (15/15), lint,
+> TypeScript, build com ambiente fictício e parse SQL passaram. **Ainda não
+> houve execução das migrations e dos testes transacionais/concorrentes em
+> PostgreSQL isolado.** O `/api/verify` de produção ainda é legado, portanto
+> nenhum token anterior deve ser considerado licença comercial pronta.
 > O banco L4-d1a está na branch WIP isolada
-> `feature/l4-payment-event-guards` (`70f9ec3`, enviada ao GitHub, sem merge,
+> `feature/l4-payment-event-guards` (`50a35a7`, enviada ao GitHub, sem merge,
 > migração ou deploy). A revisão estática não encontrou P0/P1: qualquer
 > reembolso parcial suspende, o integral marca estorno, uma disputa suspende e
 > replays pagos não reativam; e-mail inválido não finaliza compra. `npm test`
-> (3/3), lint e análise sintática SQL/PLpgSQL passaram. **Ainda faltam**
+> (3/3), lint e análise sintática SQL/PLpgSQL passaram. A correção final
+> removeu `FOR UPDATE` da leitura do recibo imutável, pois o papel
+> `service_role` tem somente `SELECT`/`INSERT` nessa tabela. **Ainda faltam**
 > executar os testes SQL/transacionais e de concorrência em PostgreSQL
 > isolado, conferir papéis/RLS, integrar o webhook assinado d1b e verificar
 > o banco real antes de qualquer implantação.
