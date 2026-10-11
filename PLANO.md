@@ -14,6 +14,12 @@
 > altos no ramo de lint (`braces`), sem correção upstream disponível; a
 > auditoria das dependências de produção permanece em zero. Isso não equivale
 > a uma certificação completa de segurança.
+> A entrega comercial continua em projeto: inventário de riscos, artefato
+> privado, autorização por compra, e-mail e eventos de reembolso estão em
+> `docs/delivery-max2026.md`. Nenhum download público foi liberado.
+> O proprietário escolheu compra sem cadastro, seguida de acesso por e-mail
+> confirmado à área da conta para baixar o arquivo; não será enviado link
+> direto ao ZIP no e-mail.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
