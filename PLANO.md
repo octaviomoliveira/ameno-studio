@@ -29,7 +29,7 @@
 
 > O login opcional e a área do cliente estão detalhados em `PLANO_AUTENTICACAO.md`. A compra continua sem cadastro obrigatório.
 
-> **Stack declarada no projeto:** Next.js 16.3.4 + React 19 + Tailwind 4 + GSAP + Lenis + Supabase + Stripe + Vercel
+> **Stack declarada no projeto:** Next.js 16.3.8 + React 19 + Tailwind 4 + GSAP + Lenis + Supabase + Stripe + Vercel
 > **Domínio:** ameno.studio
 > **Repo:** github.com/octaviomoliveira/ameno-studio
 > **Atualizado em:** 2026-09-10 — estado publicado no commit `35cc71b` e pendências reconciliadas.
@@ -92,7 +92,7 @@ O desktop não deve ser simplificado para acomodar o mobile. Cada modo mantém a
 ### Decisões aprovadas
 
 - **Pay-what-you-want**, com valor mínimo de **R$10,00**.
-- Valor sugerido de **R$29,00**, preenchido no formulário e livremente editável.
+- Valor sugerido de **R$30,00**, preenchido no formulário quando a venda reabrir e livremente editável.
 - **Pagamento único por versão**, sem assinatura mensal/anual nesta fase.
 - **Compra direta, sem login obrigatório**.
 - **Login opcional por e-mail** para recuperar compras, licenças e futuros downloads na área do cliente.
@@ -111,8 +111,8 @@ Fluxo previsto: escolha do plugin e valor → Stripe Checkout de pagamento únic
 
 Implementado:
 
-- Formulário em `/plugins` com sugestão de R$29,00, mínimo de R$10,00 e validação no cliente e servidor.
-- Checkout público de pagamento único; login continua opcional.
+- Formulário preparado em `/plugins` com sugestão de R$30,00, mínimo de R$10,00 e validação no cliente e servidor; CTA atualmente suspenso.
+- Checkout de pagamento único implementado, mas `POST /api/checkout` bloqueado com 503 até entrega/licença; login continuará opcional na compra.
 - Webhook assinado, idempotente e condicionado a pagamento confirmado.
 - Geração de compra e licença no Supabase por operação atômica.
 - `POST /api/verify` com vínculo da primeira máquina e motivos de recusa definidos.
@@ -147,7 +147,7 @@ Pendente para abrir vendas reais:
 4. **Produto e venda** — checkout, webhook, licença por computador, entrega protegida do arquivo e integração do token no plugin.
 5. **Refino e lançamento** — revisão mobile/acessibilidade, conteúdo final, teste ponta a ponta, deploy, domínio e serviços de produção.
 
-**Estado atual:** fundação, direção visual, conteúdo visual atual, domínio e deploy estão concluídos. Produto e venda têm backend funcional em modo de teste, mas ainda dependem do plugin, entrega protegida, Stripe live e teste comercial completo.
+**Estado atual:** fundação, direção visual, conteúdo visual atual, domínio e deploy estão concluídos. O checkout está suspenso em produção; produto e venda ainda dependem do pacote protegido, licença, entrega, Stripe live e teste comercial completo.
 
 ---
 
@@ -167,7 +167,7 @@ O checklist foi reconciliado com o código e com a publicação atual. A interfa
 - [x] GSAP + Lenis global
 - [x] Hero + Cotas
 - [x] Projetos scroll
-- [x] /plugins com formulário editável, sugestão R$29,00 e mínimo R$10,00
+- [x] /plugins tem formulário preparado com sugestão R$30,00 e mínimo R$10,00; compra suspensa
 - [x] Home simplificada em cinco capítulos: hero, espaços em cena, portfólio, ferramentas e contato
 - [x] Entrada “Da ideia à forma” com cotas, `O` grafitado e partículas de spray
 - [x] Campo de interferência e cotas técnicas transparentes no hero
