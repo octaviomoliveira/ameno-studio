@@ -34,6 +34,7 @@ CREATE OR REPLACE FUNCTION public.fulfill_plugin_purchase(
 LANGUAGE plpgsql SECURITY INVOKER SET search_path = '' AS $$
 DECLARE
   v_purchase_id uuid;
+  v_purchase_status text;
   v_license_id uuid;
 BEGIN
   IF p_session_id IS NULL OR p_session_id = '' OR p_amount IS NULL OR p_amount < 1000
@@ -45,14 +46,23 @@ BEGIN
   INSERT INTO public.purchases
     (stripe_session_id, stripe_payment_intent, amount, currency, customer_email, product, status)
   VALUES (p_session_id, p_payment_intent, p_amount, p_currency, p_email, p_product, 'completed')
-  ON CONFLICT (stripe_session_id) DO UPDATE SET stripe_session_id = EXCLUDED.stripe_session_id
-  RETURNING id INTO v_purchase_id;
+  ON CONFLICT (stripe_session_id) DO NOTHING;
 
-  -- The purchase row lock serializes retries; the unique FK also enforces 1:1.
-  UPDATE public.purchases SET status = 'completed' WHERE id = v_purchase_id;
-  INSERT INTO public.licenses (token, purchase_id, product)
-  VALUES (p_token, v_purchase_id, p_product)
-  ON CONFLICT (purchase_id) DO NOTHING;
+  -- The row lock serializes retries without changing a purchase that was
+  -- refunded or suspended after the first completed-session webhook.
+  SELECT id, status INTO v_purchase_id, v_purchase_status
+  FROM public.purchases WHERE stripe_session_id = p_session_id FOR UPDATE;
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'Purchase not found after insert';
+  END IF;
+
+  -- A late completed-session webhook must not mint a new active license for
+  -- an existing non-completed purchase. The unique FK still enforces 1:1.
+  IF v_purchase_status = 'completed' THEN
+    INSERT INTO public.licenses (token, purchase_id, product)
+    VALUES (p_token, v_purchase_id, p_product)
+    ON CONFLICT (purchase_id) DO NOTHING;
+  END IF;
   SELECT id INTO v_license_id FROM public.licenses WHERE purchase_id = v_purchase_id;
   RETURN v_license_id;
 END;
