@@ -49,6 +49,10 @@ verificação para negar tokens antigos/teste sem escopo pago e `livemode=true`.
   `stripe_event_receipts` deduplica por ID de evento; `payment_blocks` retém
   fatos por PI/tipo/objeto, inclusive se a compra ainda não existe. Ambos
   têm RLS e acesso somente de `service_role`, sem payload completo ou PII.
+  Revisão de integração removeu `FOR UPDATE` da leitura de recibo imutável:
+  `service_role` tem `SELECT`/`INSERT`, mas não `UPDATE` nessa tabela. O lock
+  transacional pela PI e a PK do ID do evento permanecem; o teste SQL com
+  `SET LOCAL ROLE service_role` ainda precisa ser executado em PostgreSQL.
 - `record_plugin_payment_block` recebe fatos previamente validados pelo
   webhook assinado (que **ainda não foi implementado**), trava a PI e grava
   recibo/bloqueio/status/`licenses.active=false` na mesma transação.

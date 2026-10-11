@@ -177,8 +177,10 @@ BEGIN
   PERFORM pg_catalog.pg_advisory_xact_lock(
     pg_catalog.hashtextextended('ameno-cotas-payment:' || p_payment_intent, 0));
 
+  -- Receipts are immutable. PI advisory lock + event_id PK are sufficient;
+  -- FOR UPDATE would require an UPDATE grant not held by service_role.
   SELECT * INTO v_receipt FROM public.stripe_event_receipts
-  WHERE event_id = p_event_id FOR UPDATE;
+  WHERE event_id = p_event_id;
   IF FOUND THEN
     IF v_receipt.event_type IS DISTINCT FROM p_event_type
       OR v_receipt.object_id IS DISTINCT FROM p_object_id
