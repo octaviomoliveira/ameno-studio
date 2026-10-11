@@ -1,4 +1,5 @@
--- Apply after schema.sql. Server-only RPCs; one license per paid Checkout session.
+-- Apply after schema.sql, then apply auth.sql before accepting purchases.
+-- Server-only RPCs; one license per paid Checkout session.
 CREATE TABLE IF NOT EXISTS public.licenses (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   token text UNIQUE NOT NULL,
@@ -65,6 +66,10 @@ BEGIN
       currency = p_currency,
       customer_email = p_email,
       product = p_product,
+      -- A provisional account association is not proof of who paid. The
+      -- confirmed buyer can reclaim this purchase by verified email later.
+      user_id = NULL,
+      claimed_at = NULL,
       status = 'completed'
     WHERE id = v_purchase_id;
     v_purchase_status := 'completed';

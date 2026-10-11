@@ -9,6 +9,13 @@ SQL remoto, migração de produção ou deploy.
 - Uma sessão paga nova cria compra `completed` e uma licença.
 - Uma compra `pending` da mesma sessão passa a `completed` sob bloqueio de
   linha, recebe os dados do evento pago assinado e cria exatamente uma licença.
+  Sua associação provisória a uma conta é apagada nessa transição; o comprador
+  recupera a compra usando o e-mail verificado do pagamento.
+- As funções de reivindicação e associação de conta só aceitam compras
+  `completed` e conferem o e-mail confirmado de `auth.users`. Assim, um ID de
+  usuário guardado nos metadados do Checkout não substitui a prova do e-mail.
+  `service_role` recebe leitura apenas das três colunas de identidade usadas
+  por esses RPCs `SECURITY INVOKER`.
 - A repetição da mesma sessão conserva ID, token e dados originais da compra.
 - Se a compra existente estiver `refunded` ou `suspended`, a repetição não
   altera seu estado nem cria licença ativa nova. Se já houver licença, retorna
@@ -23,8 +30,11 @@ SQL remoto, migração de produção ou deploy.
 
 O arquivo `supabase/licenses.sql` é a definição versionada do RPC, mas **não
 altera por si só** uma função já instalada. `supabase/licenses.test.sql`
-adiciona cenários transacionais de `pending` → `completed`, replay após
-`refunded` e `suspended`, além de compra previamente estornada sem licença.
+adiciona cenários transacionais de `pending` → `completed`, titular provisório
+divergente, replay após `refunded` e `suspended`, além de compra previamente
+estornada sem licença. Aplique `supabase/auth.sql` antes de executar esse teste.
+O teste também assume `SET LOCAL ROLE service_role` para provar a permissão
+real de invocação; uma execução somente como `postgres` não a comprovaria.
 A execução desse teste em banco
 local fica pendente: neste ambiente não há Supabase CLI, `psql`, Docker ou
 instância de testes aprovada. Testes de rota Node não substituem esse gate.

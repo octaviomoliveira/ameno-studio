@@ -11,6 +11,10 @@ DECLARE
   v_repeat uuid;
   v_pending_purchase uuid;
   v_pending_license uuid;
+  v_user_a uuid := gen_random_uuid();
+  v_user_b uuid := gen_random_uuid();
+  v_user_a_email text := 'provisional+' || gen_random_uuid()::text || '@example.invalid';
+  v_user_b_email text := 'buyer+' || gen_random_uuid()::text || '@example.invalid';
   v_refunded_purchase uuid;
   v_result jsonb;
   v_count integer;
@@ -43,6 +47,10 @@ BEGIN
   ASSERT public.verify_plugin_license(NULL, 'pc-a')->>'reason' = 'invalid_request', 'null token accepted';
   ASSERT NOT has_table_privilege('anon', 'public.licenses', 'SELECT'), 'public license access';
   ASSERT has_table_privilege('service_role', 'public.licenses', 'SELECT,INSERT,UPDATE'), 'service role table grants missing';
+  ASSERT has_column_privilege('service_role', 'auth.users', 'id', 'SELECT')
+    AND has_column_privilege('service_role', 'auth.users', 'email', 'SELECT')
+    AND has_column_privilege('service_role', 'auth.users', 'email_confirmed_at', 'SELECT'),
+    'service role cannot check verified auth email';
   ASSERT has_function_privilege('service_role', 'public.verify_plugin_license(text,text)', 'EXECUTE'), 'service role RPC grant missing';
   ASSERT NOT has_function_privilege('anon', 'public.verify_plugin_license(text,text)', 'EXECUTE'), 'anon RPC access';
   ASSERT NOT has_function_privilege('authenticated', 'public.fulfill_plugin_purchase(text,text,integer,text,text,text,text)', 'EXECUTE'), 'authenticated fulfillment access';
@@ -50,27 +58,50 @@ BEGIN
   ASSERT v_count = 1, 'duplicate purchase';
 
   -- A legitimate paid event must complete an earlier pending checkout,
-  -- replacing its provisional details with the signed Stripe event details.
+  -- replacing its provisional details and discarding any stale account owner.
+  -- auth.sql must be applied before this test script.
+  INSERT INTO auth.users (instance_id, id, aud, role, email, email_confirmed_at,
+    created_at, updated_at)
+  VALUES
+    ('00000000-0000-0000-0000-000000000000', v_user_a,
+      'authenticated', 'authenticated', v_user_a_email, clock_timestamp(),
+      clock_timestamp(), clock_timestamp()),
+    ('00000000-0000-0000-0000-000000000000', v_user_b,
+      'authenticated', 'authenticated', v_user_b_email, clock_timestamp(),
+      clock_timestamp(), clock_timestamp());
   INSERT INTO public.purchases
     (stripe_session_id, stripe_payment_intent, amount, currency, customer_email, product, status)
   VALUES (v_pending_session, 'pi_provisional', 1000, 'brl',
-    'provisional@example.invalid', 'ameno-cotas', 'pending')
+    v_user_a_email, 'ameno-cotas', 'pending')
   RETURNING id INTO v_pending_purchase;
+  ASSERT public.claim_purchases_for_user(v_user_a, v_user_a_email) = 0,
+    'pending checkout was claimable before payment';
+  -- Simulate an older, already-claimed pending row in the deployed database.
+  UPDATE public.purchases SET user_id = v_user_a, claimed_at = clock_timestamp()
+  WHERE id = v_pending_purchase;
   v_pending_license := public.fulfill_plugin_purchase(v_pending_session,
-    'pi_paid', 3000, 'brl', 'buyer@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
+    'pi_paid', 3000, 'brl', v_user_b_email, 'ameno-cotas', gen_random_uuid()::text);
   ASSERT v_pending_license IS NOT NULL, 'paid pending checkout did not create license';
   ASSERT (SELECT stripe_payment_intent = 'pi_paid' AND amount = 3000
-    AND customer_email = 'buyer@example.invalid' AND status = 'completed'
+    AND customer_email = v_user_b_email AND status = 'completed'
+    AND user_id IS NULL AND claimed_at IS NULL
     FROM public.purchases WHERE id = v_pending_purchase),
-    'pending checkout was not completed from signed event';
+    'pending checkout retained provisional data or owner';
   ASSERT (SELECT purchase_id = v_pending_purchase AND active
     FROM public.licenses WHERE id = v_pending_license),
     'pending checkout license missing or inactive';
+  ASSERT NOT public.attach_purchase_to_user(v_pending_session, v_user_a, v_user_b_email),
+    'buyer email could be attached to the wrong account';
+  ASSERT public.attach_purchase_to_user(v_pending_session, v_user_b, v_user_b_email),
+    'verified buyer could not claim paid checkout';
+  ASSERT (SELECT user_id = v_user_b FROM public.purchases WHERE id = v_pending_purchase),
+    'paid checkout not owned by verified buyer';
   v_repeat := public.fulfill_plugin_purchase(v_pending_session,
     'pi_replay', 3900, 'brl', 'changed@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
   ASSERT v_repeat = v_pending_license, 'paid pending replay changed license';
   ASSERT (SELECT stripe_payment_intent = 'pi_paid' AND amount = 3000
-    AND customer_email = 'buyer@example.invalid' AND status = 'completed'
+    AND customer_email = v_user_b_email AND status = 'completed'
+    AND user_id = v_user_b
     FROM public.purchases WHERE id = v_pending_purchase),
     'paid pending replay changed authoritative data';
 
@@ -109,5 +140,25 @@ BEGIN
     'late replay changed refunded purchase status';
 END;
 $$;
+-- Exercising invoker rights catches a missing auth.users grant that tests
+-- running only as postgres would conceal.
+SET LOCAL ROLE service_role;
+DO $$
+BEGIN
+  BEGIN
+    PERFORM public.claim_purchases_for_user(
+      '00000000-0000-0000-0000-000000000001'::uuid, 'absent@example.invalid');
+    RAISE EXCEPTION 'Expected verified-user refusal';
+  EXCEPTION WHEN others THEN
+    IF SQLERRM <> 'Verified user email required' THEN
+      RAISE EXCEPTION 'Service-role claim check failed: %', SQLERRM;
+    END IF;
+  END;
+  ASSERT NOT public.attach_purchase_to_user('absent_session',
+    '00000000-0000-0000-0000-000000000001'::uuid, 'absent@example.invalid'),
+    'service-role attach accepted absent user';
+END;
+$$;
+RESET ROLE;
 ROLLBACK;
 SELECT 'license integration checks passed; synthetic data rolled back' AS result;

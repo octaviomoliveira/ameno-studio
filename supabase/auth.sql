@@ -13,6 +13,9 @@ CREATE INDEX IF NOT EXISTS purchases_user_id_created_at_idx
 -- after server-side identity verification and use the service role client.
 REVOKE ALL ON public.purchases FROM anon, authenticated;
 GRANT SELECT, INSERT, UPDATE ON public.purchases TO service_role;
+-- These SECURITY INVOKER RPCs verify the Auth identity inside SQL. The API
+-- role needs only these columns, not blanket access to auth.users.
+GRANT SELECT (id, email, email_confirmed_at) ON auth.users TO service_role;
 
 CREATE OR REPLACE FUNCTION public.claim_purchases_for_user(p_user_id uuid, p_email text)
 RETURNS integer
@@ -27,11 +30,19 @@ BEGIN
     OR length(trim(p_email)) > 320 THEN
     RAISE EXCEPTION 'User and email are required';
   END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM auth.users
+    WHERE id = p_user_id AND email_confirmed_at IS NOT NULL
+      AND lower(trim(email)) = lower(trim(p_email))
+  ) THEN
+    RAISE EXCEPTION 'Verified user email required';
+  END IF;
 
   UPDATE public.purchases
   SET user_id = p_user_id,
       claimed_at = coalesce(claimed_at, clock_timestamp())
   WHERE user_id IS NULL
+    AND status = 'completed'
     AND customer_email IS NOT NULL
     AND lower(trim(customer_email)) = lower(trim(p_email));
 
@@ -62,11 +73,19 @@ BEGIN
     OR p_email IS NULL OR trim(p_email) = '' OR length(trim(p_email)) > 320 THEN
     RETURN false;
   END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM auth.users
+    WHERE id = p_user_id AND email_confirmed_at IS NOT NULL
+      AND lower(trim(email)) = lower(trim(p_email))
+  ) THEN
+    RETURN false;
+  END IF;
 
   UPDATE public.purchases
   SET user_id = p_user_id,
       claimed_at = coalesce(claimed_at, clock_timestamp())
   WHERE stripe_session_id = p_session_id
+    AND status = 'completed'
     AND (user_id IS NULL OR user_id = p_user_id)
     AND customer_email IS NOT NULL
     AND lower(trim(customer_email)) = lower(trim(p_email));
