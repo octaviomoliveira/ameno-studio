@@ -1,10 +1,12 @@
 # L4-d1 — estornos, disputas e replays do Stripe
 
-Estado em 2026-10-11: **plano, não implementação**. O checkout público segue
+Estado em 2026-10-11: d1a está implementada na branch isolada
+`feature/l4-payment-event-guards` (`70f9ec3`), mas sem execução dos testes SQL
+em PostgreSQL, migration aplicada, merge ou deploy. O checkout público segue
 desabilitado (POST `/api/checkout` responde 503). A proteção inicial por
-sessão e por e-mail do comprador está na branch isolada
-`feature/l4-refund-replay-guard` (`62014dc`), ainda sem migration aplicada.
-Nenhum pagamento, SQL de produção ou webhook novo foi executado aqui.
+sessão e por e-mail do comprador está na branch predecessora
+`feature/l4-refund-replay-guard` (`62014dc`). Nenhum pagamento ou SQL de
+produção foi executado aqui; o webhook d1b ainda não foi integrado.
 
 ## Problema e invariantes
 
@@ -53,10 +55,14 @@ repete mutação; dados de outro produto/ambiente não afetam Ameno Cotas.
    sessão/compra antes de mutar. Erro transitório da API ou do RPC devolve
    5xx para retry; evento comprovadamente estranho é registrado/ignorado com
    razão, nunca associado a uma compra por suposição.
-3. `charge.refunded` não significa necessariamente estorno integral. Conferir
-   o estado/valor atual do Charge. Reembolso integral marca `refunded`; qualquer
-   reembolso parcial marca `suspended` para revisão manual, conforme decisão
-   do proprietário em 2026-10-11, independentemente do saldo restante.
+3. `charge.refunded` não significa necessariamente estorno integral. Classificar
+   usando `amount_refunded` e `amount` do **snapshot assinado do evento**, não
+   o estado atual do Charge consultado pela API: um replay de evento parcial
+   após reembolso integral deve continuar sendo classificado como parcial.
+   A consulta à API serve apenas para correlação de identidades. Reembolso
+   integral marca `refunded`; qualquer reembolso parcial marca `suspended`
+   para revisão manual, conforme decisão do proprietário em 2026-10-11,
+   independentemente do saldo restante.
    Disputa criada também suspende antes da decisão final. Não usar
    `event.created` como ordem confiável.
 4. Testes de rota: assinatura inválida, evento repetido, IDs diferentes do
