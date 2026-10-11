@@ -65,11 +65,14 @@ Nenhum ZIP foi publicado nem pagamento realizado nesta etapa.
 
 ### L4-d — estorno, disputa, replay e ordem dos eventos
 
+Contrato incremental detalhado em `docs/l4-d1-payment-event-guards.md`.
+
 1. Registrar IDs de eventos Stripe de modo idempotente. Não presumir ordem
    entre confirmação, reembolso e disputa; manter bloqueio por PaymentIntent.
 2. Tornar `fulfill_plugin_purchase` monotônico: replay nunca reativa uma compra
    já suspensa/estornada. Reembolso integral e disputa suspendem download e
-   `licenses.active`; reembolso parcial requer regra comercial explícita.
+   `licenses.active`; qualquer reembolso parcial suspende para revisão manual
+   (decisão do proprietário em 2026-10-11).
 3. E-mail é assíncrono, fora do sucesso do webhook. Uma falha no envio não
    força nova compra. Gate: eventos duplicados/invertidos e reembolso antes
    do `checkout.session.completed` não reativam acesso.
@@ -85,8 +88,8 @@ instalação no Max; o checkout continua 503 até esse gate e o pacote protegido
 
 - Provedor SMTP transacional, validação do remetente previsto e texto final
   da mensagem.
-- Política de reembolso parcial e disputa, suporte para troca de computador,
-  textos de licença, privacidade e reembolso.
+- Procedimento de revisão manual após reembolso parcial/disputa, suporte para
+  troca de computador, textos de licença, privacidade e reembolso.
 - Aceite comercial de que uma máquina já offline pode operar até o fim de sua
   janela de sete dias após revogação no servidor.
 

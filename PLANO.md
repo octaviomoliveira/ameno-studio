@@ -31,6 +31,11 @@
 > transacional e as permissões `service_role` ainda precisam ser executados
 > em PostgreSQL local antes de uma migration de produção. A branch não foi
 > mesclada nem implantada; o POST público de checkout segue 503.
+> O próximo bloco de estorno/disputa/duplicatas está planejado por gates em
+> `docs/l4-d1-payment-event-guards.md`. O proprietário decidiu que qualquer
+> reembolso parcial suspende o acesso para revisão manual, mesmo com saldo
+> restante de R$ 10 ou mais; o procedimento de reativação auditável segue
+> pendente antes da abertura da loja.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
