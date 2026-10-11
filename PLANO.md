@@ -62,8 +62,9 @@
 > o banco real antes de qualquer implantação.
 > Uma auditoria **somente de leitura** do Supabase correto em 2026-10-11
 > confirmou que produção ainda usa o esquema/RPCs legados, não possui bucket
-> de download e contém compras anteriores ao escopo `first-paid`. Elas exigem
-> classificação individual antes da migração; não fazer backfill automático
+> de download e contém compras anteriores ao escopo `first-paid`. O
+> proprietário confirmou que essas compras eram testes próprios: não fazer
+> backfill automático, nem apagar/revogar registros sem limpeza separada,
 > nem implantar a nova `/conta` sobre o esquema antigo. Nenhuma migration ou
 > mutação de dados foi executada. O projeto foi reativado com autorização do
 > proprietário para esta auditoria.
