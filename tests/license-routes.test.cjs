@@ -64,22 +64,41 @@ test('verify validates inputs before database access and preserves denial reason
     return { data: result, error: null }
   })
   const request = (body) => new Request('http://localhost/api/verify', { method: 'POST', body: JSON.stringify(body) })
-  assert.equal((await route.POST(request({ token: 'invalid', machine_id: 'pc-a' }))).status, 400)
+  const invalid = await route.POST(request({ token: 'invalid', machine_id: 'pc-a' }))
+  assert.equal(invalid.status, 400)
+  assert.equal(Object.hasOwn(await invalid.json(), 'verified_at'), false)
   assert.equal(calls, 0)
   const input = { token: randomUUID(), machine_id: 'pc-a' }
-  assert.deepEqual(await (await route.POST(request(input))).json(), { valid: true })
+  const beforeVerify = Date.now()
+  const approved = await route.POST(request(input))
+  const afterVerify = Date.now()
+  assert.equal(approved.headers.get('Cache-Control'), 'no-store')
+  const approvedBody = await approved.json()
+  assert.equal(approvedBody.valid, true)
+  assert.match(approvedBody.verified_at, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+  assert.ok(Date.parse(approvedBody.verified_at) >= beforeVerify)
+  assert.ok(Date.parse(approvedBody.verified_at) <= afterVerify)
   for (const reason of ['not_found', 'inactive', 'machine_mismatch']) {
     result = { valid: false, reason }
-    assert.equal((await (await route.POST(request(input))).json()).reason, reason)
+    const deniedBody = await (await route.POST(request(input))).json()
+    assert.equal(deniedBody.reason, reason)
+    assert.equal(Object.hasOwn(deniedBody, 'verified_at'), false)
   }
   result = { valid: false, reason: 'rate_limited', retry_after: 42 }
   const limited = await route.POST(request(input))
   assert.equal(limited.status, 429)
   assert.equal(limited.headers.get('Retry-After'), '42')
+  assert.equal(Object.hasOwn(await limited.json(), 'verified_at'), false)
+  result = { valid: true, reason: 'rate_limited', retry_after: 42 }
+  const contradictory = await route.POST(request(input))
+  assert.equal(contradictory.status, 429)
+  assert.equal(Object.hasOwn(await contradictory.json(), 'verified_at'), false)
   const failed = loadRoute('src/app/api/verify/route.ts', async () => ({ error: { message: 'private error' } }))
   const unavailable = await failed.POST(request(input))
   assert.equal(unavailable.status, 503)
-  assert.equal((await unavailable.json()).reason, 'service_unavailable')
+  const unavailableBody = await unavailable.json()
+  assert.equal(unavailableBody.reason, 'service_unavailable')
+  assert.equal(Object.hasOwn(unavailableBody, 'verified_at'), false)
 })
 
 test('checkout is paused on the server and creates no Stripe session', async () => {

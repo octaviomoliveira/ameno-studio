@@ -17,7 +17,12 @@ export async function POST(request: Request) {
       p_token: token.trim().toLowerCase(), p_machine_id: machineId,
     })
     if (error || !data || typeof data.valid !== 'boolean') throw new Error('License verification failed')
-    return NextResponse.json(data, {
+    // The server timestamp anchors the offline lease. Denied requests must
+    // never issue or renew an offline grant.
+    const responseData = data.valid && data.reason !== 'rate_limited'
+      ? { ...data, verified_at: new Date().toISOString() }
+      : data
+    return NextResponse.json(responseData, {
       status: data.reason === 'rate_limited' ? 429 : 200,
       headers: {
         'Cache-Control': 'no-store',

@@ -1,5 +1,15 @@
 # ameno.studio — Plano do Site
 
+> **Checkpoint comercial — 2026-10-11:** a compra do Ameno Cotas permanece
+> suspensa até pacote protegido, licença e entrega funcionarem. A primeira
+> versão paga terá como alvo o 3ds Max 2026; 2021–2027 serão avaliados depois.
+> Preço flexível: mínimo R$ 10, sugestão R$ 30. O código do plugin agora está
+> em repositório privado. A licença conserva uma máquina e até sete dias
+> offline; a resposta positiva de `POST /api/verify` passa a incluir
+> `verified_at` UTC emitido pelo servidor, sem conceder prazo a respostas de
+> recusa. A integração do cache local ainda está na branch de desenvolvimento
+> do plugin e não autoriza reabrir o checkout.
+
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
 > O login opcional e a área do cliente estão detalhados em `PLANO_AUTENTICACAO.md`. A compra continua sem cadastro obrigatório.
