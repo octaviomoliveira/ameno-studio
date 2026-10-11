@@ -1,5 +1,16 @@
 # ameno.studio — Plano do Site
 
+> **L4-d1b isolada — 2026-10-11:** a branch
+> `feature/l4-webhook-entitlement` integrou os ramos de guarda de pagamento
+> e download privado e implementou webhook assinado para pagamento,
+> reembolso parcial/integral e disputa, mais RPC pago v2 e gate comercial
+> igual no download/ativação. Testes de rota 15/15, lint, TypeScript e build
+> com variáveis fictícias passaram; SQL só teve parse, **não execução em
+> PostgreSQL**. Há licenças legadas ativas em produção sem marcadores
+> comerciais; requerem classificação individual antes de migration/deploy.
+> A branch não foi mesclada; checkout segue HTTP 503. Detalhes e gates em
+> `docs/l4-d1b-implementation.md`.
+>
 > **Checkpoint comercial — 2026-10-11:** a compra do Ameno Cotas permanece
 > suspensa até pacote protegido, licença e entrega funcionarem. A primeira
 > versão paga terá como alvo o 3ds Max 2026; 2021–2027 serão avaliados depois.
