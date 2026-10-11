@@ -7,11 +7,14 @@ SQL remoto, migração de produção ou deploy.
 ## Contrato alterado
 
 - Uma sessão paga nova cria compra `completed` e uma licença.
+- Uma compra `pending` da mesma sessão passa a `completed` sob bloqueio de
+  linha, recebe os dados do evento pago assinado e cria exatamente uma licença.
 - A repetição da mesma sessão conserva ID, token e dados originais da compra.
-- Se a compra existente estiver `refunded`, `suspended` ou em qualquer outro
-  estado diferente de `completed`, a repetição não altera seu estado nem cria
-  uma licença ativa nova. Se já houver licença, retorna seu ID sem reativá-la;
-  se não houver, retorna `null` e o webhook pode confirmar o replay sem erro.
+- Se a compra existente estiver `refunded` ou `suspended`, a repetição não
+  altera seu estado nem cria licença ativa nova. Se já houver licença, retorna
+  seu ID sem reativá-la; se não houver, retorna `null` e o webhook pode
+  confirmar o replay sem erro. Um estado desconhecido provoca erro, para que
+  o webhook não confirme silenciosamente uma compra paga não entregue.
 - `ON CONFLICT DO NOTHING` seguido de `SELECT ... FOR UPDATE` serializa os
   replays sobre a linha existente. O vínculo `licenses.purchase_id UNIQUE`
   continua limitando a uma licença por compra.
@@ -20,8 +23,9 @@ SQL remoto, migração de produção ou deploy.
 
 O arquivo `supabase/licenses.sql` é a definição versionada do RPC, mas **não
 altera por si só** uma função já instalada. `supabase/licenses.test.sql`
-adiciona cenários transacionais de replay após `refunded` e `suspended`, além
-de compra previamente estornada sem licença. A execução desse teste em banco
+adiciona cenários transacionais de `pending` → `completed`, replay após
+`refunded` e `suspended`, além de compra previamente estornada sem licença.
+A execução desse teste em banco
 local fica pendente: neste ambiente não há Supabase CLI, `psql`, Docker ou
 instância de testes aprovada. Testes de rota Node não substituem esse gate.
 Os gates headless disponíveis passaram: `npm test` (3/3) e `npm run lint`.

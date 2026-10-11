@@ -56,8 +56,26 @@ BEGIN
     RAISE EXCEPTION 'Purchase not found after insert';
   END IF;
 
+  -- A paid Stripe event is authoritative for a pre-existing pending checkout.
+  -- Only this initial state may advance; terminal states must stay terminal.
+  IF v_purchase_status = 'pending' THEN
+    UPDATE public.purchases SET
+      stripe_payment_intent = p_payment_intent,
+      amount = p_amount,
+      currency = p_currency,
+      customer_email = p_email,
+      product = p_product,
+      status = 'completed'
+    WHERE id = v_purchase_id;
+    v_purchase_status := 'completed';
+  ELSIF v_purchase_status IS DISTINCT FROM 'completed'
+    AND v_purchase_status IS DISTINCT FROM 'refunded'
+    AND v_purchase_status IS DISTINCT FROM 'suspended' THEN
+    RAISE EXCEPTION 'Unexpected purchase status';
+  END IF;
+
   -- A late completed-session webhook must not mint a new active license for
-  -- an existing non-completed purchase. The unique FK still enforces 1:1.
+  -- an existing terminal purchase. The unique FK still enforces 1:1.
   IF v_purchase_status = 'completed' THEN
     INSERT INTO public.licenses (token, purchase_id, product)
     VALUES (p_token, v_purchase_id, p_product)

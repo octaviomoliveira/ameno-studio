@@ -5,9 +5,12 @@ DECLARE
   v_token text := gen_random_uuid()::text;
   v_unknown text := gen_random_uuid()::text;
   v_session text := 'codex_license_test_' || gen_random_uuid()::text;
+  v_pending_session text := 'codex_pending_test_' || gen_random_uuid()::text;
   v_refunded_session text := 'codex_refunded_test_' || gen_random_uuid()::text;
   v_first uuid;
   v_repeat uuid;
+  v_pending_purchase uuid;
+  v_pending_license uuid;
   v_refunded_purchase uuid;
   v_result jsonb;
   v_count integer;
@@ -45,6 +48,31 @@ BEGIN
   ASSERT NOT has_function_privilege('authenticated', 'public.fulfill_plugin_purchase(text,text,integer,text,text,text,text)', 'EXECUTE'), 'authenticated fulfillment access';
   SELECT count(*) INTO v_count FROM public.purchases WHERE stripe_session_id = v_session;
   ASSERT v_count = 1, 'duplicate purchase';
+
+  -- A legitimate paid event must complete an earlier pending checkout,
+  -- replacing its provisional details with the signed Stripe event details.
+  INSERT INTO public.purchases
+    (stripe_session_id, stripe_payment_intent, amount, currency, customer_email, product, status)
+  VALUES (v_pending_session, 'pi_provisional', 1000, 'brl',
+    'provisional@example.invalid', 'ameno-cotas', 'pending')
+  RETURNING id INTO v_pending_purchase;
+  v_pending_license := public.fulfill_plugin_purchase(v_pending_session,
+    'pi_paid', 3000, 'brl', 'buyer@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
+  ASSERT v_pending_license IS NOT NULL, 'paid pending checkout did not create license';
+  ASSERT (SELECT stripe_payment_intent = 'pi_paid' AND amount = 3000
+    AND customer_email = 'buyer@example.invalid' AND status = 'completed'
+    FROM public.purchases WHERE id = v_pending_purchase),
+    'pending checkout was not completed from signed event';
+  ASSERT (SELECT purchase_id = v_pending_purchase AND active
+    FROM public.licenses WHERE id = v_pending_license),
+    'pending checkout license missing or inactive';
+  v_repeat := public.fulfill_plugin_purchase(v_pending_session,
+    'pi_replay', 3900, 'brl', 'changed@example.invalid', 'ameno-cotas', gen_random_uuid()::text);
+  ASSERT v_repeat = v_pending_license, 'paid pending replay changed license';
+  ASSERT (SELECT stripe_payment_intent = 'pi_paid' AND amount = 3000
+    AND customer_email = 'buyer@example.invalid' AND status = 'completed'
+    FROM public.purchases WHERE id = v_pending_purchase),
+    'paid pending replay changed authoritative data';
 
   -- Stripe may replay a paid session after a separate refund or suspension.
   -- Neither the purchase state nor an inactive license may be resurrected.
