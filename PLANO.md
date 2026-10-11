@@ -68,6 +68,10 @@
 > executar os testes SQL/transacionais e de concorrência em PostgreSQL
 > isolado, conferir papéis/RLS, integrar o webhook assinado d1b e verificar
 > o banco real antes de qualquer implantação.
+> A ordem reproduzível e a cobertura ainda faltante dos testes SQL estão em
+> `docs/l4-postgres-isolated-gates.md`. O ambiente local não possui `psql`,
+> Supabase CLI ou Docker; nenhum desses testes foi executado. Não usar o
+> projeto de produção como substituto do banco descartável.
 > Uma auditoria **somente de leitura** do Supabase correto em 2026-10-11
 > confirmou que produção ainda usa o esquema/RPCs legados, não possui bucket
 > de download e contém compras anteriores ao escopo `first-paid`. O
