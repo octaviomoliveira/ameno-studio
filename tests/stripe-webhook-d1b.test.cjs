@@ -140,6 +140,10 @@ test('historical/test/other product sessions are not elevated by a replay', asyn
   const other = { ...session, metadata: { product: 'other-product' } }
   assert.equal((await (await route.POST(request('checkout.session.completed', other))).json()).ignored,
     'other_product')
+  const contradictory = { ...session, metadata: {
+    product: 'other-product', entitlement_scope: 'ameno-cotas-first-paid',
+  } }
+  assert.equal((await route.POST(request('checkout.session.completed', contradictory))).status, 500)
   const testMode = { ...session, id: 'cs_test_123ABC', livemode: false }
   assert.equal((await (await route.POST(request('checkout.session.completed', testMode,
     { livemode: false }))).json()).ignored, 'test_mode')
@@ -191,23 +195,45 @@ test('partial, full, then partial replay retains signed snapshot classification'
     name === 'sessions' && options.payment_intent === 'pi_123ABC'))
 })
 
-test('dispute created suspends; absent correlation and other products never mutate', async () => {
+test('refund/dispute blocks cannot be suppressed by edited current Checkout metadata', async () => {
   const valid = load()
   assert.equal((await valid.route.POST(valid.request('charge.dispute.created', dispute))).status, 200)
   assert.equal(valid.calls.rpc[0].args.p_block_kind, 'dispute')
   assert.equal(valid.calls.rpc[0].args.p_object_id, dispute.id)
 
+  // The paid event's metadata is signed and immutable, but the Session
+  // fetched later for a refund can have its metadata changed or removed.
   const other = load({ session: { metadata: { product: 'unrelated' } } })
-  const otherResult = await other.route.POST(other.request('charge.refunded', charge))
-  assert.equal(otherResult.status, 200)
-  assert.equal(other.calls.rpc.length, 0)
+  assert.equal((await other.route.POST(other.request('checkout.session.completed',
+    session, { eventId: 'evt_paid_first' }))).status, 200)
+  assert.equal((await other.route.POST(other.request('charge.refunded', charge,
+    { eventId: 'evt_refund_later' }))).status, 200)
+  assert.deepEqual(other.calls.rpc.map((call) => call.name),
+    ['fulfill_plugin_purchase_v2', 'record_plugin_payment_block'])
+  const conflicting = load({ session: { metadata: {
+    product: 'unrelated', entitlement_scope: 'ameno-cotas-first-paid',
+  } } })
+  assert.equal((await conflicting.route.POST(conflicting.request(
+    'charge.refunded', charge))).status, 200)
+  assert.equal((await conflicting.route.POST(conflicting.request(
+    'charge.dispute.created', dispute))).status, 200)
+  assert.equal(conflicting.calls.rpc.length, 2)
+  const missing = load({ session: { metadata: {} } })
+  assert.equal((await missing.route.POST(missing.request('charge.refunded', charge))).status, 200)
+  assert.equal(missing.calls.rpc[0].name, 'record_plugin_payment_block')
+  const beforePaid = load({ session: { metadata: { product: 'unrelated' } } })
+  assert.equal((await beforePaid.route.POST(beforePaid.request('charge.refunded', charge,
+    { eventId: 'evt_refund_first' }))).status, 200)
+  assert.equal((await beforePaid.route.POST(beforePaid.request('checkout.session.completed',
+    session, { eventId: 'evt_paid_later' }))).status, 200)
+  assert.deepEqual(beforePaid.calls.rpc.map((call) => call.name),
+    ['record_plugin_payment_block', 'fulfill_plugin_purchase_v2'])
   for (const bad of [
     { charge: { payment_intent: null } },
     { charge: { payment_intent: 'pi_other' } },
     { charge: { livemode: false } },
     { charge: { currency: 'usd' } },
     { session: { payment_intent: 'pi_other' } },
-    { session: { metadata: {} } },
     { session: { amount_total: 999 } },
     { sessions: [] },
     { intent: { amount_received: 2000 } },

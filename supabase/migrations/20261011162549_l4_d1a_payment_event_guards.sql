@@ -211,6 +211,22 @@ BEGIN
     AND v_by_session.status <> 'pending' THEN
     RAISE EXCEPTION 'Checkout session belongs to another PaymentIntent';
   END IF;
+  -- Current Checkout metadata can be edited after a paid snapshot. The
+  -- webhook records a block by Charge/PI/session identity even when that
+  -- metadata now names another product. Protect an actually finalized
+  -- unrelated purchase, while preserving pending/prepaid-block placeholders.
+  IF (v_by_pi.id IS NOT NULL
+      AND v_by_pi.product IS DISTINCT FROM 'ameno-cotas'
+      AND NOT (v_by_pi.status = 'pending' OR
+        (v_by_pi.blocked_while_pending_at IS NOT NULL
+         AND v_by_pi.paid_confirmed_at IS NULL)))
+    OR (v_by_session.id IS NOT NULL
+      AND v_by_session.product IS DISTINCT FROM 'ameno-cotas'
+      AND NOT (v_by_session.status = 'pending' OR
+        (v_by_session.blocked_while_pending_at IS NOT NULL
+         AND v_by_session.paid_confirmed_at IS NULL))) THEN
+    RAISE EXCEPTION 'Finalized unrelated product requires manual review';
+  END IF;
   IF EXISTS (
     SELECT 1 FROM public.payment_blocks
     WHERE stripe_payment_intent = p_payment_intent

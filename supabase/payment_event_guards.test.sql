@@ -299,6 +299,35 @@ END;
 $$;
 
 DO $$
+DECLARE
+  v_session text := 'd1a_other_session_' || gen_random_uuid()::text;
+  v_pi text := 'd1a_other_pi_' || gen_random_uuid()::text;
+  v_event text := 'd1a_other_event_' || gen_random_uuid()::text;
+BEGIN
+  -- The block route cannot rely on mutable current Checkout metadata to
+  -- suppress events. The RPC itself must protect finalized other products.
+  INSERT INTO public.purchases (stripe_session_id, stripe_payment_intent,
+    amount, currency, customer_email, product, status, paid_confirmed_at)
+  VALUES (v_session, v_pi, 3000, 'brl', 'other@example.invalid',
+    'other-product', 'completed', clock_timestamp());
+  BEGIN
+    PERFORM public.record_plugin_payment_block(v_event, 'charge.refunded',
+      'ch_other', v_session, v_pi, 'partial_refund', true);
+    RAISE EXCEPTION 'expected unrelated-product refusal';
+  EXCEPTION WHEN others THEN
+    IF SQLERRM = 'expected unrelated-product refusal' THEN RAISE; END IF;
+  END;
+  ASSERT (SELECT status = 'completed' FROM public.purchases
+    WHERE stripe_payment_intent = v_pi),
+    'block RPC mutated a finalized unrelated purchase';
+  ASSERT NOT EXISTS (SELECT 1 FROM public.stripe_event_receipts
+    WHERE event_id = v_event), 'rejected block left a receipt';
+  ASSERT NOT EXISTS (SELECT 1 FROM public.payment_blocks
+    WHERE stripe_payment_intent = v_pi), 'rejected block left a blocker';
+END;
+$$;
+
+DO $$
 BEGIN
   ASSERT NOT has_table_privilege('anon', 'public.stripe_event_receipts', 'SELECT'),
     'anon can read Stripe receipt';

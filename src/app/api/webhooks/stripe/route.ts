@@ -21,12 +21,17 @@ function validEmail(value: string | null | undefined): value is string {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 }
 
-// A non-Ameno product can be acknowledged. Missing or contradictory metadata
-// is ambiguous and must be retried/investigated, never silently 2xx'd.
+// Paid snapshots use this marker. Current Checkout metadata is mutable, so
+// refund/dispute handling must never use it as an ignore gate.
 function productDisposition(session: Stripe.Checkout.Session): 'ameno' | 'other' {
   const product = session.metadata?.product
   if (product === PRODUCT) return 'ameno'
-  if (typeof product === 'string' && product.length > 0) return 'other'
+  if (typeof product === 'string' && product.length > 0) {
+    if (session.metadata?.entitlement_scope === FIRST_PAID_SCOPE) {
+      throw new Error('Conflicting Checkout commercial metadata')
+    }
+    return 'other'
+  }
   throw new Error('Ambiguous Checkout product')
 }
 
@@ -39,9 +44,7 @@ async function matchingSession(paymentIntentId: string): Promise<Stripe.Checkout
   return session
 }
 
-function validateBlockSession(session: Stripe.Checkout.Session, eventLivemode: boolean): 'ameno' | 'other' {
-  const product = productDisposition(session)
-  if (product === 'other') return product
+function validateBlockSession(session: Stripe.Checkout.Session, eventLivemode: boolean): void {
   if (session.livemode !== eventLivemode || session.mode !== 'payment' ||
     session.payment_status !== 'paid' || session.currency !== 'brl' ||
     !Number.isSafeInteger(session.amount_total) ||
@@ -49,7 +52,6 @@ function validateBlockSession(session: Stripe.Checkout.Session, eventLivemode: b
     !(eventLivemode ? LIVE_SESSION_ID : TEST_SESSION_ID).test(session.id)) {
     throw new Error('Checkout identity mismatch')
   }
-  return 'ameno'
 }
 
 async function handlePaid(event: Stripe.Event, session: Stripe.Checkout.Session) {
@@ -134,9 +136,10 @@ async function handleBlock(
     throw new Error('Charge/PaymentIntent mismatch')
   }
   const session = await matchingSession(paymentIntentId)
-  if (validateBlockSession(session, event.livemode) === 'other') {
-    return { received: true, ignored: 'other_product' }
-  }
+  // A later metadata edit cannot erase a previously signed first-paid event.
+  // Record the PI block even when the paid event has not arrived yet. The RPC
+  // rejects finalized unrelated purchases instead of mutating them.
+  validateBlockSession(session, event.livemode)
   if (!event.livemode) return { received: true, ignored: 'test_mode' }
   const intent = await stripe.paymentIntents.retrieve(paymentIntentId)
   if (intent.id !== paymentIntentId || intent.livemode !== true ||

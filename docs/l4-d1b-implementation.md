@@ -21,6 +21,14 @@ HTTP 503 e nenhum artefato foi publicado.
   imutável: `service_role` tinha apenas `SELECT`/`INSERT` nessa tabela,
   enquanto PostgreSQL exige `UPDATE` também para `SELECT FOR UPDATE`.
   O lock advisory por PI e a PK de `event_id` preservam serialização.
+- Reembolso/disputa não usa o metadata **atual** da sessão como motivo
+  para ignorar o evento: o metadata pode ser editado após a compra. O
+  bloqueio fica atrelado a Charge, PI e sessão validados, inclusive se
+  chegar antes do webhook pago. O RPC recusa alterar uma compra finalizada
+  de outro produto, mas aceita placeholders pendentes ainda sem pagamento.
+  Operacionalmente, um reembolso live sem compra local registra um bloqueio
+  preventivo por PI mesmo que o produto atual pareça ser outro; uma compra
+  finalizada de outro produto produz non-2xx para revisão, não mutação.
 - `charge.refunded` usa `amount_refunded` e `amount_captured` **do
   snapshot assinado**: parcial suspende para revisão manual, integral marca
   `refunded`. O Charge consultado depois serve apenas para correlacionar
@@ -60,14 +68,13 @@ HTTP 503 e nenhum artefato foi publicado.
    `paid_entitlement.test.sql`; revisar advisors, RLS, grants e duas
    transações concorrentes sobre a mesma PI. Não executar os testes do RPC
    v1 após sua revogação como se fossem o contrato final.
-2. Auditar as compras e licenças ativas pré-existentes que o banco
-   de produção mostra sem `entitlement_scope`/`stripe_livemode`.
-   Não fazer backfill automático. Se forem clientes reais, definir e testar
-   tratamento individual para não cortar acesso por surpresa; se forem
-   testes, revogar/encerrar com trilha de auditoria. A migration d1b faria
-   `verify_plugin_license` recusá-las até essa decisão. O bucket de releases
-   ainda não existe na produção; confirmar a migration e as políticas de
-   Storage antes de qualquer arquivo.
+2. As compras/licenças antigas em produção sem `entitlement_scope` e
+   `stripe_livemode` foram identificadas pelo responsável como testes.
+   Permanecem sem backfill, exclusão ou revogação automática; o novo
+   predicado fail-closed não as habilita à release paga. A migration d1b
+   faria `verify_plugin_license` recusá-las; validar isso antes de aplicar
+   em produção. O bucket de releases ainda não existe; confirmar a migration
+   e as políticas de Storage antes de qualquer arquivo.
 3. Confirmar no Stripe endpoint **snapshot** e versão de API; verificar
    em ambiente de teste eventos pagos, refund parcial/integral e disputa
    com entrega duplicada/invertida. API ou banco indisponível deve produzir
