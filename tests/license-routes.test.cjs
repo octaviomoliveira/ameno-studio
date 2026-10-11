@@ -82,31 +82,31 @@ test('verify validates inputs before database access and preserves denial reason
   assert.equal((await unavailable.json()).reason, 'service_unavailable')
 })
 
-test('checkout remains public and only attaches server-verified identity', async () => {
+test('checkout is paused on the server and creates no Stripe session', async () => {
   const created = []
   const createCheckout = async (options) => {
     created.push(options)
     return { url: 'https://checkout.stripe.test/session' }
   }
-  const request = () => new Request('http://localhost/api/checkout', {
+  const request = (body) => new Request('http://localhost/api/checkout', {
     method: 'POST',
-    body: JSON.stringify({ amount: 2900, user_id: 'untrusted-client-value' }),
+    body,
   })
 
   const guest = loadCheckoutRoute(null, createCheckout)
-  assert.equal((await guest.POST(request())).status, 200)
-  assert.equal(created[0].client_reference_id, undefined)
-  assert.equal(created[0].metadata.user_id, undefined)
+  const guestResult = await guest.POST(request(JSON.stringify({ amount: 3000 })))
+  assert.equal(guestResult.status, 503)
+  assert.equal(guestResult.headers.get('Cache-Control'), 'no-store')
+  assert.match((await guestResult.json()).error, /temporariamente indisponíveis/)
 
   const claims = {
     sub: '2d57a8ba-d6e9-42ee-9d16-1f2dfaf9d57f',
     email: 'BUYER@EXAMPLE.INVALID',
   }
   const authenticated = loadCheckoutRoute(claims, createCheckout)
-  assert.equal((await authenticated.POST(request())).status, 200)
-  assert.equal(created[1].client_reference_id, claims.sub)
-  assert.equal(created[1].metadata.user_id, claims.sub)
-  assert.equal(created[1].customer_email, 'buyer@example.invalid')
+  assert.equal((await authenticated.POST(request(JSON.stringify({ amount: 1000 })))).status, 503)
+  assert.equal((await authenticated.POST(request('invalid json'))).status, 503)
+  assert.equal(created.length, 0)
 })
 
 test('webhook verifies real signatures, requires paid status and uses atomic fulfillment', async () => {

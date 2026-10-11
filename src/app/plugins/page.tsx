@@ -1,4 +1,3 @@
-import PurchaseForm from './purchase-form'
 import { STRIPE_MIN_AMOUNT, STRIPE_SUGGESTED_AMOUNT } from '@/lib/stripe'
 import PluginDiagram from '@/components/plugins/PluginDiagram'
 import styles from './page.module.css'
@@ -74,8 +73,7 @@ export default function PluginsPage() {
                 Gera cotas automaticamente por layer com render integrado.
               </p>
               <div className={styles.heroActions}>
-                <a href="#comprar" className="ameno-button ameno-button--primary">Obter o plugin <span aria-hidden="true">↗</span></a>
-                <span>A partir de {minLabel}<br />Pagamento único</span>
+                <span>Em preparação<br />Compra temporariamente indisponível</span>
               </div>
             </div>
             <div className={styles.heroVisual}><PluginDiagram /></div>
@@ -193,15 +191,14 @@ export default function PluginsPage() {
           <div id="comprar" className="plugin-purchase-box" tabIndex={-1}>
             <div className="plugin-purchase-header">
               <p className="plugin-purchase-product">Ameno Cotas</p>
-              <p className="plugin-purchase-version">Versão atual · Pagamento único</p>
+              <p className="plugin-purchase-version">Lançamento em preparação</p>
             </div>
             <div className="plugin-purchase-price-hint">
-              <p>Escolha o quanto quer pagar</p>
+              <p>Quando lançado: valor sugerido de R$ {(STRIPE_SUGGESTED_AMOUNT / 100).toFixed(2).replace('.', ',')}</p>
               <p className="plugin-purchase-min">mínimo {minLabel}</p>
             </div>
-            <PurchaseForm minimum={STRIPE_MIN_AMOUNT} suggested={STRIPE_SUGGESTED_AMOUNT} />
-            <p className="plugin-purchase-security">
-              Pagamento seguro via Stripe · SSL · sem armazenar dados do cartão
+            <p role="status" className="plugin-purchase-security">
+              As compras estão temporariamente indisponíveis enquanto finalizamos o pacote e a entrega. Nenhum pagamento está sendo recebido nesta página.
             </p>
           </div>
         </div>
