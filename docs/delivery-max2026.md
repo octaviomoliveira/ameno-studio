@@ -79,6 +79,11 @@ O webhook L4-d ainda precisa preencher os campos a partir do evento assinado.
 
 Contrato incremental detalhado em `docs/l4-d1-payment-event-guards.md`.
 Integração do webhook e do escopo comercial: `docs/l4-d1b-webhook-entitlement.md`.
+A parte SQL d1a está isolada em `feature/l4-payment-event-guards` (`70f9ec3`)
+após revisão estática, sem merge/migration/deploy. Ela registra bloqueios e
+recibos por PaymentIntent, preserva status terminal e recusa e-mail de
+pagamento inutilizável; precisa de teste SQL e concorrência em PostgreSQL
+isolado antes de aplicar. O webhook atual ainda ignora estornos/disputas.
 
 1. Registrar IDs de eventos Stripe de modo idempotente. Não presumir ordem
    entre confirmação, reembolso e disputa; manter bloqueio por PaymentIntent.

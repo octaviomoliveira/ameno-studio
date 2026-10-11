@@ -51,6 +51,15 @@
 > handler novo ou migração aplicada. O antigo `/api/verify` ainda não filtra
 > escopo live, portanto nenhum token legado deve ser considerado licença
 > comercial pronta.
+> O banco L4-d1a está na branch WIP isolada
+> `feature/l4-payment-event-guards` (`70f9ec3`, enviada ao GitHub, sem merge,
+> migração ou deploy). A revisão estática não encontrou P0/P1: qualquer
+> reembolso parcial suspende, o integral marca estorno, uma disputa suspende e
+> replays pagos não reativam; e-mail inválido não finaliza compra. `npm test`
+> (3/3), lint e análise sintática SQL/PLpgSQL passaram. **Ainda faltam**
+> executar os testes SQL/transacionais e de concorrência em PostgreSQL
+> isolado, conferir papéis/RLS, integrar o webhook assinado d1b e verificar
+> o banco real antes de qualquer implantação.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
