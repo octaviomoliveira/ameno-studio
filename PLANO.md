@@ -20,6 +20,10 @@
 > O proprietário escolheu compra sem cadastro, seguida de acesso por e-mail
 > confirmado à área da conta para baixar o arquivo; não será enviado link
 > direto ao ZIP no e-mail.
+> `CONFIGURACAO_PRODUCAO.md` já prevê
+> `Ameno Studio <octavio.oliveira@ameno.studio>` como remetente do login;
+> `contato@ameno.studio` é o endereço público de contato. O provedor SMTP
+> e o teste real de recebimento permanecem pendentes nos próprios docs.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 

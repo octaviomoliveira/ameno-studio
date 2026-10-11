@@ -55,8 +55,12 @@ Nenhum ZIP foi publicado nem pagamento realizado nesta etapa.
 2. Criar outbox transacional e retentativas para mensagem idempotente; não
    enviar token de licença nem URL assinada por e-mail. Falha de envio não
    revoga acesso pela conta.
-3. Definir provedor/remetente e verificar SPF/DKIM/DMARC e entrega real antes
-   de ativar a venda. Gate: evento duplicado não duplica compra, licença ou
+3. `CONFIGURACAO_PRODUCAO.md` prevê o remetente
+   `Ameno Studio <octavio.oliveira@ameno.studio>` para Auth, enquanto
+   `contato@ameno.studio` é contato público. O provedor/host SMTP continua
+   sem registro de configuração concluída. Confirmar sua configuração,
+   SPF/DKIM/DMARC e entrega real antes de ativar a venda. Gate: evento
+   duplicado não duplica compra, licença ou
    comunicação; endereço diferente não toma posse da compra.
 
 ### L4-d — estorno, disputa, replay e ordem dos eventos
@@ -79,7 +83,8 @@ instalação no Max; o checkout continua 503 até esse gate e o pacote protegido
 
 ## Decisões ainda necessárias
 
-- Provedor/remetente de e-mail transacional e texto final da mensagem.
+- Provedor SMTP transacional, validação do remetente previsto e texto final
+  da mensagem.
 - Política de reembolso parcial e disputa, suporte para troca de computador,
   textos de licença, privacidade e reembolso.
 - Aceite comercial de que uma máquina já offline pode operar até o fim de sua
