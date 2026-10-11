@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getSupabaseAdmin } from '@/lib/supabase-admin'
+import { FIRST_PAID_SCOPE, isFirstPaidPurchaseEligible } from '@/lib/purchase-entitlement'
 import CopyLicenseButton from './copy-license-button'
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export const dynamic = 'force-dynamic'
 
 type License = {
   token: string
+  product: string
   machine_id: string | null
   machine_bound_at: string | null
   last_verified_at: string | null
@@ -22,12 +24,25 @@ type License = {
 
 type Purchase = {
   id: string
+  user_id: string | null
   amount: number | null
   currency: string | null
+  customer_email: string | null
   product: string | null
   status: string | null
+  entitlement_scope: string | null
+  stripe_livemode: boolean | null
+  stripe_payment_intent: string | null
   created_at: string
   licenses: License[] | License | null
+}
+
+type ReleaseArtifact = {
+  id: string
+  release_version: string
+  max_year: number
+  sha256: string
+  size_bytes: number
 }
 
 function getLicense(purchase: Purchase) {
@@ -96,12 +111,26 @@ export default async function ContaPage({
 
   const { data, error: purchasesError } = await admin
     .from('purchases')
-    .select('id, amount, currency, product, status, created_at, licenses(token, machine_id, machine_bound_at, last_verified_at, active)')
+    .select('id, user_id, amount, currency, customer_email, product, status, entitlement_scope, stripe_livemode, stripe_payment_intent, created_at, licenses(token, product, machine_id, machine_bound_at, last_verified_at, active)')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
+  const { data: artifactData, error: artifactError } = await admin
+    .from('release_artifacts')
+    .select('id, release_version, max_year, sha256, size_bytes')
+    .eq('product', 'ameno-cotas')
+    .eq('entitlement_scope', FIRST_PAID_SCOPE)
+    .eq('max_year', 2026)
+    .eq('status', 'published')
+    .order('published_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
   const accountError = claimError || purchasesError
   const purchases = (data ?? []) as Purchase[]
+  // A missing/unapplied release migration keeps the account useful but never
+  // exposes a stale download link. The server route rechecks every condition.
+  const artifact = artifactError ? null : artifactData as ReleaseArtifact | null
 
   return (
     <section className="account-page relative overflow-hidden px-6 pb-28 pt-36 sm:pb-40 sm:pt-48">
@@ -145,6 +174,21 @@ export default async function ContaPage({
           <div className="account-purchases" aria-label="Suas compras">
             {purchases.map((purchase, index) => {
               const license = getLicense(purchase)
+              const sameEmail = purchase.customer_email?.trim().toLowerCase() === user.email!.trim().toLowerCase()
+              const licenseUsable = isFirstPaidPurchaseEligible(purchase, user.id, user.email!)
+              const canDownload = licenseUsable && artifact !== null
+              const licenseMessage = purchase.status === 'suspended'
+                ? 'Licença suspensa para revisão'
+                : purchase.status === 'refunded' ? 'Compra estornada'
+                : !sameEmail ? 'E-mail da compra não corresponde a esta conta'
+                : license?.active === false ? 'Licença indisponível'
+                : purchase.status === 'pending' ? 'Aguardando confirmação do pagamento'
+                  : 'Licença indisponível para esta compra'
+              const statusLabel = licenseUsable ? 'ATIVA'
+                : purchase.status === 'suspended' ? 'SUSPENSA'
+                : purchase.status === 'refunded' ? 'ESTORNADA'
+                : purchase.status === 'disputed' ? 'EM DISPUTA'
+                : purchase.status === 'pending' ? 'PROCESSANDO' : 'INDISPONÍVEL'
               return (
                 <article className="account-purchase-card" key={purchase.id}>
                   <div className="account-purchase-topline">
@@ -156,18 +200,33 @@ export default async function ContaPage({
                       <p>{purchase.product === 'ameno-cotas' ? 'Ameno Cotas' : purchase.product}</p>
                       <small>{formatAmount(purchase.amount, purchase.currency)} / pagamento único</small>
                     </div>
-                    <span className={license?.active ? 'is-active' : ''}>{license?.active ? 'ATIVA' : 'PROCESSANDO'}</span>
+                    <span className={licenseUsable ? 'is-active' : ''}>
+                      {statusLabel}
+                    </span>
                   </div>
                   <dl className="account-license-data">
                     <div>
                       <dt>Licença</dt>
                       <dd className="account-license-token">
-                        <span>{license?.token ?? 'Aguardando confirmação do pagamento'}</span>
-                        {license?.token ? <CopyLicenseButton token={license.token} /> : null}
+                        <span>{licenseUsable && license ? license.token : licenseMessage}</span>
+                        {licenseUsable && license ? <CopyLicenseButton token={license.token} /> : null}
                       </dd>
                     </div>
                     <div><dt>Computador</dt><dd>{maskMachineId(license?.machine_id ?? null)}</dd></div>
-                    <div><dt>Download</dt><dd>Será liberado quando o arquivo final estiver disponível</dd></div>
+                    <div>
+                      <dt>Download</dt>
+                      <dd>
+                        {canDownload && artifact ? (
+                          <div className="account-download">
+                            <a href={`/api/download/${artifact.id}`} className="ameno-button ameno-button--secondary" rel="noreferrer">
+                              Baixar para 3ds Max {artifact.max_year} <span aria-hidden="true">↓</span>
+                            </a>
+                            <small>Versão {artifact.release_version} · {(artifact.size_bytes / 1048576).toFixed(1)} MB</small>
+                            <small>SHA-256: <code>{artifact.sha256}</code></small>
+                          </div>
+                        ) : 'Será liberado quando o arquivo final estiver disponível'}
+                      </dd>
+                    </div>
                   </dl>
                 </article>
               )

@@ -20,6 +20,53 @@ Nenhum ZIP foi publicado nem pagamento realizado nesta etapa.
 
 ## Incrementos com gates
 
+### Implementação isolada L4-a/L4-b (2026-10-11)
+
+Na branch `feature/l4-account-download`, sem deploy/merge/publicação:
+
+- Migration Supabase gerada via CLI em
+  `supabase/migrations/20261011161301_release_artifacts_private_download.sql`:
+  adiciona `purchases.entitlement_scope` e `purchases.stripe_livemode` nulos,
+  **sem default nem backfill**, além da tabela `release_artifacts` com RLS,
+  concessão exclusiva ao `service_role`, metadados de ZIP/commit/SHA-256 e
+  bucket privado. Não insere release nem
+  arquivo. Ela pressupõe o bootstrap existente (`schema.sql`, `licenses.sql`,
+  `auth.sql`) e **não foi aplicada nem validada em um banco real**.
+- O escopo interno `ameno-cotas-first-paid` limita a entrega à primeira versão
+  comercial. A compra também precisa ter esse escopo, `stripe_livemode=true`,
+  valor ≥ R$ 10, moeda BRL, PaymentIntent não vazio e licença ativa. Registros
+  antigos e de teste não recebem acesso automaticamente. O webhook L4-d1
+  deverá preencher escopo e livemode somente a partir de evento Stripe
+  autenticado e pago. Recuperação de compra antiga exige auditoria individual
+  antes de um backfill manual; não há backfill automático. Uma futura versão
+  paga exige novo escopo e regra de autorização. O ano Max 2026 não é a
+  versão comercial da licença.
+- Rota `GET /api/download/[releaseId]` consulta Auth via `getUser()`, e-mail
+  confirmado, compra pertencente ao usuário com mesmo e-mail e status
+  `completed`, licença ativa e release `published` do produto/Max 2026. Só
+  então emite redirect `no-store` para URL assinada por 60 segundos. O
+  caminho do objeto vem exclusivamente do banco; o cliente envia apenas o ID
+  UUID do release. Um URL já assinado pode continuar funcionando até expirar.
+- `/conta` mostra versão, tamanho e SHA-256 e um link para essa rota somente
+  se a compra e a licença estiverem elegíveis pelos mesmos gates. A URL
+  assinada não entra no HTML; é criada no clique. Compras `suspended` exibem
+  “SUSPENSA”, e `refunded` exibem “ESTORNADA”, sem token nem download. O
+  checksum é informativo; o instalador ainda não o
+  verifica automaticamente.
+- Testes locais de rota negam outro usuário, e-mail divergente, convidado não
+  reivindicado, compra pendente/estornada/suspensa, compra legada sem escopo,
+  modo teste, valor/PaymentIntent inválidos, licença inativa, release
+  `staged`/`withdrawn`/outro ano, ID malformado e falhas de Storage. Build
+  passou com variáveis fictícias; nenhum teste atingiu Supabase ou Stripe reais.
+
+Ainda são gates obrigatórios: aplicar e testar SQL em ambiente de teste;
+verificar políticas globais de `storage.objects` e que acesso anônimo ao ZIP
+é negado; gerar e auditar o ZIP protegido, subir ao bucket privado, comparar
+hash/tamanho/commit com os metadados e só então marcar `published`; exercitar
+login/compra/revogação em ambiente controlado. A branch L4-d0 para
+estorno/replay e correção de vínculo de compra também deve ser integrada e
+testada antes de usar este caminho em produção. Checkout permanece 503.
+
 ### L4-a — artefato e armazenamento, sem liberação pública
 
 1. Aceitar somente ZIP Max 2026 gerado do build protegido aprovado: nome
@@ -65,11 +112,14 @@ Nenhum ZIP foi publicado nem pagamento realizado nesta etapa.
 
 ### L4-d — estorno, disputa, replay e ordem dos eventos
 
+Contrato incremental detalhado em `docs/l4-d1-payment-event-guards.md`.
+
 1. Registrar IDs de eventos Stripe de modo idempotente. Não presumir ordem
    entre confirmação, reembolso e disputa; manter bloqueio por PaymentIntent.
 2. Tornar `fulfill_plugin_purchase` monotônico: replay nunca reativa uma compra
    já suspensa/estornada. Reembolso integral e disputa suspendem download e
-   `licenses.active`; reembolso parcial requer regra comercial explícita.
+   `licenses.active`; qualquer reembolso parcial suspende para revisão manual
+   (decisão do proprietário em 2026-10-11).
 3. E-mail é assíncrono, fora do sucesso do webhook. Uma falha no envio não
    força nova compra. Gate: eventos duplicados/invertidos e reembolso antes
    do `checkout.session.completed` não reativam acesso.
@@ -85,8 +135,8 @@ instalação no Max; o checkout continua 503 até esse gate e o pacote protegido
 
 - Provedor SMTP transacional, validação do remetente previsto e texto final
   da mensagem.
-- Política de reembolso parcial e disputa, suporte para troca de computador,
-  textos de licença, privacidade e reembolso.
+- Procedimento de revisão manual após reembolso parcial/disputa, suporte para
+  troca de computador, textos de licença, privacidade e reembolso.
 - Aceite comercial de que uma máquina já offline pode operar até o fim de sua
   janela de sete dias após revogação no servidor.
 

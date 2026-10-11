@@ -24,6 +24,18 @@
 > `Ameno Studio <octavio.oliveira@ameno.studio>` como remetente do login;
 > `contato@ameno.studio` é o endereço público de contato. O provedor SMTP
 > e o teste real de recebimento permanecem pendentes nos próprios docs.
+> O bloqueio inicial de replay/reembolso e de titularidade em uma compra
+> `pending` está implementado somente na branch
+> `feature/l4-refund-replay-guard` (`62014dc`). A revisão independente não
+> encontrou bloqueador estático; testes Node (3/3) e lint passaram. O SQL
+> transacional e as permissões `service_role` ainda precisam ser executados
+> em PostgreSQL local antes de uma migration de produção. A branch não foi
+> mesclada nem implantada; o POST público de checkout segue 503.
+> O próximo bloco de estorno/disputa/duplicatas está planejado por gates em
+> `docs/l4-d1-payment-event-guards.md`. O proprietário decidiu que qualquer
+> reembolso parcial suspende o acesso para revisão manual, mesmo com saldo
+> restante de R$ 10 ou mais; o procedimento de reativação auditável segue
+> pendente antes da abertura da loja.
 
 > A direção de arte e a sequência narrativa atualizadas estão em `PLANO_VISUAL.md`. Esse documento passa a reger toda nova implementação visual da home.
 
