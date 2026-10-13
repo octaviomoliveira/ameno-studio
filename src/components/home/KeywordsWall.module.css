@@ -9,11 +9,11 @@
 .mobile { display: none; }
 .preview { position: fixed; top: 0; left: 0; width: min(440px, calc(100vw - 32px), calc((100svh - 110px) * 1.6)); pointer-events: none; z-index: 80; opacity: 0; visibility: hidden; transition: opacity .16s, visibility .16s; }
 .preview[data-visible='true'] { opacity: 1; visibility: visible; }
-.previewCard { border: 1px solid var(--gray); overflow: hidden; background: var(--black); box-shadow: 0 1.5rem 4rem rgb(10 10 10 / .5); }
+.previewCard { border: 1px solid var(--border); overflow: hidden; background: var(--black); box-shadow: 0 1.5rem 4rem rgb(10 10 10 / .75); }
 .previewMedia { position: relative; aspect-ratio: 16 / 10; }
-.previewCaption { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem; border-top: 1px solid var(--border); font-family: var(--font-ibm-plex-mono), monospace; font-size: .6rem; }
+.previewCaption { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .85rem 1rem; border-top: 1px solid var(--border); font-family: var(--font-ibm-plex-mono), monospace; font-size: .6rem; letter-spacing: .08em; text-transform: uppercase; }
 .previewCaption strong { color: var(--white); font-weight: 500; }
-.previewCaption span { color: var(--off-white); text-align: right; }
+.previewCaption span { color: var(--red); text-align: right; }
 @media (max-width: 767px), (hover: none) and (pointer: coarse) {
   .wall { padding: 3rem 0 1rem; }
   .desktop { display: none; }

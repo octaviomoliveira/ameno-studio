@@ -89,9 +89,13 @@ export default function ProjectScrollSection() {
                 className="object-cover" preload={index === 0} />
               <div className="project-scroll-wash" aria-hidden="true" />
               <div className="project-scroll-meta">
-                <span className="project-scroll-num">{String(index + 1).padStart(2, '0')} / {String(PROJECTS.length).padStart(2, '0')}</span>
+                <span className="project-scroll-num">
+                  <strong>{String(index + 1).padStart(2, '0')}</strong> <em>/</em> {String(PROJECTS.length).padStart(2, '0')}
+                </span>
                 <h2 className="project-scroll-title">{project.title}</h2>
-                <p className="project-scroll-info">{project.category} · {project.location} · {project.year}</p>
+                <p className="project-scroll-info">
+                  {project.category} · {project.location} · <span className="project-scroll-year">{project.year}</span>
+                </p>
               </div>
             </article>
           ))}

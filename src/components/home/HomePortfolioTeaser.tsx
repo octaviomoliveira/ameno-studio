@@ -14,7 +14,7 @@ const FEATURED = {
   description: 'Do conceito à entrega — renders que comunicam espaço, atmosfera e intenção.',
   coverUrl: '/projects/interior-stair.webp',
   href: '/portfolio',
-  cta: 'Explorar portfólio →',
+  cta: 'Explorar portfólio',
 }
 
 export default function HomePortfolioTeaser() {
@@ -68,7 +68,7 @@ export default function HomePortfolioTeaser() {
           <p data-portfolio-teaser-text>{FEATURED.description}</p>
           <div data-portfolio-teaser-text>
             <Link href={FEATURED.href} className="ameno-button ameno-button--primary">
-              {FEATURED.cta}
+              {FEATURED.cta} <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>

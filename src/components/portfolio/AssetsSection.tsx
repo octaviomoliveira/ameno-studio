@@ -32,7 +32,7 @@ const ASSETS: Asset3D[] = [
     name: 'Cadeira Raia',
     description: 'Modelagem em 3ds Max com geometria precisa e leveza de arquivo. Pronta para renderização em SketchUp e Enscape — aparece bem até no primeiro plano.',
     glbSrc: '/assets/3d/cadeira-raia/cadeira-raia.glb',
-    fallbackImg: '/projects/interior-stair.webp',
+    fallbackImg: '/assets/3d/cadeira-raia/cadeira-raia-render-01.webp',
     renders: [
       { src: '/assets/3d/cadeira-raia/cadeira-raia-render-01.webp', alt: 'Cadeira Raia — vista frontal renderizada' },
       { src: '/assets/3d/cadeira-raia/cadeira-raia-render-02.webp', alt: 'Cadeira Raia — vista traseira renderizada' },
@@ -43,7 +43,7 @@ const ASSETS: Asset3D[] = [
     name: 'Cadeira Axis',
     description: 'Modelagem em 3ds Max com atenção aos detalhes estruturais. Disponível em versão alta e baixa, pronta para SketchUp e Enscape.',
     glbSrc: '/assets/3d/cadeira-axis/cadeira-axis.glb',
-    fallbackImg: '/projects/interior-stair.webp',
+    fallbackImg: '/assets/3d/cadeira-axis/cadeira-axis-render-01.webp',
     renders: [
       { src: '/assets/3d/cadeira-axis/cadeira-axis-render-01.webp', alt: 'Cadeira Axis — vista frontal renderizada' },
       { src: '/assets/3d/cadeira-axis/cadeira-axis-render-02.webp', alt: 'Cadeira Axis — vista traseira renderizada' },

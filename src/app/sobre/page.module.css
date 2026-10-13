@@ -57,6 +57,7 @@
   position: relative;
   aspect-ratio: 3 / 4;
   overflow: hidden;
+  border: 1px solid var(--border);
   background: var(--gray-dark);
 }
 .portraitImage { object-fit: cover; object-position: 50% 40%; }
@@ -99,6 +100,19 @@
   margin-top: 2rem;
   color: var(--off-white);
   font-size: 0.8rem;
+}
+.disciplines span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.disciplines span::before {
+  content: '';
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
 }
 .storyContent { min-width: 0; }
 .statement {
