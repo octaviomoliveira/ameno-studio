@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 add-asset.py — Adiciona novos modelos 3D ao ameno-studio automaticamente.
 
@@ -133,7 +133,7 @@ def process_folder(folder: Path):
     # 2. Meta
     meta_path = folder / "meta.json"
     if meta_path.exists():
-        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        meta = json.loads(meta_path.read_text(encoding="utf-8-sig"))
         name = meta.get("name", slug.replace("-", " ").title())
         desc = meta.get("description", "Modelagem 3D de alta fidelidade.")
     else:

@@ -73,6 +73,17 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-archi/cadeira-archi-render-02.webp', alt: 'Cadeira Archi — vista traseira' },
     ],
   },
+  {
+    slug: 'lg-zvnq48gm2aa',
+    name: 'Ar-Condicionado LG ZVNQ48GM2AA',
+    description: 'Unidade evaporadora piso-teto LG Inverter 48.000 BTUs. Modelagem em 3ds Max com aletas direcionais, grelhas inferiores e curvatura do gabinete fiéis às especificações técnicas para projetos comerciais e corporativos.',
+    glbSrc: '/assets/3d/lg-zvnq48gm2aa/lg-zvnq48gm2aa.glb',
+    fallbackImg: '/assets/3d/lg-zvnq48gm2aa/lg-zvnq48gm2aa-render-01.webp',
+    renders: [
+      { src: '/assets/3d/lg-zvnq48gm2aa/lg-zvnq48gm2aa-render-01.webp', alt: 'Ar-Condicionado LG ZVNQ48GM2AA — vista em perspectiva' },
+      { src: '/assets/3d/lg-zvnq48gm2aa/lg-zvnq48gm2aa-render-02.webp', alt: 'Ar-Condicionado LG ZVNQ48GM2AA — detalhe das aletas e gabinete' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

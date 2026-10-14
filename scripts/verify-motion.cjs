@@ -86,7 +86,7 @@ async function main() {
         assert.ok(Math.abs(sizes.clip - sizes.card) < 2, 'asset must fit its viewport')
         await page.getByRole('button', { name: 'Próximo modelo' }).click()
         await page.waitForTimeout(800)
-        assert.match(await page.locator('.assets-touch-controls').innerText(), /2 \/ 4/)
+        assert.match(await page.locator('.assets-touch-controls').innerText(), /2 \/ \d+/)
         await page.getByRole('button', { name: 'Modelo anterior', exact: true }).click()
         await page.waitForTimeout(800)
         const canvas = page.locator('.asset-slide').first().locator('canvas')
