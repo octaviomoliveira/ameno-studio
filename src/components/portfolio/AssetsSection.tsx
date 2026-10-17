@@ -321,6 +321,17 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-elevata/poltrona-elevata-render-01.webp', alt: 'Poltrona Elevata — conjunto com banqueta em estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-orbe-alta',
+    name: 'Poltrona Orbe Alta',
+    description: 'Poltrona de espaldar alto com encosto envolvente e apoio de cabeça estofado integrado, disponível nas versões com e sem braços laterais acolchoados e base tubular metálica.',
+    glbSrc: '/assets/3d/poltrona-orbe-alta/poltrona-orbe-alta.glb',
+    fallbackImg: '/assets/3d/poltrona-orbe-alta/poltrona-orbe-alta-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-orbe-alta/poltrona-orbe-alta-render-01.webp', alt: 'Poltrona Orbe Alta — versão com braços em estúdio' },
+      { src: '/assets/3d/poltrona-orbe-alta/poltrona-orbe-alta-render-02.webp', alt: 'Poltrona Orbe Alta — versão sem braços em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

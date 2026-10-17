@@ -1,0 +1,18 @@
+{
+  "id": "poltrona-orbe-alta",
+  "title": "Poltrona Orbe Alta",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/poltrona-orbe-alta/poltrona-orbe-alta.glb",
+  "renders": [
+    "/assets/3d/poltrona-orbe-alta/poltrona-orbe-alta-render-01.webp",
+    "/assets/3d/poltrona-orbe-alta/poltrona-orbe-alta-render-02.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}
