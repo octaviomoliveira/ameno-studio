@@ -106,6 +106,18 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/dlock-dlh-4800-pnb/dlock-dlh-4800-pnb-render-03.webp', alt: 'Fechadura Digital DLock DLH-4800-PNB — close-up da maçaneta biométrica' },
     ],
   },
+  {
+    slug: 'dlock-dl-4800-2022',
+    name: 'Fechadura Digital DLock DL-4800 (2022)',
+    description: 'Fechadura eletrônica biométrica versão 2022 com painel touch inteiriço em acrílico black piano, leitor de cartão RFID integrado e sensor biométrico côncavo na maçaneta.',
+    glbSrc: '/assets/3d/dlock-dl-4800-2022/dlock-dl-4800-2022.glb',
+    fallbackImg: '/assets/3d/dlock-dl-4800-2022/dlock-dl-4800-2022-render-01.webp',
+    renders: [
+      { src: '/assets/3d/dlock-dl-4800-2022/dlock-dl-4800-2022-render-01.webp', alt: 'Fechadura Digital DLock DL-4800 (2022) — vista frontal estúdio 4K' },
+      { src: '/assets/3d/dlock-dl-4800-2022/dlock-dl-4800-2022-render-02.webp', alt: 'Fechadura Digital DLock DL-4800 (2022) — detalhe painel touch, cartão RFID e maçaneta' },
+      { src: '/assets/3d/dlock-dl-4800-2022/dlock-dl-4800-2022-render-03.webp', alt: 'Fechadura Digital DLock DL-4800 (2022) — close-up da maçaneta e leitor biométrico côncavo' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
