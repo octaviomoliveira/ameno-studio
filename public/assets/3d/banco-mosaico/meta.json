@@ -1,0 +1,18 @@
+{
+  "id": "banco-mosaico",
+  "title": "Banco Mosaico",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/banco-mosaico/banco-mosaico.glb",
+  "renders": [
+    "/assets/3d/banco-mosaico/banco-mosaico-render-01.webp",
+    "/assets/3d/banco-mosaico/banco-mosaico-render-02.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}

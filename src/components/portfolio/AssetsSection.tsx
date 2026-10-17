@@ -332,6 +332,17 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-orbe-alta/poltrona-orbe-alta-render-02.webp', alt: 'Poltrona Orbe Alta — versão sem braços em estúdio' },
     ],
   },
+  {
+    slug: 'banco-mosaico',
+    name: 'Banco Mosaico',
+    description: 'Banco modular com estrutura tubular metálica contínua e cinco assentos geométricos trapezoidais alternados, estofados em couro natural com costura central pespontada.',
+    glbSrc: '/assets/3d/banco-mosaico/banco-mosaico.glb',
+    fallbackImg: '/assets/3d/banco-mosaico/banco-mosaico-render-01.webp',
+    renders: [
+      { src: '/assets/3d/banco-mosaico/banco-mosaico-render-01.webp', alt: 'Banco Mosaico — vista em perspectiva em estúdio' },
+      { src: '/assets/3d/banco-mosaico/banco-mosaico-render-02.webp', alt: 'Banco Mosaico — composição modular em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
