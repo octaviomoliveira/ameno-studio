@@ -118,6 +118,17 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/dlock-dl-4800-2022/dlock-dl-4800-2022-render-03.webp', alt: 'Fechadura Digital DLock DL-4800 (2022) — close-up da maçaneta e leitor biométrico côncavo' },
     ],
   },
+  {
+    slug: 'cadeira-office-volo',
+    name: 'Cadeira Office Volo',
+    description: 'Cadeira giratória executiva com assento e encosto estofados em couro cinza, estrutura tubular metálica com apoios de braço em madeira natural, suporte dorsal escultural e base piramidal de cinco pontas com rodízios.',
+    glbSrc: '/assets/3d/cadeira-office-volo/cadeira-office-volo.glb',
+    fallbackImg: '/assets/3d/cadeira-office-volo/cadeira-office-volo-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-office-volo/cadeira-office-volo-render-01.webp', alt: 'Cadeira Office Volo — vista frontal em estúdio' },
+      { src: '/assets/3d/cadeira-office-volo/cadeira-office-volo-render-02.webp', alt: 'Cadeira Office Volo — vista traseira e detalhe do suporte dorsal' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
