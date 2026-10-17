@@ -149,6 +149,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-gralha/cadeira-gralha-render-01.webp', alt: 'Cadeira Gralha — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'banqueta-soa',
+    name: 'Banqueta Soa',
+    description: 'Banqueta alta com estrutura tubular metálica contínua, apoio para os pés integrado em H, encosto suspenso revestido em couro pespontado e assento estofado anatômico.',
+    glbSrc: '/assets/3d/banqueta-soa/banqueta-soa.glb',
+    fallbackImg: '/assets/3d/banqueta-soa/banqueta-soa-render-01.webp',
+    renders: [
+      { src: '/assets/3d/banqueta-soa/banqueta-soa-render-01.webp', alt: 'Banqueta Soa — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
