@@ -129,6 +129,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-office-volo/cadeira-office-volo-render-02.webp', alt: 'Cadeira Office Volo — vista traseira e detalhe do suporte dorsal' },
     ],
   },
+  {
+    slug: 'cadeira-lirio',
+    name: 'Cadeira Lírio',
+    description: 'Cadeira de jantar com encosto envolvente em tela de palhinha sextavada e moldura curvada em madeira maciça, assento estofado em linho claro e pernas torneadas com sapatas metálicas.',
+    glbSrc: '/assets/3d/cadeira-lirio/cadeira-lirio.glb',
+    fallbackImg: '/assets/3d/cadeira-lirio/cadeira-lirio-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-lirio/cadeira-lirio-render-01.webp', alt: 'Cadeira Lírio — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
