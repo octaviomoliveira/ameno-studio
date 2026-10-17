@@ -201,6 +201,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/puff-bonni/puff-bonni-render-01.webp', alt: 'Puff Bonni — versões em bouclé com madeira e couro em estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-agatha',
+    name: 'Poltrona Agatha',
+    description: 'Poltrona giratória lounge com concha curva envolvente de abas pronunciadas, apoio de cabeça suspenso, assento cilíndrico generoso em tecido bouclé estruturado e base em disco metálico preto fosco.',
+    glbSrc: '/assets/3d/poltrona-agatha/poltrona-agatha.glb',
+    fallbackImg: '/assets/3d/poltrona-agatha/poltrona-agatha-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-agatha/poltrona-agatha-render-01.webp', alt: 'Poltrona Agatha — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
