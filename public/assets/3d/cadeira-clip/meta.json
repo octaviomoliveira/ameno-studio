@@ -1,0 +1,17 @@
+{
+  "id": "cadeira-clip",
+  "title": "Cadeira Clip",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/cadeira-clip/cadeira-clip.glb",
+  "renders": [
+    "/assets/3d/cadeira-clip/cadeira-clip-render-01.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}

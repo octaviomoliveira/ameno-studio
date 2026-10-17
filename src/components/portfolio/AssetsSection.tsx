@@ -353,6 +353,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-pinhao/poltrona-pinhao-render-01.webp', alt: 'Poltrona Pinhão — render de estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-clip',
+    name: 'Cadeira Clip',
+    description: 'Cadeira de jantar com estrutura em madeira maciça torneada, assento estofado e encosto curvo com detalhe traseiro em presilha metálica que abraça a travessa superior.',
+    glbSrc: '/assets/3d/cadeira-clip/cadeira-clip.glb',
+    fallbackImg: '/assets/3d/cadeira-clip/cadeira-clip-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-clip/cadeira-clip-render-01.webp', alt: 'Cadeira Clip — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
