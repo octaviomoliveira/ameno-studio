@@ -311,6 +311,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-bold/poltrona-bold-render-01.webp', alt: 'Poltrona Bold — vista frontal e posterior em estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-elevata',
+    name: 'Poltrona Elevata',
+    description: 'Poltrona de leitura com banqueta apoia-pés coordenada, estrutura tubular metálica com tirantes traseiros em couro e fivelas, braços estofados chanfrados e apoio de cabeça envolvente.',
+    glbSrc: '/assets/3d/poltrona-elevata/poltrona-elevata.glb',
+    fallbackImg: '/assets/3d/poltrona-elevata/poltrona-elevata-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-elevata/poltrona-elevata-render-01.webp', alt: 'Poltrona Elevata — conjunto com banqueta em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

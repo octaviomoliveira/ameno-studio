@@ -1,0 +1,17 @@
+{
+  "id": "poltrona-elevata",
+  "title": "Poltrona Elevata",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/poltrona-elevata/poltrona-elevata.glb",
+  "renders": [
+    "/assets/3d/poltrona-elevata/poltrona-elevata-render-01.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}
