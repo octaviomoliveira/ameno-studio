@@ -343,6 +343,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/banco-mosaico/banco-mosaico-render-02.webp', alt: 'Banco Mosaico — composição modular em estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-pinhao',
+    name: 'Poltrona Pinhão',
+    description: 'Poltrona giratória de desenho orgânico inspirado nas escamas do pinhão, com assento envolvente e encosto segmentado em três gomos estofados em tecido bouclé sobre base cônica.',
+    glbSrc: '/assets/3d/poltrona-pinhao/poltrona-pinhao.glb',
+    fallbackImg: '/assets/3d/poltrona-pinhao/poltrona-pinhao-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-pinhao/poltrona-pinhao-render-01.webp', alt: 'Poltrona Pinhão — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

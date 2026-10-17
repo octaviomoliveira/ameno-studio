@@ -1,0 +1,17 @@
+{
+  "id": "poltrona-pinhao",
+  "title": "Poltrona Pinhão",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/poltrona-pinhao/poltrona-pinhao.glb",
+  "renders": [
+    "/assets/3d/poltrona-pinhao/poltrona-pinhao-render-01.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}
