@@ -139,6 +139,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-lirio/cadeira-lirio-render-01.webp', alt: 'Cadeira Lírio — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-gralha',
+    name: 'Cadeira Gralha',
+    description: 'Cadeira contemporânea com estrutura metálica esguia em A, articulação aparente nas laterais do encosto curvo anatômico e assento estofado suspenso.',
+    glbSrc: '/assets/3d/cadeira-gralha/cadeira-gralha.glb',
+    fallbackImg: '/assets/3d/cadeira-gralha/cadeira-gralha-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-gralha/cadeira-gralha-render-01.webp', alt: 'Cadeira Gralha — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
