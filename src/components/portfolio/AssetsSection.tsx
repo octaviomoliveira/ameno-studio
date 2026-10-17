@@ -221,6 +221,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-abassata/poltrona-abassata-render-01.webp', alt: 'Poltrona Abassata — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'vidro-martelado',
+    name: 'Vidro Martelado',
+    description: 'Tampos circulares em vidro martelado de espessura maciça com bordas polidas e relevo orgânico sutil, desenvolvidos para composições de mesas laterais e de centro.',
+    glbSrc: '/assets/3d/vidro-martelado/vidro-martelado.glb',
+    fallbackImg: '/assets/3d/vidro-martelado/vidro-martelado-render-01.webp',
+    renders: [
+      { src: '/assets/3d/vidro-martelado/vidro-martelado-render-01.webp', alt: 'Vidro Martelado — tampos circulares em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
