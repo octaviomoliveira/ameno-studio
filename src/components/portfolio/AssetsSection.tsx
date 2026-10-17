@@ -231,6 +231,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/vidro-martelado/vidro-martelado-render-01.webp', alt: 'Vidro Martelado — tampos circulares em estúdio' },
     ],
   },
+  {
+    slug: 'banqueta-bold',
+    name: 'Banqueta Bold',
+    description: 'Banqueta alta com estrutura tubular metálica contínua e pintura eletrostática, apoio de pés perimetral integrado, assento estofado com sobreposição frontal e encosto curvo acolchoado com botões posteriores.',
+    glbSrc: '/assets/3d/banqueta-bold/banqueta-bold.glb',
+    fallbackImg: '/assets/3d/banqueta-bold/banqueta-bold-render-01.webp',
+    renders: [
+      { src: '/assets/3d/banqueta-bold/banqueta-bold-render-01.webp', alt: 'Banqueta Bold — vista frontal e posterior em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
