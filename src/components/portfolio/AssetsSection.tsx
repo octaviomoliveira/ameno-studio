@@ -383,6 +383,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-ramo/cadeira-ramo-render-01.webp', alt: 'Cadeira Ramo — render de estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-ramo',
+    name: 'Poltrona Ramo',
+    description: 'Poltrona lounge com estrutura de pernas cilíndricas inclinadas que abraçam a concha estofada vazada, assento generoso e acabamento em vivo pespontado.',
+    glbSrc: '/assets/3d/poltrona-ramo/poltrona-ramo.glb',
+    fallbackImg: '/assets/3d/poltrona-ramo/poltrona-ramo-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-ramo/poltrona-ramo-render-01.webp', alt: 'Poltrona Ramo — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
