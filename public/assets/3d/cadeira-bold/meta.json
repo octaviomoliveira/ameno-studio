@@ -1,0 +1,17 @@
+{
+  "id": "cadeira-bold",
+  "title": "Cadeira Bold",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/cadeira-bold/cadeira-bold.glb",
+  "renders": [
+    "/assets/3d/cadeira-bold/cadeira-bold-render-01.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}

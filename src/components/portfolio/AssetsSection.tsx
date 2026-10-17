@@ -261,6 +261,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-soa/cadeira-soa-render-01.webp', alt: 'Cadeira Soa — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-bold',
+    name: 'Cadeira Bold',
+    description: 'Cadeira contemporânea nas versões com e sem braços, com estrutura tubular metálica contínua, assento estofado com sobreposição frontal e encosto curvo acolchoado com botões posteriores.',
+    glbSrc: '/assets/3d/cadeira-bold/cadeira-bold.glb',
+    fallbackImg: '/assets/3d/cadeira-bold/cadeira-bold-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-bold/cadeira-bold-render-01.webp', alt: 'Cadeira Bold — versões com e sem braços em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
