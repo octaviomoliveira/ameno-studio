@@ -251,6 +251,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-alva/cadeira-alva-render-01.webp', alt: 'Cadeira Alva — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-soa',
+    name: 'Cadeira Soa',
+    description: 'Cadeira de jantar com estrutura tubular metálica esguia, encosto suspenso revestido em couro com costura pespontada no topo e assento estofado anatômico em tecido bouclé.',
+    glbSrc: '/assets/3d/cadeira-soa/cadeira-soa.glb',
+    fallbackImg: '/assets/3d/cadeira-soa/cadeira-soa-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-soa/cadeira-soa-render-01.webp', alt: 'Cadeira Soa — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
