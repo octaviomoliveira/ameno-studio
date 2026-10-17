@@ -271,6 +271,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-bold/cadeira-bold-render-01.webp', alt: 'Cadeira Bold — versões com e sem braços em estúdio' },
     ],
   },
+  {
+    slug: 'carrinho-bacuri',
+    name: 'Carrinho Bacuri',
+    description: 'Carrinho bar e aparador com estrutura tubular metálica com alças integradas, duas bandejas ripadas em madeira natural, rodas frontais torneadas com banda emborrachada e organizador lateral suspenso em couro camurça com bolsos.',
+    glbSrc: '/assets/3d/carrinho-bacuri/carrinho-bacuri.glb',
+    fallbackImg: '/assets/3d/carrinho-bacuri/carrinho-bacuri-render-01.webp',
+    renders: [
+      { src: '/assets/3d/carrinho-bacuri/carrinho-bacuri-render-01.webp', alt: 'Carrinho Bacuri — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

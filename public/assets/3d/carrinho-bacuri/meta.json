@@ -1,0 +1,17 @@
+{
+  "id": "carrinho-bacuri",
+  "title": "Carrinho Bacuri",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/carrinho-bacuri/carrinho-bacuri.glb",
+  "renders": [
+    "/assets/3d/carrinho-bacuri/carrinho-bacuri-render-01.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}
