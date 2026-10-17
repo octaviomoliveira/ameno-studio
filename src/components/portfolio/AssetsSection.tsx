@@ -241,6 +241,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/banqueta-bold/banqueta-bold-render-01.webp', alt: 'Banqueta Bold — vista frontal e posterior em estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-alva',
+    name: 'Cadeira Alva',
+    description: 'Cadeira office giratória com estrutura tubular metálica contínua, braços integrados revestidos em couro pespontado, encosto ergonômico em T com apoio lombar estofado e base piramidal de quatro hastes com rodízios.',
+    glbSrc: '/assets/3d/cadeira-alva/cadeira-alva.glb',
+    fallbackImg: '/assets/3d/cadeira-alva/cadeira-alva-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-alva/cadeira-alva-render-01.webp', alt: 'Cadeira Alva — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
