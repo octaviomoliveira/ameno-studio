@@ -159,6 +159,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/banqueta-soa/banqueta-soa-render-01.webp', alt: 'Banqueta Soa — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'banqueta-beet',
+    name: 'Banqueta Beet',
+    description: 'Banqueta giratória regulável com concha estofada orgânica e abas laterais envolventes, apoio de pés metálico trapezoidal integrado, coluna a gás com alavanca e base quadrada de cantos arredondados.',
+    glbSrc: '/assets/3d/banqueta-beet/banqueta-beet.glb',
+    fallbackImg: '/assets/3d/banqueta-beet/banqueta-beet-render-01.webp',
+    renders: [
+      { src: '/assets/3d/banqueta-beet/banqueta-beet-render-01.webp', alt: 'Banqueta Beet — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
