@@ -1,0 +1,17 @@
+{
+  "id": "cadeira-zenith",
+  "title": "Cadeira Zenith",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/cadeira-zenith/cadeira-zenith.glb",
+  "renders": [
+    "/assets/3d/cadeira-zenith/cadeira-zenith-render-01.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}

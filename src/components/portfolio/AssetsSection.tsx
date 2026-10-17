@@ -363,6 +363,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-clip/cadeira-clip-render-01.webp', alt: 'Cadeira Clip — render de estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-zenith',
+    name: 'Cadeira Zenith',
+    description: 'Cadeira executiva de espaldar alto com encosto em tela mesh tensionada, apoio lombar integrado, braços reguláveis em alumínio polido e base giratória piramidal com rodízios.',
+    glbSrc: '/assets/3d/cadeira-zenith/cadeira-zenith.glb',
+    fallbackImg: '/assets/3d/cadeira-zenith/cadeira-zenith-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-zenith/cadeira-zenith-render-01.webp', alt: 'Cadeira Zenith — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
