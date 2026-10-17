@@ -8,7 +8,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import Image from 'next/image'
 import styles from './AssetViewer.module.css'
 
-type Props = { src: string; fallbackImg: string; label: string; className?: string }
+type Props = { src: string; fallbackImg: string; label: string; className?: string; active?: boolean }
 
 function disposeMaterials(materials: Set<THREE.Material>) {
   const textures = new Set<THREE.Texture>()
@@ -35,21 +35,49 @@ function disposeModel(model: THREE.Object3D) {
 
 export default function AssetViewer(props: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  const [inView, setInView] = useState(false)
+  const isActive = props.active ?? true
+
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { setVisible(true); observer.disconnect() }
-    }, { rootMargin: '200px' })
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting)
+      },
+      { rootMargin: '200px' }
+    )
     observer.observe(container)
     return () => observer.disconnect()
   }, [])
-  return <div ref={containerRef} className={props.className}>
-    {visible ? <AssetScene key={props.src} {...props} /> : <div className={styles.viewer} style={{ height: '100%' }}>
-      <Image src={props.fallbackImg} alt={props.label} fill sizes="(max-width: 1024px) 90vw, 38vw" className="object-cover" />
-    </div>}
-  </div>
+
+  const shouldRenderWebGL = inView && isActive
+
+  return (
+    <div ref={containerRef} className={props.className}>
+      {shouldRenderWebGL ? (
+        <AssetScene key={props.src} {...props} />
+      ) : (
+        <div className={styles.viewer} style={{ height: '100%' }}>
+          <div className={styles.canvas}>
+            <Image
+              src={props.fallbackImg}
+              alt={props.label}
+              fill
+              sizes="(max-width: 1024px) 90vw, 38vw"
+              className="object-cover"
+            />
+          </div>
+          <span className={styles.label}>{props.label}</span>
+          <div className={styles.toolbar} aria-hidden="true">
+            <button type="button" tabIndex={-1} disabled>←</button>
+            <button type="button" tabIndex={-1} disabled>3D interativo</button>
+            <button type="button" tabIndex={-1} disabled>→</button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 function AssetScene({ src, fallbackImg, label, className = '' }: Props) {

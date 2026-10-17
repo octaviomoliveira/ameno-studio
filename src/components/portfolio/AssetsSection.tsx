@@ -26,6 +26,16 @@ export type Asset3D = {
   renders: { src: string; alt: string }[]
 }
 
+// Escolha aqui os 5 modelos (pelo slug) que aparecem no carrossel principal em destaque.
+// Todos os demais itens continuam acessíveis no grid clicável ("Olhar mais") logo abaixo.
+const FEATURED_SLUGS: string[] = [
+  'cadeira-raia',
+  'cadeira-axis',
+  'poltrona-pelicano',
+  'cadeira-archi',
+  'lg-zvnq48gm2aa',
+]
+
 const ASSETS: Asset3D[] = [
   {
     slug: 'cadeira-raia',
@@ -99,6 +109,17 @@ const ASSETS: Asset3D[] = [
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
+const FEATURED_ASSETS: Asset3D[] = (() => {
+  const bySlug = new Map(ASSETS.map(a => [a.slug, a]))
+  const picked = FEATURED_SLUGS.map(s => bySlug.get(s)).filter((a): a is Asset3D => Boolean(a))
+  if (picked.length >= 5) return picked.slice(0, 5)
+  for (const asset of ASSETS) {
+    if (picked.length >= 5) break
+    if (!picked.some(p => p.slug === asset.slug)) picked.push(asset)
+  }
+  return picked
+})()
+
 /* ── Carrossel de renders dentro de um slide ────────────────────────── */
 function RenderCarousel({ renders, name, description }: {
   renders: Asset3D['renders']
@@ -140,42 +161,44 @@ function RenderCarousel({ renders, name, description }: {
   )
 }
 
-/* ── Seção principal — GSAP horizontal scroll por slide ─────────────── */
+/* ── Seção principal — Carrossel 5 Destaques + Grid Clicável ("Olhar mais") ── */
 export default function AssetsSection() {
   const sectionRef = useRef<HTMLElement>(null)
-  const stripRef  = useRef<HTMLDivElement>(null)
+  const carouselPinRef = useRef<HTMLDivElement>(null)
+  const stripRef = useRef<HTMLDivElement>(null)
   const clipRef = useRef<HTMLDivElement>(null)
   const [current, setCurrent] = useState(1)
-  const total = ASSETS.length
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+  const featuredTotal = FEATURED_ASSETS.length
 
   useEffect(() => {
-    if (total <= 1) return
+    if (featuredTotal <= 1) return
 
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia()
 
-      /* Desktop: GSAP pina e move por largura de card */
+      /* Desktop: GSAP pina apenas o palco dos 5 destaques e libera para o grid abaixo */
       mm.add('(min-width: 1025px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-        const section = sectionRef.current
-        const strip   = stripRef.current
-        if (!section || !strip) return
+        const pinStage = carouselPinRef.current
+        const strip = stripRef.current
+        if (!pinStage || !strip) return
 
         // Lê a largura real do primeiro slide (definida via CSS em 75vw)
         const getCardW = () => (strip.children[0] as HTMLElement)?.offsetWidth ?? window.innerWidth
 
         gsap.to(strip, {
-          x: () => -((total - 1) * getCardW()),
+          x: () => -((featuredTotal - 1) * getCardW()),
           ease: 'none',
           scrollTrigger: {
-            trigger: section,
+            trigger: pinStage,
             pin: true,
             pinSpacing: true,
             scrub: 1,
             start: 'top top',
-            end: () => `+=${(total - 1) * getCardW()}`,
+            end: () => `+=${(featuredTotal - 1) * getCardW()}`,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              setCurrent(Math.round(self.progress * (total - 1)) + 1)
+              setCurrent(Math.round(self.progress * (featuredTotal - 1)) + 1)
             },
           },
         })
@@ -183,70 +206,218 @@ export default function AssetsSection() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [total])
+  }, [featuredTotal])
+
+  useEffect(() => {
+    if (selectedIndex === null) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedIndex(null)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = prevOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [selectedIndex])
 
   const moveSlide = (direction: number) => {
     const clip = clipRef.current
     if (!clip) return
-    clip.scrollBy({ left: direction * clip.clientWidth,
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+    clip.scrollBy({
+      left: direction * clip.clientWidth,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+    })
   }
 
   const updateCurrent = () => {
     const clip = clipRef.current
-    if (clip && clip.clientWidth) setCurrent(Math.min(total, Math.round(clip.scrollLeft / clip.clientWidth) + 1))
+    if (clip && clip.clientWidth) {
+      setCurrent(Math.min(featuredTotal, Math.round(clip.scrollLeft / clip.clientWidth) + 1))
+    }
   }
+
+  const activeModalAsset = selectedIndex !== null ? ASSETS[selectedIndex] : null
 
   return (
     <section ref={sectionRef} className="assets-section" aria-labelledby="assets-title">
 
-      {/* Header com contador */}
-      <div className="assets-section-header">
-        <div className="assets-section-header-left">
-          <span className="section-tag">ASSETS 3D</span>
-          <h2 id="assets-title">
-            Modelagens prontas para<br />
-            <em className="font-editorial">quem entrega detalhe.</em>
-          </h2>
-          <p>Produzidas no 3ds Max. Prontas para SketchUp e Enscape.</p>
+      {/* Etapa 1: Palco Pinned — Carrossel com os 5 itens escolhidos */}
+      <div ref={carouselPinRef} className="assets-carousel-stage">
+        <div className="assets-section-header">
+          <div className="assets-section-header-left">
+            <span className="section-tag">ASSETS 3D · DESTAQUES</span>
+            <h2 id="assets-title">
+              Modelagens prontas para<br />
+              <em className="font-editorial">quem entrega detalhe.</em>
+            </h2>
+            <p>Produzidas no 3ds Max. Prontas para SketchUp e Enscape.</p>
+          </div>
+          <span className="assets-slide-counter" aria-live="polite">
+            {String(current).padStart(2, '0')}
+            <span className="assets-slide-counter-total"> / {String(featuredTotal).padStart(2, '0')}</span>
+          </span>
         </div>
-        <span className="assets-slide-counter" aria-live="polite">
-          {String(current).padStart(2, '0')}
-          <span className="assets-slide-counter-total"> / {String(total).padStart(2, '0')}</span>
-        </span>
+
+        {/* Clip wrapper — 100vw, escapa o container, oculta overflow horizontal */}
+        <div ref={clipRef} className="assets-strip-clip" onScroll={updateCurrent}>
+          {/* Strip — GSAP move via translateX */}
+          <div ref={stripRef} className="assets-strip">
+            {FEATURED_ASSETS.map((asset, index) => (
+              <article key={asset.slug} className="asset-slide">
+                {/* Esquerda — viewer 3D (WebGL ativo apenas no slide em foco) */}
+                <div className="asset-viewer-wrap">
+                  <AssetViewer
+                    src={asset.glbSrc}
+                    fallbackImg={asset.fallbackImg}
+                    label={asset.name}
+                    className="assets-section-viewer"
+                    active={index === current - 1 && selectedIndex === null}
+                  />
+                </div>
+                {/* Direita — render (foto) + descrição */}
+                <RenderCarousel
+                  renders={asset.renders}
+                  name={asset.name}
+                  description={asset.description}
+                />
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <nav className="assets-touch-controls" aria-label="Modelos 3D">
+          <button type="button" className="asset-carousel-btn" onClick={() => moveSlide(-1)} disabled={current === 1} aria-label="Modelo anterior">←</button>
+          <span>Deslize para explorar · {current} / {featuredTotal}</span>
+          <button type="button" className="asset-carousel-btn" onClick={() => moveSlide(1)} disabled={current === featuredTotal} aria-label="Próximo modelo">→</button>
+        </nav>
       </div>
 
-      {/* Clip wrapper — 100vw, escapa o container, oculta overflow horizontal */}
-      <div ref={clipRef} className="assets-strip-clip" onScroll={updateCurrent}>
-        {/* Strip — GSAP move via translateX */}
-        <div ref={stripRef} className="assets-strip">
-          {ASSETS.map(asset => (
-            <article key={asset.slug} className="asset-slide">
-              {/* Esquerda — viewer 3D */}
+      {/* Etapa 2: Grid Clicável ("Olhar mais" — acervo completo sem pesar o scroll nem o WebGL) */}
+      <div className="assets-catalog">
+        <div className="assets-catalog-header">
+          <div>
+            <span className="section-tag">OLHAR MAIS · ACERVO COMPLETO</span>
+            <h3 className="assets-catalog-title">
+              Explore todos os <em className="font-editorial">ativos modelados.</em>
+            </h3>
+          </div>
+          <p className="assets-catalog-hint">
+            {String(ASSETS.length).padStart(2, '0')} MODELOS NO ACERVO · CLIQUE EM QUALQUER CARD PARA ABRIR O 3D INTERATIVO
+          </p>
+        </div>
+
+        <div className="assets-catalog-grid">
+          {ASSETS.map((asset, idx) => {
+            const isFeatured = FEATURED_SLUGS.includes(asset.slug)
+            return (
+              <button
+                key={asset.slug}
+                type="button"
+                className="assets-catalog-card"
+                onClick={() => setSelectedIndex(idx)}
+                aria-label={`Abrir modelo 3D interativo e renders de ${asset.name}`}
+              >
+                <div className="assets-catalog-card-top">
+                  <span className="assets-catalog-card-num">
+                    #{String(idx + 1).padStart(2, '0')}
+                    {isFeatured ? <em> · DESTAQUE</em> : <strong> · ACERVO</strong>}
+                  </span>
+                  <span className="assets-catalog-card-cta">ABRIR 3D ↗</span>
+                </div>
+
+                <div className="assets-catalog-card-media">
+                  <Image
+                    src={asset.fallbackImg}
+                    alt={asset.renders[0]?.alt ?? asset.name}
+                    fill
+                    sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="assets-catalog-card-body">
+                  <h4 className="assets-catalog-card-name">{asset.name}</h4>
+                  <p className="assets-catalog-card-desc">{asset.description}</p>
+                  <div className="assets-catalog-card-meta">
+                    <span>GLB 3D INTERATIVO</span>
+                    <span>{asset.renders.length} RENDERS</span>
+                  </div>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Modal de Inspeção 3D + Renders quando o usuário clica num card do Grid */}
+      {activeModalAsset && selectedIndex !== null && (
+        <div
+          className="assets-modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Inspeção 3D — ${activeModalAsset.name}`}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedIndex(null)
+          }}
+        >
+          <div className="assets-modal-dialog">
+            <div className="assets-modal-header">
+              <div className="assets-modal-header-title">
+                <span className="assets-modal-counter">
+                  {String(selectedIndex + 1).padStart(2, '0')} / {String(ASSETS.length).padStart(2, '0')}
+                </span>
+                <strong>{activeModalAsset.name}</strong>
+              </div>
+              <div className="assets-modal-actions">
+                <button
+                  type="button"
+                  className="asset-carousel-btn"
+                  onClick={() => setSelectedIndex((selectedIndex - 1 + ASSETS.length) % ASSETS.length)}
+                  aria-label="Modelo anterior do acervo"
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  className="asset-carousel-btn"
+                  onClick={() => setSelectedIndex((selectedIndex + 1) % ASSETS.length)}
+                  aria-label="Próximo modelo do acervo"
+                >
+                  →
+                </button>
+                <button
+                  type="button"
+                  className="assets-modal-close"
+                  onClick={() => setSelectedIndex(null)}
+                >
+                  FECHAR [ESC]
+                </button>
+              </div>
+            </div>
+
+            <div className="assets-modal-stage">
               <div className="asset-viewer-wrap">
                 <AssetViewer
-                  src={asset.glbSrc}
-                  fallbackImg={asset.fallbackImg}
-                  label={asset.name}
+                  key={activeModalAsset.slug}
+                  src={activeModalAsset.glbSrc}
+                  fallbackImg={activeModalAsset.fallbackImg}
+                  label={activeModalAsset.name}
                   className="assets-section-viewer"
+                  active={true}
                 />
               </div>
-              {/* Direita — render (foto) + descrição */}
               <RenderCarousel
-                renders={asset.renders}
-                name={asset.name}
-                description={asset.description}
+                key={activeModalAsset.slug}
+                renders={activeModalAsset.renders}
+                name={activeModalAsset.name}
+                description={activeModalAsset.description}
               />
-            </article>
-          ))}
+            </div>
+          </div>
         </div>
-      </div>
-
-      <nav className="assets-touch-controls" aria-label="Modelos 3D">
-        <button type="button" className="asset-carousel-btn" onClick={() => moveSlide(-1)} disabled={current === 1} aria-label="Modelo anterior">←</button>
-        <span>Deslize para explorar · {current} / {total}</span>
-        <button type="button" className="asset-carousel-btn" onClick={() => moveSlide(1)} disabled={current === total} aria-label="Próximo modelo">→</button>
-      </nav>
+      )}
     </section>
   )
 }
