@@ -84,6 +84,18 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/lg-zvnq48gm2aa/lg-zvnq48gm2aa-render-02.webp', alt: 'Ar-Condicionado LG ZVNQ48GM2AA — detalhe das aletas e gabinete' },
     ],
   },
+  {
+    slug: 'dlock-dlh-4800-pnb',
+    name: 'Fechadura Digital DLock DLH-4800-PNB',
+    description: 'Fechadura eletrônica biométrica de embutir em alumínio preto anodizado e painel touch acrílico. Modelagem em 3ds Max com leitor biométrico integrado à maçaneta, teclado luminoso e cilindro mecânico traseiro.',
+    glbSrc: '/assets/3d/dlock-dlh-4800-pnb/dlock-dlh-4800-pnb.glb',
+    fallbackImg: '/assets/3d/dlock-dlh-4800-pnb/dlock-dlh-4800-pnb-render-01.webp',
+    renders: [
+      { src: '/assets/3d/dlock-dlh-4800-pnb/dlock-dlh-4800-pnb-render-01.webp', alt: 'Fechadura Digital DLock DLH-4800-PNB — vista frontal estúdio' },
+      { src: '/assets/3d/dlock-dlh-4800-pnb/dlock-dlh-4800-pnb-render-02.webp', alt: 'Fechadura Digital DLock DLH-4800-PNB — detalhe painel touch e maçaneta' },
+      { src: '/assets/3d/dlock-dlh-4800-pnb/dlock-dlh-4800-pnb-render-03.webp', alt: 'Fechadura Digital DLock DLH-4800-PNB — close-up da maçaneta biométrica' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
