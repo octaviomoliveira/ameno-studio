@@ -191,6 +191,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/mesa-lateral-nova/mesa-lateral-nova-render-01.webp', alt: 'Mesa Lateral Nova — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'puff-bonni',
+    name: 'Puff Bonni',
+    description: 'Puff cilíndrico em dois volumes concêntricos, com assento estofado de bordas abauladas e base recuada revestida em madeira natural ou couro com costuras verticais aparentes.',
+    glbSrc: '/assets/3d/puff-bonni/puff-bonni.glb',
+    fallbackImg: '/assets/3d/puff-bonni/puff-bonni-render-01.webp',
+    renders: [
+      { src: '/assets/3d/puff-bonni/puff-bonni-render-01.webp', alt: 'Puff Bonni — versões em bouclé com madeira e couro em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
