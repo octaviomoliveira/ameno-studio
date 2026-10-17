@@ -211,6 +211,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-agatha/poltrona-agatha-render-01.webp', alt: 'Poltrona Agatha — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-abassata',
+    name: 'Poltrona Abassata',
+    description: 'Poltrona contemporânea com estrutura tubular em aço carbono preto fosco, cinta traseira estrutural com pespontos contrastantes, braços estofados dobrados sobre o chassi e almofadas generosas em bouclé.',
+    glbSrc: '/assets/3d/poltrona-abassata/poltrona-abassata.glb',
+    fallbackImg: '/assets/3d/poltrona-abassata/poltrona-abassata-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-abassata/poltrona-abassata-render-01.webp', alt: 'Poltrona Abassata — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
