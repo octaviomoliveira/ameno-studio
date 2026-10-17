@@ -281,6 +281,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/carrinho-bacuri/carrinho-bacuri-render-01.webp', alt: 'Carrinho Bacuri — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'pendente-haste',
+    name: 'Pendente Haste',
+    description: 'Luminária pendente contemporânea com haste vertical metálica esguia, anel intermediário usinado, difusor tubular interno canelado e cúpula cônica dobrada em couro pespontado com fechamento por botão.',
+    glbSrc: '/assets/3d/pendente-haste/pendente-haste.glb',
+    fallbackImg: '/assets/3d/pendente-haste/pendente-haste-render-01.webp',
+    renders: [
+      { src: '/assets/3d/pendente-haste/pendente-haste-render-01.webp', alt: 'Pendente Haste — composição em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

@@ -1,0 +1,17 @@
+{
+  "id": "pendente-haste",
+  "title": "Pendente Haste",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Iluminação",
+  "glb": "/assets/3d/pendente-haste/pendente-haste.glb",
+  "renders": [
+    "/assets/3d/pendente-haste/pendente-haste-render-01.webp"
+  ],
+  "tags": [
+    "Iluminação",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}
