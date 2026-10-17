@@ -169,6 +169,18 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/banqueta-beet/banqueta-beet-render-01.webp', alt: 'Banqueta Beet — vista em perspectiva em estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-amanda-presidente',
+    name: 'Cadeira Amanda Presidente',
+    description: 'Cadeira presidente giratória bimatéria em tecido tramado e camurça aveludada, com encosto alto, apoio de cabeça estofado, braços envolventes integrados à concha e base estrela de cinco pontas em alumínio polido com rodízios.',
+    glbSrc: '/assets/3d/cadeira-amanda-presidente/cadeira-amanda-presidente.glb',
+    fallbackImg: '/assets/3d/cadeira-amanda-presidente/cadeira-amanda-presidente-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-amanda-presidente/cadeira-amanda-presidente-render-01.webp', alt: 'Cadeira Amanda Presidente — vista em perspectiva em estúdio' },
+      { src: '/assets/3d/cadeira-amanda-presidente/cadeira-amanda-presidente-render-02.webp', alt: 'Cadeira Amanda Presidente — vista frontal em estúdio' },
+      { src: '/assets/3d/cadeira-amanda-presidente/cadeira-amanda-presidente-render-03.webp', alt: 'Cadeira Amanda Presidente — vista traseira em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
