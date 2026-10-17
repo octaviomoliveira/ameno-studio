@@ -393,6 +393,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-ramo/poltrona-ramo-render-01.webp', alt: 'Poltrona Ramo — render de estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-alta-flow',
+    name: 'Cadeira Alta Flow',
+    description: 'Cadeira presidente de espaldar alto com estofamento em gomos horizontais e verticais pespontados, braços estofados integrados à concha e base giratória de cinco hastes com rodízios.',
+    glbSrc: '/assets/3d/cadeira-alta-flow/cadeira-alta-flow.glb',
+    fallbackImg: '/assets/3d/cadeira-alta-flow/cadeira-alta-flow-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-alta-flow/cadeira-alta-flow-render-01.webp', alt: 'Cadeira Alta Flow — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

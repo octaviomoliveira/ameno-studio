@@ -1,0 +1,17 @@
+{
+  "id": "cadeira-alta-flow",
+  "title": "Cadeira Alta Flow",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/cadeira-alta-flow/cadeira-alta-flow.glb",
+  "renders": [
+    "/assets/3d/cadeira-alta-flow/cadeira-alta-flow-render-01.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}
