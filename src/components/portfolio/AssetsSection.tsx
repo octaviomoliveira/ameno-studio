@@ -301,6 +301,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-alento/poltrona-alento-render-01.webp', alt: 'Poltrona Alento — vista frontal e posterior em estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-bold',
+    name: 'Poltrona Bold',
+    description: 'Poltrona lounge com estrutura tubular metálica contínua, braços laterais com manta estofada sobreposta, assento generoso e encosto acolchoado com fixação aparente.',
+    glbSrc: '/assets/3d/poltrona-bold/poltrona-bold.glb',
+    fallbackImg: '/assets/3d/poltrona-bold/poltrona-bold-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-bold/poltrona-bold-render-01.webp', alt: 'Poltrona Bold — vista frontal e posterior em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

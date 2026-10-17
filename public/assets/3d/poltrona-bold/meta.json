@@ -1,0 +1,17 @@
+{
+  "id": "poltrona-bold",
+  "title": "Poltrona Bold",
+  "client": "ADM Design",
+  "year": 2025,
+  "category": "Mobiliário",
+  "glb": "/assets/3d/poltrona-bold/poltrona-bold.glb",
+  "renders": [
+    "/assets/3d/poltrona-bold/poltrona-bold-render-01.webp"
+  ],
+  "tags": [
+    "Mobiliário",
+    "3ds Max",
+    "Corona",
+    "WebGL"
+  ]
+}
