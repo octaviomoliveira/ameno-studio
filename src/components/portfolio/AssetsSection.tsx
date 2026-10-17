@@ -181,6 +181,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-amanda-presidente/cadeira-amanda-presidente-render-03.webp', alt: 'Cadeira Amanda Presidente — vista traseira em estúdio' },
     ],
   },
+  {
+    slug: 'mesa-lateral-nova',
+    name: 'Mesa Lateral Nova',
+    description: 'Mesa lateral contemporânea com tampo circular chanfrado em madeira ebanizada, haste metálica deslocada e base cilíndrica encapada em couro natural pespontado com botão metálico.',
+    glbSrc: '/assets/3d/mesa-lateral-nova/mesa-lateral-nova.glb',
+    fallbackImg: '/assets/3d/mesa-lateral-nova/mesa-lateral-nova-render-01.webp',
+    renders: [
+      { src: '/assets/3d/mesa-lateral-nova/mesa-lateral-nova-render-01.webp', alt: 'Mesa Lateral Nova — vista em perspectiva em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
