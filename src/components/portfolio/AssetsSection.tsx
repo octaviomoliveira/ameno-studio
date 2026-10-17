@@ -291,6 +291,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/pendente-haste/pendente-haste-render-01.webp', alt: 'Pendente Haste — composição em estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-alento',
+    name: 'Poltrona Alento',
+    description: 'Poltrona lounge com estrutura externa em madeira curvada, base metálica esguia, braços estofados integrados com fivela lateral em couro e conjunto de assento, encosto e apoio de cabeça acolchoados.',
+    glbSrc: '/assets/3d/poltrona-alento/poltrona-alento.glb',
+    fallbackImg: '/assets/3d/poltrona-alento/poltrona-alento-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-alento/poltrona-alento-render-01.webp', alt: 'Poltrona Alento — vista frontal e posterior em estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
