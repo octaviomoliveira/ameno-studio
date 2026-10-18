@@ -1,0 +1,11 @@
+{
+  "slug": "divisoria-orbe",
+  "name": "Divisória Orbe",
+  "category": "Mobiliário",
+  "client": "ADM Design",
+  "year": 2024,
+  "glb": "/assets/3d/divisoria-orbe/divisoria-orbe.glb",
+  "renders": [
+    "/assets/3d/divisoria-orbe/divisoria-orbe-render-01.webp"
+  ]
+}

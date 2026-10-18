@@ -473,6 +473,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/sofa-orbe/sofa-orbe-render-01.webp', alt: 'Sofá Orbe — render de estúdio' },
     ],
   },
+  {
+    slug: 'divisoria-orbe',
+    name: 'Divisória Orbe',
+    description: 'Biombo e divisória escultural com estrutura metálica arqueada, discos estofados suspensos em padrão concêntrico e base cilíndrica em pedra natural.',
+    glbSrc: '/assets/3d/divisoria-orbe/divisoria-orbe.glb',
+    fallbackImg: '/assets/3d/divisoria-orbe/divisoria-orbe-render-01.webp',
+    renders: [
+      { src: '/assets/3d/divisoria-orbe/divisoria-orbe-render-01.webp', alt: 'Divisória Orbe — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
