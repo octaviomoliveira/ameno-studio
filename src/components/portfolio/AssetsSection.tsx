@@ -463,6 +463,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-orbe/poltrona-orbe-render-01.webp', alt: 'Poltrona Orbe — render de estúdio' },
     ],
   },
+  {
+    slug: 'sofa-orbe',
+    name: 'Sofá Orbe',
+    description: 'Sofá de dois lugares com concha estofada em tecido bouclé estruturado e base contínua em tubo metálico curvo.',
+    glbSrc: '/assets/3d/sofa-orbe/sofa-orbe.glb',
+    fallbackImg: '/assets/3d/sofa-orbe/sofa-orbe-render-01.webp',
+    renders: [
+      { src: '/assets/3d/sofa-orbe/sofa-orbe-render-01.webp', alt: 'Sofá Orbe — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
