@@ -453,6 +453,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-paloma-alta-office/cadeira-paloma-alta-office-render-01.webp', alt: 'Cadeira Paloma Alta Office — render de estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-orbe',
+    name: 'Poltrona Orbe',
+    description: 'Poltrona lounge compacta com concha estofada em tecido bouclé estruturado e base contínua em tubo metálico curvo.',
+    glbSrc: '/assets/3d/poltrona-orbe/poltrona-orbe.glb',
+    fallbackImg: '/assets/3d/poltrona-orbe/poltrona-orbe-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-orbe/poltrona-orbe-render-01.webp', alt: 'Poltrona Orbe — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

@@ -1,0 +1,11 @@
+{
+  "slug": "poltrona-orbe",
+  "name": "Poltrona Orbe",
+  "category": "Poltronas",
+  "client": "ADM Design",
+  "year": 2024,
+  "glb": "/assets/3d/poltrona-orbe/poltrona-orbe.glb",
+  "renders": [
+    "/assets/3d/poltrona-orbe/poltrona-orbe-render-01.webp"
+  ]
+}
