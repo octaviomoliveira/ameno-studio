@@ -443,6 +443,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-kauai-baixa/cadeira-kauai-baixa-render-01.webp', alt: 'Cadeira Kauai Baixa — render de estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-paloma-alta-office',
+    name: 'Cadeira Paloma Alta Office',
+    description: 'Cadeira office giratória com concha bipartida de espaldar alto, braços envolventes com revestimento externo contrastante, mecanismo de inclinação e base de cinco hastes com rodízios.',
+    glbSrc: '/assets/3d/cadeira-paloma-alta-office/cadeira-paloma-alta-office.glb',
+    fallbackImg: '/assets/3d/cadeira-paloma-alta-office/cadeira-paloma-alta-office-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-paloma-alta-office/cadeira-paloma-alta-office-render-01.webp', alt: 'Cadeira Paloma Alta Office — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
