@@ -403,6 +403,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-alta-flow/cadeira-alta-flow-render-01.webp', alt: 'Cadeira Alta Flow — render de estúdio' },
     ],
   },
+  {
+    slug: 'poltrona-traverse',
+    name: 'Poltrona Traverse',
+    description: 'Poltrona lounge de volumes generosos com braços cilíndricos estofados em tecido bouclé, almofada de encosto com caimento suave tipo manta e base recuada em madeira.',
+    glbSrc: '/assets/3d/poltrona-traverse/poltrona-traverse.glb',
+    fallbackImg: '/assets/3d/poltrona-traverse/poltrona-traverse-render-01.webp',
+    renders: [
+      { src: '/assets/3d/poltrona-traverse/poltrona-traverse-render-01.webp', alt: 'Poltrona Traverse — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

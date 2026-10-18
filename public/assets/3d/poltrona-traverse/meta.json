@@ -1,0 +1,11 @@
+{
+  "slug": "poltrona-traverse",
+  "name": "Poltrona Traverse",
+  "category": "Poltronas",
+  "client": "ADM Design",
+  "year": 2024,
+  "glb": "/assets/3d/poltrona-traverse/poltrona-traverse.glb",
+  "renders": [
+    "/assets/3d/poltrona-traverse/poltrona-traverse-render-01.webp"
+  ]
+}
