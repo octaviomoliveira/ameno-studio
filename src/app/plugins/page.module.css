@@ -54,19 +54,36 @@
   color: var(--off-white);
 }
 
+.heroTutorialBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1.4rem;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.heroTutorialBtn:hover {
+  background: #ff4738;
+  transform: translateY(-1px);
+}
+
 .heroVisual { min-width: 0; }
 .heroVisual :global(.plugin-diagram) {
   min-height: 0;
-  aspect-ratio: 1.2;
   background: var(--black);
   border: 0;
 }
 .heroVisual :global(.plugin-diagram)::before { display: none; }
-.heroVisual :global(.plugin-diagram svg) { min-height: 0; width: 100%; height: 100%; }
 .heroVisual :global(.plugin-diagram-topline),
 .heroVisual :global(.plugin-diagram-footer) { display: none; }
-.heroVisual svg text,
-.heroVisual svg circle { fill: var(--off-white); }
 
 .page :global(.plugin-hero-badges) {
   gap: 0;
