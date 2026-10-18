@@ -433,6 +433,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/cadeira-kauai-alta/cadeira-kauai-alta-render-01.webp', alt: 'Cadeira Kauai Alta — render de estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-kauai-baixa',
+    name: 'Cadeira Kauai Baixa',
+    description: 'Poltrona giratória de espaldar baixo com concha estofada envolvente, almofada de assento solta e base metálica cromada de quatro hastes.',
+    glbSrc: '/assets/3d/cadeira-kauai-baixa/cadeira-kauai-baixa.glb',
+    fallbackImg: '/assets/3d/cadeira-kauai-baixa/cadeira-kauai-baixa-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-kauai-baixa/cadeira-kauai-baixa-render-01.webp', alt: 'Cadeira Kauai Baixa — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
