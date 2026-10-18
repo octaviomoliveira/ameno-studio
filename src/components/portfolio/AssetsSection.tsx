@@ -413,6 +413,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/poltrona-traverse/poltrona-traverse-render-01.webp', alt: 'Poltrona Traverse — render de estúdio' },
     ],
   },
+  {
+    slug: 'sofa-bold',
+    name: 'Sofá Bold',
+    description: 'Sofá de dois lugares com estrutura tubular metálica aparente que contorna os braços e o encosto, almofadas duplas de assento e encosto de volume generoso e braços acolchoados envolventes.',
+    glbSrc: '/assets/3d/sofa-bold/sofa-bold.glb',
+    fallbackImg: '/assets/3d/sofa-bold/sofa-bold-render-01.webp',
+    renders: [
+      { src: '/assets/3d/sofa-bold/sofa-bold-render-01.webp', alt: 'Sofá Bold — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 

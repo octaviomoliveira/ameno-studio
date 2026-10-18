@@ -1,0 +1,11 @@
+{
+  "slug": "sofa-bold",
+  "name": "Sofá Bold",
+  "category": "Sofás",
+  "client": "ADM Design",
+  "year": 2024,
+  "glb": "/assets/3d/sofa-bold/sofa-bold.glb",
+  "renders": [
+    "/assets/3d/sofa-bold/sofa-bold-render-01.webp"
+  ]
+}
