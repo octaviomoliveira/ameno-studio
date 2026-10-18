@@ -423,6 +423,16 @@ const ASSETS: Asset3D[] = [
       { src: '/assets/3d/sofa-bold/sofa-bold-render-01.webp', alt: 'Sofá Bold — render de estúdio' },
     ],
   },
+  {
+    slug: 'cadeira-kauai-alta',
+    name: 'Cadeira Kauai Alta',
+    description: 'Poltrona giratória de espaldar alto com concha estofada contínua, braços integrados, almofada de assento solta e base metálica cromada de quatro hastes.',
+    glbSrc: '/assets/3d/cadeira-kauai-alta/cadeira-kauai-alta.glb',
+    fallbackImg: '/assets/3d/cadeira-kauai-alta/cadeira-kauai-alta-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cadeira-kauai-alta/cadeira-kauai-alta-render-01.webp', alt: 'Cadeira Kauai Alta — render de estúdio' },
+    ],
+  },
   // Para adicionar novo asset: criar public/assets/3d/<slug>/<slug>.glb e <slug>-render-0N.webp
 ]
 
