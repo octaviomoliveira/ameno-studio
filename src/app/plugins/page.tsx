@@ -11,85 +11,85 @@ export const metadata = {
 
 const FEATURES = [
   {
-    title: 'Cota individual e cadeia contínua',
+    title: 'Medir 1 vão ou vários seguidos',
     description:
-      'Meça um vão isolado em 3 cliques ou encadeie vários vãos consecutivos na mesma linha base (estilo Revit), finalizando com um clique no espaço vazio.',
+      'Dê 3 cliques pra medir um espaço isolado ou saia clicando nos cantos do armário pra fazer uma fila inteira de cotas alinhadas de uma vez só.',
   },
   {
-    title: 'Âncoras 3D e vértices reativos',
+    title: 'Mudou o móvel? A cota muda sozinha',
     description:
-      'As cotas se prendem aos objetos e vértices do Editable Poly / Edit Poly. Moveu uma parede ou alterou a marcenaria? A medida e o desenho atualizam sozinhos.',
+      'As cotas ficam presas nas quinas do seu modelo. Se você arrastar uma parede ou mexer no móvel depois, o número atualiza na hora sem precisar refazer.',
   },
   {
-    title: 'Planta (XY) e Fachada / Vista',
+    title: 'Planta (visto de cima) ou Fachada (de frente)',
     description:
-      'Alterne entre o plano horizontal do mundo para plantas baixas e o plano da vista ativa para elevações, cortes e detalhamento de marcenaria, nas direções Automática, Horizontal ou Vertical.',
+      'Funciona tanto pra plantas baixas vistas de cima quanto pra vistas frontais de marcenaria e cortes, na horizontal ou na vertical.',
   },
   {
-    title: 'Editor de estilos com prévia 2D',
+    title: 'Troque seta, tracinho, cor e tamanho',
     description:
-      'Personalize fonte, tamanho, máscara de texto, linhas, cor e 6 tipos de terminais (Tick, Seta fechada, Seta aberta, Ponto, Losango ou Nenhum) com biblioteca global persistente entre cenas.',
+      'Aumente a letra, engrosse a linha e escolha entre tracinho (Tick), seta fechada, seta aberta, bolinha ou losango vendo o desenho mudar na hora.',
   },
   {
-    title: 'Revisão, arredondamento e destaque âmbar',
+    title: 'Arredonde ou digite o número que quiser',
     description:
-      'Compare o valor medido na cena com o exibido, arredonde em múltiplos exatos ou aplique valor manual com motivo documentado e destaque visual em âmbar (#F5A623) na viewport.',
+      'Deu 1803 mm no 3D mas você quer escrever 1800 mm? Arredonde ou digite o valor na mão — a cota fica laranja na tela pra você lembrar que foi editada.',
   },
   {
-    title: 'Passe PNG transparente (Corona e V-Ray)',
+    title: 'Salve PNG sem fundo pro Photoshop',
     description:
-      'Exporte um passe separado em PNG com fundo transparente (Alpha) contendo todas as cotas ou apenas as selecionadas, sem sujar seu Beauty, LightMix ou materiais da cena.',
+      'Gere em segundos uma imagem PNG transparente só com as cotas (no Corona ou V-Ray) pra jogar por cima do seu render pronto, sem renderizar a cena de novo.',
   },
 ]
 
 const STEPS = [
   {
     num: '01',
-    title: 'Instale e ative seu token',
-    body: 'Copie o pacote para ApplicationPlugins\\AmenoTools, abra pelo menu Ameno Tools no 3ds Max 2026 e ative com seu token UUID v4 — funciona inclusive com o 3dsmax.exe bloqueado no Firewall e por até 7 dias offline.',
+    title: 'Cole seu código na 1ª vez',
+    body: 'Coloque a pasta do plugin no 3ds Max, abra pelo menu Ameno Tools e cole seu código. Depois da 1ª vez ele já abre direto liberado (mesmo com o Max bloqueado no Firewall).',
   },
   {
     num: '02',
-    title: 'Prepare a cena e escolha o modo',
-    body: 'Na aba Cotar, clique em Preparar cena para estruturar a layer dedicada AMENO_COTAS, escolha Uma medida ou Várias medidas, defina Planta ou Fachada e a direção desejada.',
+    title: 'Escolha 1 medida ou várias seguidas',
+    body: 'Na primeira aba (Cotar), escolha se quer medir um espaço só ou vários seguidos, e marque se está olhando em Planta ou Fachada.',
   },
   {
     num: '03',
-    title: 'Marque os pontos com Snap 3D',
-    body: 'Com o Snap (tecla S) ativo em vértices, clique nos pontos do modelo. As cotas nascem ancoradas à geometria e acompanham futuras edições de malha ou movimentações.',
+    title: 'Dê 3 cliques com o imã (Tecla S)',
+    body: 'Com o Snap do Max ligado, clique no começo, clique no fim e puxe a linha pro lado. A cota já nasce presa no móvel.',
   },
   {
     num: '04',
-    title: 'Padronize o estilo e revise valores',
-    body: 'Ajuste terminais, fontes e cores na aba Estilos com prévia 2D ao vivo, e use a aba Revisar para arredondar medidas quebradas ou registrar ajustes executivos com auditoria em âmbar.',
+    title: 'Ajuste o visual ou arredonde medidas',
+    body: 'Se quiser mudar o tamanho da letra ou trocar tracinho por seta, use a aba Estilos. Se quiser arredondar um número quebrado, use a aba Revisar.',
   },
   {
     num: '05',
-    title: 'Exporte o PNG transparente para pós',
-    body: 'Na aba Exportar, gere em 1 clique o arquivo .png com canal Alpha via Corona ou V-Ray e sobreponha direto no Photoshop sem alterar nada na iluminação da sua cena.',
+    title: 'Clique em Exportar PNG e jogue no Photoshop',
+    body: 'Na aba Exportar, salve o PNG com fundo transparente em segundos e solte por cima do seu render pronto.',
   },
 ]
 
 const FAQ = [
   {
-    q: 'Como faço a instalação e onde encontro o plugin dentro do 3ds Max?',
-    a: 'Com o 3ds Max fechado, basta colocar a pasta AmenoTools dentro de %APPDATA%\\Autodesk\\ApplicationPlugins\\AmenoTools. Ao abrir o 3ds Max 2026, o menu "Ameno Tools" aparece automaticamente na barra superior (e a macro AbrirCotasPanel fica disponível em Customize User Interface).',
+    q: 'Como instalo e onde acho o botão dentro do 3ds Max?',
+    a: 'Com o 3ds Max fechado, coloque a pasta AmenoTools dentro de %APPDATA%\\Autodesk\\ApplicationPlugins\\AmenoTools. Quando abrir o 3ds Max 2026, vai aparecer o menu "Ameno Tools" lá no topo da tela.',
   },
   {
-    q: 'Funciona se o 3ds Max estiver bloqueado no Firewall do Windows ou sem internet?',
-    a: 'Sim. Na ativação, se o processo do 3ds Max estiver bloqueado no Firewall, o plugin utiliza automaticamente o worker Python autônomo do sistema operacional para validar o token. Após ativado, o cache local criptografado (DPAPI) permite trabalhar até 7 dias seguidos totalmente offline.',
+    q: 'Meu 3ds Max é bloqueado no Firewall do Windows. Vai funcionar?',
+    a: 'Sim, funciona normal! O plugin valida seu código por fora do 3ds Max justamente para o Firewall nunca atrapalhar. E depois de entrar, você pode ficar até 7 dias sem internet que ele continua funcionando.',
   },
   {
-    q: 'O que acontece se eu alterar a modelagem depois de criar as cotas?',
-    a: 'As cotas criadas sobre objetos e vértices possuem âncoras reativas: ao mover o objeto ou deslocar vértices no Editable Poly / Edit Poly, a linha de cota acompanha o novo ponto e recalcula o valor medido automaticamente.',
+    q: 'Se eu mexer no móvel depois de cotar, tenho que apagar e cotar de novo?',
+    a: 'Não! Como a cota fica presa nos cantos da peça, quando você arrasta o móvel ou puxa os pontos no Edit Poly, a linha estica e o número muda sozinho.',
   },
   {
-    q: 'Se eu digitar um valor manual ou arredondar, como não esquecer que a medida foi alterada?',
-    a: 'Na aba Revisar, toda cota com arredondamento ou valor/texto manual exibe a diferença exata entre o valor Medido na cena e o Exibido (ex.: 1803 mm vs. 1800 mm), registra o motivo da alteração e recebe cor âmbar (#F5A623) de auditoria na viewport.',
+    q: 'E se o meu 3D estiver com medida quebrada (tipo 1803 mm) e eu quiser mostrar 1800 mm?',
+    a: 'Na aba Revisar você pode mandar arredondar ou digitar 1800 na mão. A cota fica laranja na tela do Max pra você lembrar que mudou aquele número.',
   },
   {
-    q: 'Posso usar em mais de um computador ou formatar a máquina?',
-    a: 'A política é de 1 licença vinculada a 1 computador por compra. Caso você troque de computador ou reinstale o Windows, a transferência manual da licença é gratuita mediante solicitação ao suporte.',
+    q: 'Posso usar em outro computador se eu formatar ou trocar de PC?',
+    a: 'Cada compra vale para 1 computador por vez. Se você formatar ou trocar de máquina, é só chamar a gente no suporte que liberamos pro computador novo gratuitamente.',
   },
 ]
 

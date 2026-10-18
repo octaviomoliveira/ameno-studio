@@ -61,6 +61,54 @@
   line-height: 1.7;
 }
 
+/* ── RESUMO EM 15 SEGUNDOS (3 PASSOS GIGANTES) ───────────── */
+.tldrStrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.tldrCard {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+  padding: 1.15rem 1.25rem;
+  background: #12141a;
+  border: 1px solid #2b2f3c;
+  border-left: 3px solid var(--red);
+}
+
+.tldrNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.tldrTitle {
+  display: block;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.25rem;
+}
+
+.tldrText {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--off-white);
+  line-height: 1.5;
+}
+
 /* ── NAVEGAÇÃO DOS 7 PASSOS REAIS ────────────────────────── */
 .tabBar {
   display: grid;
@@ -819,7 +867,8 @@
 
 @media (max-width: 900px) {
   .headerGrid,
-  .allBoardsHeader {
+  .allBoardsHeader,
+  .tldrStrip {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
   }
