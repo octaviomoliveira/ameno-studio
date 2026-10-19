@@ -538,6 +538,23 @@ function RenderCarousel({ renders, name, description }: {
   )
 }
 
+type AssetCategory = 'todos' | 'cadeiras' | 'poltronas' | 'apoio' | 'equipamentos'
+
+function getAssetCategory(slug: string): Exclude<AssetCategory, 'todos'> {
+  if (slug.startsWith('cadeira-') || slug.startsWith('banqueta-')) return 'cadeiras'
+  if (slug.startsWith('poltrona-') || slug.startsWith('sofa-') || slug.startsWith('puff-') || slug.startsWith('banco-')) return 'poltronas'
+  if (slug.startsWith('mesa-') || slug.startsWith('carrinho-') || slug.startsWith('vidro-') || slug.startsWith('divisoria-')) return 'apoio'
+  return 'equipamentos'
+}
+
+const ASSET_CATEGORIES: { id: AssetCategory; label: string }[] = [
+  { id: 'todos', label: 'Todos os modelos' },
+  { id: 'cadeiras', label: 'Cadeiras & Banquetas' },
+  { id: 'poltronas', label: 'Poltronas, Sofás & Bancos' },
+  { id: 'apoio', label: 'Mesas, Carrinhos & Divisórias' },
+  { id: 'equipamentos', label: 'Iluminação & Equipamentos' },
+]
+
 /* ── Seção principal — Carrossel 5 Destaques + Grid Clicável ("Olhar mais") ── */
 export default function AssetsSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -546,7 +563,14 @@ export default function AssetsSection() {
   const clipRef = useRef<HTMLDivElement>(null)
   const [current, setCurrent] = useState(1)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+  const [activeCategory, setActiveCategory] = useState<AssetCategory>('todos')
   const featuredTotal = FEATURED_ASSETS.length
+
+  const filteredAssets = ASSETS.map((asset, originalIndex) => ({
+    asset,
+    originalIndex,
+    category: getAssetCategory(asset.slug),
+  })).filter((entry) => activeCategory === 'todos' || entry.category === activeCategory)
 
   useEffect(() => {
     if (featuredTotal <= 1) return
@@ -681,24 +705,47 @@ export default function AssetsSection() {
             </h3>
           </div>
           <p className="assets-catalog-hint">
-            {String(ASSETS.length).padStart(2, '0')} MODELOS NO ACERVO · CLIQUE EM QUALQUER CARD PARA ABRIR O 3D INTERATIVO
+            {String(filteredAssets.length).padStart(2, '0')} DE {String(ASSETS.length).padStart(2, '0')} MODELOS · CLIQUE EM QUALQUER CARD PARA ABRIR O 3D INTERATIVO
           </p>
         </div>
 
+        <div className="assets-catalog-filters" role="tablist" aria-label="Filtrar modelos 3D por categoria">
+          {ASSET_CATEGORIES.map((cat) => {
+            const count =
+              cat.id === 'todos'
+                ? ASSETS.length
+                : ASSETS.filter((a) => getAssetCategory(a.slug) === cat.id).length
+            const isActive = activeCategory === cat.id
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                className={`assets-catalog-filter-btn${isActive ? ' is-active' : ''}`}
+                onClick={() => setActiveCategory(cat.id)}
+              >
+                <span>{cat.label}</span>
+                <strong>{String(count).padStart(2, '0')}</strong>
+              </button>
+            )
+          })}
+        </div>
+
         <div className="assets-catalog-grid">
-          {ASSETS.map((asset, idx) => {
+          {filteredAssets.map(({ asset, originalIndex }) => {
             const isFeatured = FEATURED_SLUGS.includes(asset.slug)
             return (
               <button
                 key={asset.slug}
                 type="button"
                 className="assets-catalog-card"
-                onClick={() => setSelectedIndex(idx)}
+                onClick={() => setSelectedIndex(originalIndex)}
                 aria-label={`Abrir modelo 3D interativo e renders de ${asset.name}`}
               >
                 <div className="assets-catalog-card-top">
                   <span className="assets-catalog-card-num">
-                    #{String(idx + 1).padStart(2, '0')}
+                    #{String(originalIndex + 1).padStart(2, '0')}
                     {isFeatured ? <em> · DESTAQUE</em> : <strong> · ACERVO</strong>}
                   </span>
                   <span className="assets-catalog-card-cta">ABRIR 3D ↗</span>

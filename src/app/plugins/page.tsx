@@ -1,3 +1,4 @@
+import PurchaseForm from './purchase-form'
 import { STRIPE_MIN_AMOUNT, STRIPE_SUGGESTED_AMOUNT } from '@/lib/stripe'
 import PluginDiagram from '@/components/plugins/PluginDiagram'
 import PluginTutorial from '@/components/plugins/PluginTutorial'
@@ -46,7 +47,7 @@ const STEPS = [
   {
     num: '01',
     title: 'Cole seu código na 1ª vez',
-    body: 'Coloque a pasta do plugin no 3ds Max, abra pelo menu Ameno Tools e cole seu código. Depois da 1ª vez ele já abre direto liberado (mesmo com o Max bloqueado no Firewall).',
+    body: 'Execute o instalador (ou coloque a pasta AmenoTools em ApplicationPlugins), abra pelo menu Ameno Tools no 3ds Max e cole seu código. Depois da 1ª vez ele já abre direto liberado (mesmo com o Max bloqueado no Firewall).',
   },
   {
     num: '02',
@@ -73,7 +74,7 @@ const STEPS = [
 const FAQ = [
   {
     q: 'Como instalo e onde acho o botão dentro do 3ds Max?',
-    a: 'Com o 3ds Max fechado, coloque a pasta AmenoTools dentro de %APPDATA%\\Autodesk\\ApplicationPlugins\\AmenoTools. Quando abrir o 3ds Max 2026, vai aparecer o menu "Ameno Tools" lá no topo da tela.',
+    a: 'Com o 3ds Max fechado, basta dar 2 cliques no instalador automático (ou extrair a pasta AmenoTools em %APPDATA%\\Autodesk\\ApplicationPlugins\\AmenoTools). Quando abrir o 3ds Max 2026, vai aparecer o menu "Ameno Tools" lá no topo da tela.',
   },
   {
     q: 'Meu 3ds Max é bloqueado no Firewall do Windows. Vai funcionar?',
@@ -95,6 +96,7 @@ const FAQ = [
 
 export default function PluginsPage() {
   const minLabel = `R$ ${(STRIPE_MIN_AMOUNT / 100).toFixed(2).replace('.', ',')}`
+  const suggestedLabel = `R$ ${(STRIPE_SUGGESTED_AMOUNT / 100).toFixed(2).replace('.', ',')}`
 
   return (
     <div className={`plugin-page ${styles.page}`}>
@@ -115,10 +117,13 @@ export default function PluginsPage() {
                 Cotas técnicas reativas, editor de estilos 2D e exportação em passe PNG transparente direto no 3ds Max 2026.
               </p>
               <div className={styles.heroActions}>
-                <a href="#tutorial" className={styles.heroTutorialBtn}>
-                  Explorar tutorial interativo ↓
+                <a href="#comprar" className="ameno-button ameno-button--primary">
+                  Comprar Ameno Cotas <span aria-hidden="true">→</span>
                 </a>
-                <span>Em preparação<br />Compra temporariamente indisponível</span>
+                <a href="#tutorial" className={styles.heroTutorialBtn}>
+                  Ver tutorial em fotos ↓
+                </a>
+                <span>A partir de {minLabel}<br />Pagamento único (sugerido {suggestedLabel})</span>
               </div>
             </div>
             <div className={styles.heroVisual}><PluginDiagram /></div>
@@ -211,44 +216,45 @@ export default function PluginsPage() {
         <div className="plugin-section-inner plugin-section-inner--split">
           {/* Explicação da licença */}
           <div className="plugin-license-info">
-            <span className="plugin-section-tag">LICENCIAMENTO</span>
-            <h2 id="purchase-title">Licenciamento planejado</h2>
-            <p className="plugin-license-note">Estas condições serão confirmadas antes da abertura das vendas.</p>
+            <span className="plugin-section-tag">LICENCIAMENTO SIMPLES</span>
+            <h2 id="purchase-title">Compre uma vez, use sem mensalidade.</h2>
+            <p className="plugin-license-note">Como funciona sua licença do Ameno Cotas:</p>
             <ul className="plugin-license-list">
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span><strong>Meta: 1 compra = 1 licença = 1 computador.</strong> Ativação ainda em implementação.</span>
+                <span><strong>1 compra = 1 licença = 1 computador ativo por vez.</strong></span>
               </li>
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span>Está prevista a verificação de um token e o vínculo à máquina na primeira ativação.</span>
+                <span>Após o pagamento, seu código aparece na página <strong>Conta</strong>. Basta colar no plugin na primeira vez.</span>
               </li>
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span>Meta: verificação online com tolerância de até <strong>7 dias offline</strong>.</span>
+                <span>Funciona mesmo com o 3ds Max bloqueado no Firewall e aguenta até <strong>7 dias sem internet</strong>.</span>
               </li>
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span>Está prevista a transferência manual e gratuita da licença para outro computador.</span>
+                <span>Trocou de computador ou formatou? Transferimos sua licença gratuitamente pelo suporte.</span>
               </li>
             </ul>
             <p className="plugin-license-note">
-              Planejamos pagamento único com valor livre a partir de R$ 10,00. As condições finais serão publicadas antes da venda.
+              Pagamento único com valor flexível a partir de {minLabel} (sugerido {suggestedLabel}).
             </p>
           </div>
 
-          {/* Aviso de venda suspensa */}
+          {/* Caixa de Compra Ativa */}
           <div id="comprar" className="plugin-purchase-box" tabIndex={-1}>
             <div className="plugin-purchase-header">
               <p className="plugin-purchase-product">Ameno Cotas</p>
-              <p className="plugin-purchase-version">Lançamento em preparação</p>
+              <p className="plugin-purchase-version">3ds Max 2026 · Pagamento único</p>
             </div>
             <div className="plugin-purchase-price-hint">
-              <p>Quando lançado: valor sugerido de R$ {(STRIPE_SUGGESTED_AMOUNT / 100).toFixed(2).replace('.', ',')}</p>
+              <p>Escolha o quanto quer pagar (sugerido {suggestedLabel})</p>
               <p className="plugin-purchase-min">mínimo {minLabel}</p>
             </div>
-            <p role="status" className="plugin-purchase-security">
-              As compras estão temporariamente indisponíveis enquanto finalizamos o pacote e a entrega. Nenhum pagamento está sendo recebido nesta página.
+            <PurchaseForm minimum={STRIPE_MIN_AMOUNT} suggested={STRIPE_SUGGESTED_AMOUNT} />
+            <p className="plugin-purchase-security">
+              Pagamento seguro via Stripe · SSL · liberação imediata na sua Conta
             </p>
           </div>
         </div>

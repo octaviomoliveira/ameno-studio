@@ -59,6 +59,7 @@ const getServerClientSnapshot = () => false
 
 export default function KeywordsWall() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [expanded, setExpanded] = useState(false)
   const [railIndex, setRailIndex] = useState(0)
   const isClient = useSyncExternalStore(subscribeToClient, getClientSnapshot, getServerClientSnapshot)
@@ -75,6 +76,7 @@ export default function KeywordsWall() {
   const railId = useId()
   const mobileIndexes = expanded ? MOBILE_ORDER : MOBILE_FEATURED_INDEXES
   const activeItem = activeIndex === null ? null : KEYWORDS[activeIndex]
+  const lightboxItem = lightboxIndex === null ? null : KEYWORDS[lightboxIndex]
 
   const dismissPreview = useCallback(() => {
     cancelAnimationFrame(frameRef.current)
@@ -82,6 +84,30 @@ export default function KeywordsWall() {
     activeRef.current = null
     setActiveIndex(null)
   }, [])
+
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const total = KEYWORDS.length
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setLightboxIndex(null)
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault()
+        setLightboxIndex((prev) => (prev === null ? 0 : (prev + 1) % total))
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault()
+        setLightboxIndex((prev) => (prev === null ? 0 : (prev - 1 + total) % total))
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = prevOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [lightboxIndex])
 
   const placePreview = useCallback((x: number, y: number) => {
     const preview = floatingBoxRef.current
@@ -136,7 +162,7 @@ export default function KeywordsWall() {
   }, [touchMode])
 
   const handleMouseMove = (event: MouseEvent<HTMLElement>) => {
-    if (touchMode) return
+    if (touchMode || lightboxIndex !== null) return
     modeRef.current = 'pointer'
     pointerRef.current = { x: event.clientX, y: event.clientY }
     if (frameRef.current) return
@@ -186,7 +212,7 @@ export default function KeywordsWall() {
       <section id="galeria-renders" ref={sectionRef} className={styles.wall} onMouseMove={handleMouseMove}
         onMouseLeave={() => { if (modeRef.current === 'pointer') dismissPreview() }}
         onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) dismissPreview() }}
-        onKeyDown={(event) => { if (event.key === 'Escape') { event.preventDefault(); dismissPreview() } }}>
+        onKeyDown={(event) => { if (event.key === 'Escape' && lightboxIndex === null) { event.preventDefault(); dismissPreview() } }}>
         <div className={styles.desktop}>
           <div className={styles.cloud}>
             {KEYWORDS.map((item, index) => (
@@ -194,16 +220,21 @@ export default function KeywordsWall() {
                 <button type="button" ref={(element) => { wordsRef.current[index] = element }}
                   className={`${item.cls === 'bold' ? 'kw-bold' : 'kw-italic'} ${styles.word}`} data-active={activeIndex === index}
                   data-dimmed={activeIndex !== null && activeIndex !== index}
-                  aria-describedby={`${previewId}-${index}`} onFocus={() => focusWord(index)} onClick={() => focusWord(index)}>
+                  aria-describedby={`${previewId}-${index}`}
+                  onFocus={() => focusWord(index)}
+                  onClick={() => {
+                    dismissPreview()
+                    setLightboxIndex(index)
+                  }}>
                   {item.text}
                 </button>
-                <span className="sr-only" id={`${previewId}-${index}`}>{item.project} — {item.type}. Prévia do render.</span>
+                <span className="sr-only" id={`${previewId}-${index}`}>{item.project} — {item.type}. Clique para abrir em tela cheia.</span>
               </span>
             ))}
           </div>
           <div className={styles.footer}>
-            <span>AMENO · DISCIPLINAS & RENDERS REAIS</span>
-            <span>EXPLORE COM O CURSOR OU TECLADO</span>
+            <span>AMENO · 22 RENDERS REAIS</span>
+            <span>PASSE O MOUSE PARA PRÉVIA · CLIQUE PARA AMPLIAR EM TELA CHEIA</span>
             <span>RECIFE / BRASIL</span>
           </div>
         </div>
@@ -211,7 +242,7 @@ export default function KeywordsWall() {
           <div className={styles.mobileHeading}>
             <span>02 / ESPAÇOS EM CENA</span>
             <h2>Do detalhe<br />ao <em className="font-editorial">conjunto.</em></h2>
-            <p>Arquitetura visualizada para revelar atmosfera, uso e intenção.</p>
+            <p>Arquitetura visualizada para revelar atmosfera, uso e intenção. Toque em qualquer imagem para ampliar.</p>
           </div>
           <div ref={railRef} id={railId} className={styles.rail} role="region" aria-label="Ambientes e renders" tabIndex={0}
             onScroll={updateRailIndex} onKeyDown={(event) => {
@@ -219,16 +250,23 @@ export default function KeywordsWall() {
             }}>
             {mobileIndexes.map((itemIndex, index) => {
               const item = KEYWORDS[itemIndex]
-              return <article className={styles.mobileCard} key={item.text}>
-                <Image src={item.img} alt={`${item.project} — ${item.type}`} fill className="object-cover" sizes="(max-width: 767px) 82vw, 368px" />
-                <div className={styles.wash} aria-hidden="true" />
-                <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')} / {String(mobileIndexes.length).padStart(2, '0')}</span>
-                <div className={styles.caption}><span>{item.type}</span><h3>{item.text}</h3><p>{item.project}</p></div>
-              </article>
+              return (
+                <article
+                  className={styles.mobileCard}
+                  key={item.text}
+                  onClick={() => setLightboxIndex(itemIndex)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <Image src={item.img} alt={`${item.project} — ${item.type}`} fill className="object-cover" sizes="(max-width: 767px) 82vw, 368px" />
+                  <div className={styles.wash} aria-hidden="true" />
+                  <span className={styles.cardIndex}>{String(index + 1).padStart(2, '0')} / {String(mobileIndexes.length).padStart(2, '0')}</span>
+                  <div className={styles.caption}><span>{item.type} · AMPLIAR ↗</span><h3>{item.text}</h3><p>{item.project}</p></div>
+                </article>
+              )
             })}
           </div>
           <div className={styles.railFooter}>
-            <span>DESLIZE PARA EXPLORAR</span>
+            <span>DESLIZE OU TOQUE PARA AMPLIAR</span>
             <div className={styles.railControls}>
               <button type="button" aria-label="Render anterior" onClick={() => moveRail(-1)} disabled={railIndex <= 0}>←</button>
               <button type="button" aria-label="Próximo render" onClick={() => moveRail(1)} disabled={railIndex >= mobileIndexes.length - 1}>→</button>
@@ -240,9 +278,73 @@ export default function KeywordsWall() {
         </div>
       </section>
       {isClient && !touchMode && createPortal(
-        <div ref={floatingBoxRef} className={styles.preview} data-visible={activeItem !== null} aria-hidden="true">
+        <div ref={floatingBoxRef} className={styles.preview} data-visible={activeItem !== null && lightboxIndex === null} aria-hidden="true">
           {activeItem ? <KeywordPreview item={activeItem} /> : null}
         </div>, document.body,
+      )}
+      {isClient && lightboxItem && lightboxIndex !== null && createPortal(
+        <div
+          className="project-album-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${lightboxItem.project} — ${lightboxItem.text}`}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setLightboxIndex(null)
+          }}
+        >
+          <div className="project-album-dialog">
+            <div className="project-album-header">
+              <div className="project-album-header-left">
+                <span className="project-album-kicker">
+                  MURAL DE RENDERS · {String(lightboxIndex + 1).padStart(2, '0')} / {String(KEYWORDS.length).padStart(2, '0')} · {lightboxItem.type}
+                </span>
+                <h3 className="project-album-title">
+                  {lightboxItem.project}
+                  <span> — {lightboxItem.text}</span>
+                </h3>
+              </div>
+
+              <div className="project-album-actions">
+                <button
+                  type="button"
+                  className="asset-carousel-btn"
+                  onClick={() => setLightboxIndex((lightboxIndex - 1 + KEYWORDS.length) % KEYWORDS.length)}
+                  aria-label="Render anterior"
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  className="asset-carousel-btn"
+                  onClick={() => setLightboxIndex((lightboxIndex + 1) % KEYWORDS.length)}
+                  aria-label="Próximo render"
+                >
+                  →
+                </button>
+                <button
+                  type="button"
+                  className="assets-modal-close"
+                  onClick={() => setLightboxIndex(null)}
+                >
+                  FECHAR [ESC]
+                </button>
+              </div>
+            </div>
+
+            <div className="project-album-stage">
+              <Image
+                key={lightboxItem.img}
+                src={lightboxItem.img}
+                alt={`${lightboxItem.project} — ${lightboxItem.type}`}
+                fill
+                sizes="94vw"
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+        </div>,
+        document.body,
       )}
     </>
   )
@@ -252,7 +354,7 @@ function KeywordPreview({ item }: { item: KeywordItem }) {
   return (
     <div className={styles.previewCard}>
       <div className={styles.previewMedia}><Image src={item.img} alt={`${item.project} — ${item.type}`} fill className="object-cover" sizes="440px" /></div>
-      <div className={styles.previewCaption}><strong>{item.project}</strong><span>{item.type}</span></div>
+      <div className={styles.previewCaption}><strong>{item.project}</strong><span>{item.type} · CLIQUE P/ AMPLIAR ↗</span></div>
     </div>
   )
 }

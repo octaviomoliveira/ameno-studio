@@ -5596,3 +5596,295 @@ summary:focus-visible {
     display: none;
   }
 }
+
+/* ── Contato Destravado no Footer (1-clique p/ copiar + canais diretos) ── */
+.site-footer-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: clamp(2.25rem, 4vw, 3.5rem);
+}
+
+.site-footer-action-btn {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 1.15rem 1.35rem;
+  border: 1px solid var(--border);
+  background: #101010;
+  color: var(--off-white);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.site-footer-action-btn:hover {
+  border-color: var(--red);
+  background: #161616;
+  transform: translateY(-2px);
+}
+
+.site-footer-action-btn.is-copied {
+  border-color: var(--red);
+  background: rgba(230, 59, 46, 0.14);
+}
+
+.site-footer-action-kicker {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.site-footer-action-btn.is-copied .site-footer-action-kicker {
+  color: var(--red);
+}
+
+.site-footer-action-btn strong {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+
+/* ── Botão de Álbum Completo nos Slides de Projetos + Lightbox Fullscreen ── */
+.project-scroll-slide.is-interactive {
+  cursor: pointer;
+}
+
+.project-scroll-album-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+  padding: 0.65rem 1.05rem;
+  border: 1px solid rgba(232, 232, 224, 0.35);
+  background: rgba(10, 10, 10, 0.78);
+  backdrop-filter: blur(8px);
+  color: var(--white);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.project-scroll-slide.is-interactive:hover .project-scroll-album-btn,
+.project-scroll-album-btn:hover {
+  border-color: var(--red);
+  background: var(--red);
+  transform: translateY(-1px);
+}
+
+.project-scroll-album-btn em {
+  font-style: normal;
+}
+
+.project-album-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.75rem, 2vw, 1.75rem);
+  background: rgba(5, 5, 5, 0.94);
+  backdrop-filter: blur(14px);
+}
+
+.project-album-dialog {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  width: min(96vw, 1480px);
+  height: min(94svh, 960px);
+  border: 1px solid var(--border);
+  background: #0b0b0b;
+  overflow: hidden;
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.85);
+}
+
+.project-album-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  background: #0f0f0f;
+}
+
+.project-album-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.project-album-kicker {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.project-album-title {
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-album-title span {
+  font-weight: 400;
+  color: var(--off-white);
+}
+
+.project-album-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.project-album-counter {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--off-white);
+  margin-right: 0.4rem;
+}
+
+.project-album-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: #070707;
+}
+
+.project-album-thumbs {
+  display: flex;
+  align-items: stretch;
+  gap: 0.6rem;
+  padding: 0.75rem 1.2rem;
+  border-top: 1px solid var(--border);
+  background: #0f0f0f;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.project-album-thumb {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.35rem 0.65rem 0.35rem 0.35rem;
+  border: 1px solid var(--border);
+  background: #141414;
+  color: var(--off-white);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.project-album-thumb:hover {
+  border-color: rgba(232, 232, 224, 0.45);
+}
+
+.project-album-thumb.is-active {
+  border-color: var(--red);
+  background: rgba(230, 59, 46, 0.15);
+  color: var(--white);
+}
+
+.project-album-thumb-media {
+  position: relative;
+  width: 3.4rem;
+  height: 2.25rem;
+  overflow: hidden;
+  background: #1c1c1c;
+  flex-shrink: 0;
+}
+
+.project-album-thumb span {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Filtro Rápido por Categoria no Catálogo de Modelos 3D ── */
+.assets-catalog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0 0 2rem;
+}
+
+.assets-catalog-filter-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border);
+  background: #111111;
+  color: var(--off-white);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.assets-catalog-filter-btn:hover {
+  border-color: rgba(232, 232, 224, 0.45);
+  background: #181818;
+}
+
+.assets-catalog-filter-btn.is-active {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--white);
+}
+
+.assets-catalog-filter-btn strong {
+  padding: 0.1rem 0.4rem;
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 0.6rem;
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .site-footer-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .site-footer-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .project-album-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .project-album-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
