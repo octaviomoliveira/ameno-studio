@@ -183,7 +183,7 @@ export default function KeywordsWall() {
 
   return (
     <>
-      <section ref={sectionRef} className={styles.wall} onMouseMove={handleMouseMove}
+      <section id="galeria-renders" ref={sectionRef} className={styles.wall} onMouseMove={handleMouseMove}
         onMouseLeave={() => { if (modeRef.current === 'pointer') dismissPreview() }}
         onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) dismissPreview() }}
         onKeyDown={(event) => { if (event.key === 'Escape') { event.preventDefault(); dismissPreview() } }}>

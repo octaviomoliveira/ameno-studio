@@ -618,7 +618,7 @@ export default function AssetsSection() {
   const activeModalAsset = selectedIndex !== null ? ASSETS[selectedIndex] : null
 
   return (
-    <section ref={sectionRef} className="assets-section" aria-labelledby="assets-title">
+    <section id="assets-3d" ref={sectionRef} className="assets-section" aria-labelledby="assets-title">
 
       {/* Etapa 1: Palco Pinned — Carrossel com os 5 itens escolhidos */}
       <div ref={carouselPinRef} className="assets-carousel-stage">
@@ -672,7 +672,7 @@ export default function AssetsSection() {
       </div>
 
       {/* Etapa 2: Grid Clicável ("Olhar mais" — acervo completo sem pesar o scroll nem o WebGL) */}
-      <div className="assets-catalog">
+      <div id="catalogo-3d" className="assets-catalog">
         <div className="assets-catalog-header">
           <div>
             <span className="section-tag">OLHAR MAIS · ACERVO COMPLETO</span>

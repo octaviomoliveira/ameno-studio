@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     locale: 'pt_BR',
     type: 'website',
     images: [{
-      url: '/hero/ameno-hero-concept-v1.webp',
+      url: '/projects/central-parque.webp',
       alt: 'ameno.studio — arquitetura, visualização e ferramentas',
     }],
   },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'ameno.studio',
     description: 'Arquitetura. Visualização. Ferramentas.',
-    images: ['/hero/ameno-hero-concept-v1.webp'],
+    images: ['/projects/central-parque.webp'],
   },
 }
 

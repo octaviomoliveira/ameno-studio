@@ -8,14 +8,87 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const FEATURED = {
-  title: 'Portfólio',
-  subtitle: 'Arquitetura · Visualização · Assets 3D',
-  description: 'Do conceito à entrega — renders que comunicam espaço, atmosfera e intenção.',
-  coverUrl: '/projects/interior-stair.webp',
-  href: '/portfolio',
-  cta: 'Explorar portfólio',
-}
+const HOME_PROJECTS = [
+  {
+    slug: 'estudio-bola',
+    num: '01',
+    title: 'Estúdio Bola',
+    category: 'Comercial',
+    location: 'São Paulo, SP',
+    year: '2023',
+    coverUrl: '/projects/estudio-bola.webp',
+    featured: true,
+  },
+  {
+    slug: 'central-parque',
+    num: '02',
+    title: 'Central Parque',
+    category: 'Residencial',
+    location: 'Curitiba, PR',
+    year: '2024',
+    coverUrl: '/projects/central-parque.webp',
+  },
+  {
+    slug: 'raizes',
+    num: '03',
+    title: 'Raízes',
+    category: 'Residencial',
+    location: 'Capão Bonito, SP',
+    year: '2024',
+    coverUrl: '/projects/raizes-manha.webp',
+  },
+  {
+    slug: 'goya',
+    num: '04',
+    title: 'Goya',
+    category: 'Residencial',
+    location: 'São Paulo, SP',
+    year: '2024',
+    coverUrl: '/projects/goya-gourmet.webp',
+  },
+  {
+    slug: 'moradas-do-bosque',
+    num: '05',
+    title: 'Moradas do Bosque',
+    category: 'Condomínio',
+    location: 'Campinas, SP',
+    year: '2023',
+    coverUrl: '/projects/moradas-bosque.webp',
+  },
+]
+
+const HOME_ASSETS_PREVIEW = [
+  {
+    name: 'Poltrona Pelicano',
+    tag: 'Mobiliário Brasileiro',
+    img: '/assets/3d/poltrona-pelicano/poltrona-pelicano-render-01.webp',
+  },
+  {
+    name: 'Cadeira Raia',
+    tag: 'Assento Assinado',
+    img: '/assets/3d/cadeira-raia/cadeira-raia-render-01.webp',
+  },
+  {
+    name: 'Cadeira Axis',
+    tag: 'Madeira & Estrutura',
+    img: '/assets/3d/cadeira-axis/cadeira-axis-render-01.webp',
+  },
+  {
+    name: 'Cadeira Archi',
+    tag: 'Corporativo & Couro',
+    img: '/assets/3d/cadeira-archi/cadeira-archi-render-01.webp',
+  },
+  {
+    name: 'Fechadura DLock 4800',
+    tag: 'Hardware & Detalhe',
+    img: '/assets/3d/dlock-dl-4800-2022/dlock-dl-4800-2022-render-01.webp',
+  },
+  {
+    name: 'LG Inverter 48k BTU',
+    tag: 'Equipamento Técnico',
+    img: '/assets/3d/lg-zvnq48gm2aa/lg-zvnq48gm2aa-render-01.webp',
+  },
+]
 
 export default function HomePortfolioTeaser() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -25,22 +98,23 @@ export default function HomePortfolioTeaser() {
     if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      gsap.fromTo('[data-portfolio-teaser-text]', { yPercent: 20, opacity: 0 }, {
-        yPercent: 0,
+      gsap.fromTo('[data-portfolio-teaser-text]', { y: 24, opacity: 0 }, {
+        y: 0,
         opacity: 1,
-        duration: 0.9,
-        stagger: 0.12,
+        duration: 0.8,
+        stagger: 0.1,
         ease: 'power3.out',
         clearProps: 'opacity,transform',
-        scrollTrigger: { trigger: section, start: 'top 70%', once: true },
+        scrollTrigger: { trigger: section, start: 'top 76%', once: true },
       })
-      gsap.fromTo('[data-portfolio-teaser-img]', { scale: 1.05, opacity: 0 }, {
-        scale: 1,
+      gsap.fromTo('[data-portfolio-card]', { y: 28, opacity: 0 }, {
+        y: 0,
         opacity: 1,
-        duration: 1.1,
+        duration: 0.85,
+        stagger: 0.08,
         ease: 'power3.out',
         clearProps: 'opacity,transform',
-        scrollTrigger: { trigger: section, start: 'top 75%', once: true },
+        scrollTrigger: { trigger: '[data-portfolio-grid]', start: 'top 82%', once: true },
       })
     }, section)
 
@@ -54,45 +128,131 @@ export default function HomePortfolioTeaser() {
       aria-labelledby="home-portfolio-title"
     >
       <div className="home-portfolio-topline">
-        <span>03 / PORTFÓLIO</span>
-        <span>AUTORAIS · ESTÚDIO · ASSETS 3D</span>
+        <span>03 / PORTFÓLIO & ACERVO 3D</span>
+        <span>05 PROJETOS · 22 RENDERS · 29 MODELOS 3D INTERATIVOS</span>
       </div>
-      <div className="home-portfolio-teaser-inner">
-        {/* Texto */}
-        <div className="home-portfolio-teaser-copy">
-          <h2 id="home-portfolio-title" data-portfolio-teaser-text>
-            <span>Arquitetura.</span>
-            <em className="font-editorial">Visualização.</em>
-            <span>Assets 3D.</span>
-          </h2>
-          <p data-portfolio-teaser-text>{FEATURED.description}</p>
-          <div data-portfolio-teaser-text>
-            <Link href={FEATURED.href} className="ameno-button ameno-button--primary">
-              {FEATURED.cta} <span aria-hidden="true">→</span>
+
+      <div className="home-showcase-wrap">
+        {/* Cabeçalho + Placas de salto rápido */}
+        <div className="home-showcase-header">
+          <div className="home-portfolio-teaser-copy">
+            <h2 id="home-portfolio-title" data-portfolio-teaser-text>
+              <span>Arquitetura.</span>
+              <em className="font-editorial">Visualização.</em>
+              <span>Assets 3D.</span>
+            </h2>
+            <p data-portfolio-teaser-text>
+              Do estudo de luz à marcenaria em close-up — explore os projetos completos do estúdio, o mural de renders e a biblioteca de blocos 3D interativos.
+            </p>
+          </div>
+
+          <div className="home-showcase-stats" data-portfolio-teaser-text>
+            <Link href="/portfolio#projetos" className="home-stat-card">
+              <span className="home-stat-num">05</span>
+              <strong className="home-stat-label">Projetos em Cena</strong>
+              <span className="home-stat-Action">Ver projetos →</span>
+            </Link>
+            <Link href="/portfolio#galeria-renders" className="home-stat-card">
+              <span className="home-stat-num">22</span>
+              <strong className="home-stat-label">Renders Autorais</strong>
+              <span className="home-stat-Action">Abrir mural →</span>
+            </Link>
+            <Link href="/portfolio#assets-3d" className="home-stat-card home-stat-card--accent">
+              <span className="home-stat-num">29</span>
+              <strong className="home-stat-label">Modelos 3D (.GLB)</strong>
+              <span className="home-stat-Action">Girar em 3D →</span>
             </Link>
           </div>
         </div>
 
-        {/* Imagem de destaque */}
-        <Link
-          href={FEATURED.href}
-          className="home-portfolio-teaser-media"
-          data-portfolio-teaser-img
-          aria-hidden="true"
-          tabIndex={-1}
-        >
-          <Image
-            src={FEATURED.coverUrl}
-            alt={`${FEATURED.title} — ameno.studio`}
-            fill
-            sizes="(max-width: 768px) 90vw, 52vw"
-            className="object-cover"
-          />
-          <div className="home-portfolio-teaser-wash" aria-hidden="true" />
-          <span className="home-portfolio-teaser-hover-label" aria-hidden="true">
-            Ver portfólio →
-          </span>
-        </Link>
+        {/* Grid com os 5 Projetos Reais */}
+        <div className="home-projects-grid" data-portfolio-grid>
+          {HOME_PROJECTS.map((project, idx) => (
+            <Link
+              key={project.slug}
+              href={`/portfolio#${project.slug}`}
+              className={`home-project-card${project.featured ? ' home-project-card--featured' : ''}`}
+              data-portfolio-card
+            >
+              <div className="home-project-card-media">
+                <Image
+                  src={project.coverUrl}
+                  alt={`${project.title} — ${project.category} (${project.location})`}
+                  fill
+                  sizes={
+                    project.featured
+                      ? '(max-width: 1024px) 100vw, 60vw'
+                      : '(max-width: 768px) 100vw, 38vw'
+                  }
+                  className="object-cover"
+                  preload={idx === 0}
+                />
+                <div className="home-project-card-wash" aria-hidden="true" />
+                <div className="home-project-card-top">
+                  <span className="home-project-card-num">
+                    <strong>{project.num}</strong> / 05
+                  </span>
+                  <span className="home-project-card-badge">
+                    {project.category} · {project.year}
+                  </span>
+                </div>
+                <div className="home-project-card-bottom">
+                  <div>
+                    <h3 className="home-project-card-title">{project.title}</h3>
+                    <p className="home-project-card-loc">{project.location}</p>
+                  </div>
+                  <span className="home-project-card-cta" aria-hidden="true">
+                    Abrir projeto ↗
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Vitrine de Destaque: 29 Modelos 3D Interativos */}
+        <div className="home-assets-band">
+          <div className="home-assets-band-head">
+            <div>
+              <span className="home-assets-band-kicker">
+                BIBLIOTECA 3D INTERATIVA · 3DS MAX, SKETCHUP & ENSCAPE
+              </span>
+              <h3 className="home-assets-band-title">
+                29 modelos 3D prontos para girar <em className="font-editorial">direto no navegador.</em>
+              </h3>
+            </div>
+            <Link href="/portfolio#assets-3d" className="ameno-button ameno-button--primary">
+              Explorar os 29 Modelos 3D <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+
+          <div className="home-assets-band-grid">
+            {HOME_ASSETS_PREVIEW.map((asset, index) => (
+              <Link
+                key={asset.name}
+                href="/portfolio#assets-3d"
+                className="home-asset-mini-card"
+              >
+                <div className="home-asset-mini-media">
+                  <Image
+                    src={asset.img}
+                    alt={asset.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                    className="object-cover"
+                  />
+                  <span className="home-asset-mini-badge">
+                    #{String(index + 1).padStart(2, '0')} · 3D .GLB
+                  </span>
+                </div>
+                <div className="home-asset-mini-info">
+                  <strong>{asset.name}</strong>
+                  <span>{asset.tag}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )

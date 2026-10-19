@@ -12,7 +12,7 @@ export default function Home() {
       <HeroVideo
         videoSrc="/hero/hero-central-parque-scrub.webm"
         touchVideoSrc="/hero/hero-central-parque-touch.mp4"
-        posterSrc="/hero/ameno-hero-concept-v1.webp"
+        posterSrc="/projects/central-parque.webp"
         alt="Vista aérea do Central Parque — ameno.studio"
       />
 

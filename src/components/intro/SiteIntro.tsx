@@ -6,7 +6,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import GraffitiWall from './GraffitiWall'
 
 const INTRO_STORAGE_KEY = 'ameno-intro-seen-v1'
-let introSeenInMemory = false
 
 export default function SiteIntro() {
   const pathname = usePathname()
@@ -22,11 +21,10 @@ function HomeIntro() {
   const dismiss = useCallback(() => {
     if (leaveTimerRef.current !== null) return
 
-    introSeenInMemory = true
     try {
       window.sessionStorage.setItem(INTRO_STORAGE_KEY, 'true')
     } catch {
-      // The in-memory flag still permits entering when browser storage is blocked.
+      // Storage may be unavailable in restricted contexts.
     }
     setLeaving(true)
     document.documentElement.removeAttribute('data-intro-active')
@@ -42,15 +40,9 @@ function HomeIntro() {
   useEffect(() => {
     const introParam = new URLSearchParams(window.location.search).get('intro')
     const forceIntro = introParam === '1'
-    let hasSeenIntro = introSeenInMemory
-    try {
-      hasSeenIntro ||= window.sessionStorage.getItem(INTRO_STORAGE_KEY) === 'true'
-    } catch {
-      // Session storage can be unavailable in restricted browsing contexts.
-    }
 
     let frame: number | undefined
-    if (introParam !== '0' && (forceIntro || !hasSeenIntro)) {
+    if (forceIntro) {
       document.documentElement.setAttribute('data-intro-active', 'true')
       frame = window.requestAnimationFrame(() => setVisible(true))
     } else {

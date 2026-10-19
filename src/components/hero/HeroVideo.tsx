@@ -2,12 +2,11 @@
 
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
-
-const LAYERS = ['Arquitetura.', 'Visualização.', 'Ferramentas.']
 
 type Props = {
   videoSrc?: string
@@ -32,7 +31,8 @@ export default function HeroVideo({ videoSrc, touchVideoSrc, posterSrc, alt = 'C
       if (!context.conditions?.motion) return
       const compact = context.conditions.compact
       const layers = section.querySelectorAll<HTMLElement>('[data-hero-layer]')
-      const signature = section.querySelector('[data-hero-signature]')
+      const actions = section.querySelector<HTMLElement>('[data-hero-actions]')
+      const signature = section.querySelector<HTMLElement>('[data-hero-signature]')
       const video = videoRef.current
       const playhead = { progress: 0 }
       let disposed = false
@@ -45,7 +45,20 @@ export default function HeroVideo({ videoSrc, touchVideoSrc, posterSrc, alt = 'C
         const time = playhead.progress * Math.max(0, video.duration - 1 / 24)
         if (Math.abs(video.currentTime - time) > 1 / 48) video.currentTime = time
       }
-      gsap.set([...Array.from(layers).slice(1), signature], { autoAlpha: 0, y: 24 })
+
+      // Reveal complete identity and quick-jump CTAs right on entry
+      gsap.fromTo(
+        [...Array.from(layers), actions, signature],
+        { autoAlpha: 0, y: 20 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.1,
+          ease: 'power3.out',
+          clearProps: 'transform',
+        }
+      )
 
       // Fit the complete story inside the distance travelled by the sticky frame.
       const timeline = gsap.timeline({
@@ -60,10 +73,7 @@ export default function HeroVideo({ videoSrc, touchVideoSrc, posterSrc, alt = 'C
       timeline
         .to(playhead, { progress: 1, duration: 1, ease: 'none', onUpdate: seek }, 0)
         .to('[data-hero-media]', { scale: compact ? 1.025 : 1.045, duration: 1, ease: 'none' }, 0)
-        .to(layers[1], { autoAlpha: 1, y: 0, duration: 0.28, ease: 'power1.out' }, 0.12)
-        .to(layers[2], { autoAlpha: 1, y: 0, duration: 0.28, ease: 'power1.out' }, 0.38)
-        .to(signature, { autoAlpha: 1, y: 0, duration: 0.22, ease: 'power1.out' }, 0.7)
-        .to('[data-hero-scroll]', { opacity: 0, duration: 0.12 }, 0)
+        .to('[data-hero-scroll]', { opacity: 0, duration: 0.15 }, 0)
 
       if (!video || !videoSrc) return
       const onReady = () => { video.dataset.ready = 'true'; seek() }
@@ -115,18 +125,35 @@ export default function HeroVideo({ videoSrc, touchVideoSrc, posterSrc, alt = 'C
         </div>
 
         <div className="hero-video-layers">
-          <p className="hero-video-kicker">AMENO.STUDIO / RECIFE · BRASIL</p>
+          <p className="hero-video-kicker">AMENO.STUDIO / RECIFE · BRASIL — ARCHVIZ · ASSETS 3D · PLUGINS</p>
           <h1 id="hero-video-title">
-            {LAYERS.map(text => <span key={text} data-hero-layer className="hero-video-layer">{text}</span>)}
+            <span data-hero-layer className="hero-video-layer">Arquitetura.</span>
+            <span data-hero-layer className="hero-video-layer hero-video-layer--accent">
+              <em className="font-editorial">Visualização.</em>
+            </span>
+            <span data-hero-layer className="hero-video-layer">Ferramentas.</span>
           </h1>
+
+          <div data-hero-actions className="hero-video-actions">
+            <Link href="/portfolio#projetos" className="ameno-button ameno-button--primary">
+              Ver Portfólio · 05 Projetos <span aria-hidden="true">→</span>
+            </Link>
+            <Link href="/portfolio#assets-3d" className="ameno-button ameno-button--secondary">
+              Biblioteca 3D · 29 Modelos <span aria-hidden="true">→</span>
+            </Link>
+            <Link href="/plugins" className="ameno-button ameno-button--secondary">
+              Plugin Ameno Cotas <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+
           <div data-hero-signature className="hero-video-signature">
-            <span>ameno.studio</span>
-            <span>Recife · Brasil</span>
+            <span>05 PROJETOS AUTORAIS · 22 RENDERS · 29 MODELOS .GLB · 01 PLUGIN 3DS MAX</span>
+            <span>RECIFE · BRASIL</span>
           </div>
         </div>
 
         <div data-hero-scroll className="hero-video-scroll" aria-hidden="true">
-          <span>ROLE</span><i />
+          <span>ROLE PARA EXPLORAR</span><i />
         </div>
       </div>
     </section>

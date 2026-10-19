@@ -43,18 +43,32 @@ export default function ProjectScrollSection() {
 
       let disposed = false
       let refreshFrame = 0
+      const scrollToHashIfProject = () => {
+        const hash = window.location.hash.replace('#', '')
+        if (!hash) return
+        const idx = PROJECTS.findIndex((p) => p.slug === hash)
+        if (idx >= 0 && PROJECTS.length > 1) {
+          const targetY = st.start + (idx / (PROJECTS.length - 1)) * (st.end - st.start)
+          window.scrollTo({ top: targetY, behavior: 'smooth' })
+        }
+      }
       const refresh = () => {
         cancelAnimationFrame(refreshFrame)
-        refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh())
+        refreshFrame = requestAnimationFrame(() => {
+          ScrollTrigger.refresh()
+          scrollToHashIfProject()
+        })
       }
       const observer = new ResizeObserver(refresh)
       observer.observe(track)
       observer.observe(trackWrap)
+      window.addEventListener('hashchange', scrollToHashIfProject)
       void document.fonts.ready.then(() => { if (!disposed) refresh() })
 
       return () => {
         disposed = true
         observer.disconnect()
+        window.removeEventListener('hashchange', scrollToHashIfProject)
         cancelAnimationFrame(refreshFrame)
         st.kill()
         anim.kill()
@@ -79,7 +93,7 @@ export default function ProjectScrollSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="project-scroll-section" aria-label="Projetos principais">
+    <section id="projetos" ref={sectionRef} className="project-scroll-section" aria-label="Projetos principais">
       <div ref={trackWrapRef} className="project-scroll-wrap">
         <div ref={trackRef} className="project-scroll-track">
           {PROJECTS.map((project, index) => (
