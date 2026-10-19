@@ -5,9 +5,9 @@ import PluginTutorial from '@/components/plugins/PluginTutorial'
 import styles from './page.module.css'
 
 export const metadata = {
-  title: 'Ameno Cotas — Plugin e Tutorial Completo para 3ds Max 2026',
+  title: 'Ameno Cotas — Plugin e Tutorial Completo para 3ds Max (2021 a 2026)',
   description:
-    'Apresentação completa e tutorial passo a passo do Ameno Cotas para 3ds Max 2026: cotas individuais e em cadeia, âncoras reativas em vértices, editor de estilos 2D, revisão auditável e passe PNG transparente para Corona e V-Ray.',
+    'Apresentação completa e tutorial passo a passo do Ameno Cotas para 3ds Max 2021 a 2026: cotas individuais e em cadeia, âncoras reativas em vértices, editor de estilos 2D, revisão auditável e passe PNG transparente para Corona e V-Ray.',
 }
 
 const FEATURES = [
@@ -46,8 +46,8 @@ const FEATURES = [
 const STEPS = [
   {
     num: '01',
-    title: 'Cole seu código na 1ª vez',
-    body: 'Execute o instalador (ou coloque a pasta AmenoTools em ApplicationPlugins), abra pelo menu Ameno Tools no 3ds Max e cole seu código. Depois da 1ª vez ele já abre direto liberado (mesmo com o Max bloqueado no Firewall).',
+    title: 'Instale com 1 clique e cole seu código',
+    body: 'Dê 2 cliques no instalador automático (Instalar_Ameno_Cotas.exe), abra pelo menu Ameno Tools no seu 3ds Max (2021 a 2026) e cole seu código. Depois da 1ª vez ele já abre direto liberado (mesmo com o Max bloqueado no Firewall).',
   },
   {
     num: '02',
@@ -73,8 +73,8 @@ const STEPS = [
 
 const FAQ = [
   {
-    q: 'Como instalo e onde acho o botão dentro do 3ds Max?',
-    a: 'Com o 3ds Max fechado, basta dar 2 cliques no instalador automático (ou extrair a pasta AmenoTools em %APPDATA%\\Autodesk\\ApplicationPlugins\\AmenoTools). Quando abrir o 3ds Max 2026, vai aparecer o menu "Ameno Tools" lá no topo da tela.',
+    q: 'Como instalo e em quais versões do 3ds Max ele funciona?',
+    a: 'Funciona do 3ds Max 2021 até o 2026 (2021, 2022, 2023, 2024, 2025 e 2026). Com o 3ds Max fechado, basta dar 2 cliques no instalador automático (Instalar_Ameno_Cotas.exe) e clicar no botão vermelho "Instalar". Quando abrir o 3ds Max, acesse Ameno Tools.',
   },
   {
     q: 'Meu 3ds Max é bloqueado no Firewall do Windows. Vai funcionar?',
@@ -106,7 +106,7 @@ export default function PluginsPage() {
         <div className={`plugin-hero-inner ${styles.heroInner}`}>
           <div className="plugin-hero-topline">
             <span>AMENO TOOLS / 001</span>
-            <span>PLUGIN PARA 3DS MAX</span>
+            <span>PLUGIN PARA 3DS MAX (2021 A 2026)</span>
           </div>
           <div className={styles.heroGrid}>
             <div>
@@ -114,7 +114,7 @@ export default function PluginsPage() {
                 Ameno<br /><em className="font-editorial">Cotas.</em>
               </h1>
               <p className="plugin-hero-subtitle">
-                Cotas técnicas reativas, editor de estilos 2D e exportação em passe PNG transparente direto no 3ds Max 2026.
+                Cotas técnicas reativas, editor de estilos 2D e exportação em passe PNG transparente direto no 3ds Max (2021 a 2026).
               </p>
               <div className={styles.heroActions}>
                 <a href="#comprar" className="ameno-button ameno-button--primary">
@@ -129,7 +129,7 @@ export default function PluginsPage() {
             <div className={styles.heroVisual}><PluginDiagram /></div>
           </div>
           <div className="plugin-hero-badges">
-            <span className="plugin-badge">Compatível: 3ds Max 2026</span>
+            <span className="plugin-badge">Compatível: 3ds Max 2021 a 2026</span>
             <span className="plugin-badge">Passe PNG: Corona &amp; V-Ray</span>
             <span className="plugin-badge">Âncoras 3D Reativas</span>
             <span className="plugin-badge">Offline até 7 dias (DPAPI)</span>
@@ -193,7 +193,7 @@ export default function PluginsPage() {
           <dl className="plugin-req-grid">
             <div className="plugin-req-item">
               <dt>Software</dt>
-              <dd>Autodesk 3ds Max 2026 (Python 3.11 / PySide6 nativo)</dd>
+              <dd>Autodesk 3ds Max 2021, 2022, 2023, 2024, 2025 e 2026</dd>
             </div>
             <div className="plugin-req-item">
               <dt>Render</dt>
@@ -226,7 +226,7 @@ export default function PluginsPage() {
               </li>
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
-                <span>Após o pagamento, seu código aparece na página <strong>Conta</strong>. Basta colar no plugin na primeira vez.</span>
+                <span>Após o pagamento, seu código e o <strong>Instalador 1-Clique</strong> aparecem na página <strong>Conta</strong>.</span>
               </li>
               <li>
                 <span className="plugin-license-icon" aria-hidden="true">↳</span>
@@ -246,7 +246,7 @@ export default function PluginsPage() {
           <div id="comprar" className="plugin-purchase-box" tabIndex={-1}>
             <div className="plugin-purchase-header">
               <p className="plugin-purchase-product">Ameno Cotas</p>
-              <p className="plugin-purchase-version">3ds Max 2026 · Pagamento único</p>
+              <p className="plugin-purchase-version">3ds Max 2021 a 2026 · Pagamento único</p>
             </div>
             <div className="plugin-purchase-price-hint">
               <p>Escolha o quanto quer pagar (sugerido {suggestedLabel})</p>

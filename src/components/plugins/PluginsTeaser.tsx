@@ -41,7 +41,7 @@ export default function PluginsTeaser() {
       <div className="plugins-teaser-inner">
         <div className="plugins-teaser-topline">
           <span>04 / FERRAMENTAS PROPRIETÁRIAS</span>
-          <span>AMENO TOOLS / 001 · 3DS MAX 2026</span>
+          <span>AMENO TOOLS / 001 · 3DS MAX 2021–2026</span>
         </div>
 
         <div className="plugins-teaser-showcase">
@@ -54,7 +54,7 @@ export default function PluginsTeaser() {
             <div data-tool-rule className="plugins-teaser-rule" />
 
             <div className="plugins-teaser-meta">
-              <span className="plugins-teaser-badge">PLUGIN PARA 3DS MAX 2026 · CORONA & V-RAY</span>
+              <span className="plugins-teaser-badge">PLUGIN PARA 3DS MAX 2021 A 2026 · CORONA & V-RAY</span>
               <p className="plugins-teaser-product">Ameno Cotas</p>
               <p className="plugins-teaser-description">
                 Cotas técnicas em 3 cliques direto no 3ds Max. Ficam presas nos cantos do móvel, mudam de cor/seta na hora e exportam um PNG sem fundo pronto para soltar por cima do seu render no Photoshop.

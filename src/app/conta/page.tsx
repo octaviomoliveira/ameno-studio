@@ -172,7 +172,7 @@ export default async function ContaPage({
                       <dd className="account-license-token">
                         {license?.active ? (
                           <>
-                            <span>Instalador 1-Clique (3ds Max 2025 / 2026)</span>
+                            <span>Instalador 1-Clique (3ds Max 2021 a 2026)</span>
                             <a
                               href="/downloads/AmenoCotas-Instalador.zip"
                               download="AmenoCotas-Instalador.zip"
