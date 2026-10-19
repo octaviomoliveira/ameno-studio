@@ -167,7 +167,25 @@ export default async function ContaPage({
                       </dd>
                     </div>
                     <div><dt>Computador</dt><dd>{maskMachineId(license?.machine_id ?? null)}</dd></div>
-                    <div><dt>Download</dt><dd>Será liberado quando o arquivo final estiver disponível</dd></div>
+                    <div>
+                      <dt>Download</dt>
+                      <dd className="account-license-token">
+                        {license?.active ? (
+                          <>
+                            <span>Instalador 1-Clique (3ds Max 2025 / 2026)</span>
+                            <a
+                              href="/downloads/AmenoCotas-Instalador.zip"
+                              download="AmenoCotas-Instalador.zip"
+                              className="ameno-button ameno-button--primary"
+                            >
+                              Baixar Instalador ↓
+                            </a>
+                          </>
+                        ) : (
+                          <span>Liberado automaticamente após a confirmação do pagamento</span>
+                        )}
+                      </dd>
+                    </div>
                   </dl>
                 </article>
               )
