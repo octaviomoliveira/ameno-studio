@@ -172,14 +172,23 @@ export default async function ContaPage({
                       <dd className="account-license-token">
                         {license?.active ? (
                           <>
-                            <span>Instalador 1-Clique (3ds Max 2021 a 2026)</span>
-                            <a
-                              href="/downloads/AmenoCotas-Instalador.zip"
-                              download="AmenoCotas-Instalador.zip"
-                              className="ameno-button ameno-button--primary"
-                            >
-                              Baixar Instalador ↓
-                            </a>
+                            <span>Arraste o arquivo .mzp para a viewport do 3ds Max (2021 a 2026) — sem alerta do Windows</span>
+                            <div className="flex flex-wrap items-center gap-3">
+                              <a
+                                href="/downloads/Instalar_Ameno_Cotas.mzp"
+                                download="Instalar_Ameno_Cotas.mzp"
+                                className="ameno-button ameno-button--primary"
+                              >
+                                Baixar Instalador (.mzp) ↓
+                              </a>
+                              <a
+                                href="/downloads/AmenoCotas-Instalador.zip"
+                                download="AmenoCotas-Instalador.zip"
+                                className="ameno-button ameno-button--secondary"
+                              >
+                                Pacote .zip (.mzp + .exe) ↓
+                              </a>
+                            </div>
                           </>
                         ) : (
                           <span>Liberado automaticamente após a confirmação do pagamento</span>
