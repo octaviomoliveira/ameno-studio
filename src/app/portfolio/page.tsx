@@ -1,11 +1,8 @@
-import ProjectScrollSection from '@/components/portfolio/ProjectScrollSection'
-import KeywordsWall from '@/components/home/KeywordsWall'
-import AssetsSection from '@/components/portfolio/AssetsSection'
-import PortfolioQuickNav from '@/components/portfolio/PortfolioQuickNav'
+import PortfolioCatalogHub from '@/components/portfolio/PortfolioCatalogHub'
 
 export const metadata = {
   title: 'Portfólio — ameno.studio',
-  description: 'Arquitetura, visualização e assets 3D — trabalhos autorais e projetos do estúdio.',
+  description: 'Projetos autorais de arquitetura, visualização arquitetônica (ArchViz) e biblioteca de assets 3D interativos.',
 }
 
 export default function PortfolioPage() {
@@ -14,21 +11,18 @@ export default function PortfolioPage() {
       <header className="portfolio-header">
         <div className="page-topline">
           <span>PORTFÓLIO / AMENO STUDIO</span>
-          <span>05 PROJETOS · 22 RENDERS · 29 MODELOS 3D (.GLB)</span>
+          <span>08 PROJETOS DE ARQUITETURA · 07 EMPREENDIMENTOS ARCHVIZ · 29 MODELOS 3D (.GLB)</span>
         </div>
         <div className="portfolio-header-grid">
           <h1 className="portfolio-heading">
             Trabalhos que tornam<br /><em className="font-editorial">ideias visíveis.</em>
           </h1>
           <p className="portfolio-header-lead">
-            Navegue pelas cenas completas do estúdio, explore o mural de renders em alta resolução ou pule direto para a biblioteca de 29 modelos 3D interativos abaixo.
+            Navegue pelas três frentes do estúdio: projetos autorais de arquitetura e executivo BIM, catálogo de visualização por empreendimento e biblioteca de 29 ativos 3D interativos.
           </p>
         </div>
       </header>
-      <PortfolioQuickNav />
-      <ProjectScrollSection />
-      <KeywordsWall />
-      <AssetsSection />
+      <PortfolioCatalogHub />
     </div>
   )
 }

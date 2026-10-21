@@ -80,6 +80,11 @@ async function main() {
       } else await page.goto(`${base}/portfolio`, { waitUntil: 'load' })
       await page.waitForTimeout(700)
       if (profile.touch || profile.reduced) {
+        const tab3d = page.locator('#tab-modelagem-3d')
+        if (await tab3d.count()) {
+          await tab3d.click()
+          await page.waitForTimeout(400)
+        }
         await page.locator('.assets-section').scrollIntoViewIfNeeded()
         await page.waitForTimeout(1500)
         const sizes = await page.locator('.assets-strip-clip').evaluate(el => ({ clip: el.clientWidth, card: el.querySelector('.asset-slide').getBoundingClientRect().width }))
