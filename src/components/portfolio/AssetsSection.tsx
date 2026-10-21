@@ -119,6 +119,58 @@ const ASSETS: Asset3D[] = [
     ],
   },
   {
+    slug: 'base-cama-box-euro',
+    name: 'Base Cama Box Euro Casal',
+    description: 'Base para cama box casal (138 × 188 × 37 cm) com revestimento perimetral em quatro variações de acabamento (Corano Bege, Corano Cinza, Linho Cinza e Linho Bege), tampo central antiderrapante, cantoneiras com logo Euro Colchões em relevo e pés torneados em madeira maciça.',
+    glbSrc: '/assets/3d/base-cama-box-euro/base-cama-box-euro.glb',
+    fallbackImg: '/assets/3d/base-cama-box-euro/base-cama-box-euro-render-01.webp',
+    renders: [
+      { src: '/assets/3d/base-cama-box-euro/base-cama-box-euro-render-01.webp', alt: 'Base Cama Box Euro Casal — acabamento Corano Bege' },
+      { src: '/assets/3d/base-cama-box-euro/base-cama-box-euro-render-02.webp', alt: 'Base Cama Box Euro Casal — acabamento Corano Cinza' },
+      { src: '/assets/3d/base-cama-box-euro/base-cama-box-euro-render-03.webp', alt: 'Base Cama Box Euro Casal — acabamento Linho Cinza' },
+      { src: '/assets/3d/base-cama-box-euro/base-cama-box-euro-render-04.webp', alt: 'Base Cama Box Euro Casal — acabamento Linho Bege' },
+    ],
+  },
+  {
+    slug: 'base-cama-box-euro-solteiro',
+    name: 'Base Cama Box Euro Solteiro',
+    description: 'Base para cama box solteiro (88 × 188 × 37 cm) com estrutura estofada em quatro variações de acabamento (Corano Bege, Corano Cinza, Linho Cinza e Linho Bege), tampo antiderrapante, cantoneiras poliméricas com logo em relevo e pés em madeira maciça.',
+    glbSrc: '/assets/3d/base-cama-box-euro-solteiro/base-cama-box-euro-solteiro.glb',
+    fallbackImg: '/assets/3d/base-cama-box-euro-solteiro/base-cama-box-euro-solteiro-render-01.webp',
+    renders: [
+      { src: '/assets/3d/base-cama-box-euro-solteiro/base-cama-box-euro-solteiro-render-01.webp', alt: 'Base Cama Box Euro Solteiro — acabamento Corano Bege' },
+      { src: '/assets/3d/base-cama-box-euro-solteiro/base-cama-box-euro-solteiro-render-02.webp', alt: 'Base Cama Box Euro Solteiro — acabamento Corano Cinza' },
+      { src: '/assets/3d/base-cama-box-euro-solteiro/base-cama-box-euro-solteiro-render-03.webp', alt: 'Base Cama Box Euro Solteiro — acabamento Linho Cinza' },
+      { src: '/assets/3d/base-cama-box-euro-solteiro/base-cama-box-euro-solteiro-render-04.webp', alt: 'Base Cama Box Euro Solteiro — acabamento Linho Bege' },
+    ],
+  },
+  {
+    slug: 'cabeceira-leme',
+    name: 'Cabeceira Leme Euro Colchões',
+    description: 'Cabeceira estofada com abas laterais envolventes chanfradas, painel frontal bipartido com costura horizontal pespontada e quatro variações de revestimento (Corano Bege, Corano Cinza, Linho Cinza e Linho Bege).',
+    glbSrc: '/assets/3d/cabeceira-leme/cabeceira-leme.glb',
+    fallbackImg: '/assets/3d/cabeceira-leme/cabeceira-leme-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cabeceira-leme/cabeceira-leme-render-01.webp', alt: 'Cabeceira Leme — acabamento Corano Bege' },
+      { src: '/assets/3d/cabeceira-leme/cabeceira-leme-render-02.webp', alt: 'Cabeceira Leme — acabamento Corano Cinza' },
+      { src: '/assets/3d/cabeceira-leme/cabeceira-leme-render-03.webp', alt: 'Cabeceira Leme — acabamento Linho Cinza' },
+      { src: '/assets/3d/cabeceira-leme/cabeceira-leme-render-04.webp', alt: 'Cabeceira Leme — acabamento Linho Bege' },
+    ],
+  },
+  {
+    slug: 'cabeceira-joa',
+    name: 'Cabeceira Joá Euro Colchões',
+    description: 'Cabeceira estofada com moldura perimetral em meia-esquadria, almofada central acolchoada em espuma D18, sapatas metálicas de fixação e quatro variações de acabamento (Corano Bege, Corano Cinza, Linho Cinza e Linho Bege).',
+    glbSrc: '/assets/3d/cabeceira-joa/cabeceira-joa.glb',
+    fallbackImg: '/assets/3d/cabeceira-joa/cabeceira-joa-render-01.webp',
+    renders: [
+      { src: '/assets/3d/cabeceira-joa/cabeceira-joa-render-01.webp', alt: 'Cabeceira Joá — acabamento Corano Bege' },
+      { src: '/assets/3d/cabeceira-joa/cabeceira-joa-render-02.webp', alt: 'Cabeceira Joá — acabamento Corano Cinza' },
+      { src: '/assets/3d/cabeceira-joa/cabeceira-joa-render-03.webp', alt: 'Cabeceira Joá — acabamento Linho Cinza' },
+      { src: '/assets/3d/cabeceira-joa/cabeceira-joa-render-04.webp', alt: 'Cabeceira Joá — acabamento Linho Bege' },
+    ],
+  },
+  {
     slug: 'cadeira-office-volo',
     name: 'Cadeira Office Volo',
     description: 'Cadeira giratória executiva com assento e encosto estofados em couro cinza, estrutura tubular metálica com apoios de braço em madeira natural, suporte dorsal escultural e base piramidal de cinco pontas com rodízios.',
@@ -542,7 +594,7 @@ type AssetCategory = 'todos' | 'cadeiras' | 'poltronas' | 'apoio' | 'equipamento
 
 function getAssetCategory(slug: string): Exclude<AssetCategory, 'todos'> {
   if (slug.startsWith('cadeira-') || slug.startsWith('banqueta-')) return 'cadeiras'
-  if (slug.startsWith('poltrona-') || slug.startsWith('sofa-') || slug.startsWith('puff-') || slug.startsWith('banco-')) return 'poltronas'
+  if (slug.startsWith('poltrona-') || slug.startsWith('sofa-') || slug.startsWith('puff-') || slug.startsWith('banco-') || slug.startsWith('base-cama-') || slug.startsWith('cabeceira-')) return 'poltronas'
   if (slug.startsWith('mesa-') || slug.startsWith('carrinho-') || slug.startsWith('vidro-') || slug.startsWith('divisoria-')) return 'apoio'
   return 'equipamentos'
 }
