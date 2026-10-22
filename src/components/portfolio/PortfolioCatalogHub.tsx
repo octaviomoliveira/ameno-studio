@@ -269,10 +269,11 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
     location: 'São Paulo, SP',
     year: 2024,
     description:
-      'Imagens de lançamento focadas nas áreas comuns decoradas: espaço gourmet com ilha escultórica, salão de festas, salão de jogos e terraço externo paisagístico.',
+      'Imagens de lançamento focadas nas áreas comuns decoradas: espaço gourmet com ilha escultórica, brinquedoteca lúdica, salão de festas, salão de jogos e terraço externo paisagístico.',
     cover: '/projects/goya-gourmet.webp',
     renders: [
       { src: '/projects/goya-gourmet.webp', label: 'Espaço Gourmet & Ilha Central' },
+      { src: '/renders/goya-brinquedoteca.webp', label: 'Brinquedoteca & Espaço Kids — Marcenaria Lúdica & Iluminação' },
       { src: '/renders/goya-externa.webp', label: 'Área Externa & Paisagismo' },
       { src: '/renders/salao-festas.webp', label: 'Salão de Festas & Eventos' },
       { src: '/renders/salao-jogos.webp', label: 'Salão de Jogos & Convivência' },
