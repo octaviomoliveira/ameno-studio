@@ -167,6 +167,7 @@ const AUTORAIS_PROJECTS: AutoralProject[] = [
       { src: '/projects/autorais/barbearia-pais-e-filhos/lavatorio.webp', label: 'Setor de Lavatório & Contra-Plano para a Entrada do Salão (CAM06)' },
       { src: '/projects/autorais/barbearia-pais-e-filhos/copa.webp', label: 'Copa & Lounge de Café — Marcenaria, Nespresso, Purificador & Cervejeira (CAM07)' },
       { src: '/projects/autorais/barbearia-pais-e-filhos/banheiro.webp', label: 'Sanitário — Espelho em Arco Retroiluminado, Luz Indireta & Marcenaria Piso-Teto (CAM08)' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/antes-local.webp', label: 'Antes da Reforma — Salão Original com Vão Entre Pilares à Esquerda & Arco Semi-Fechado ao Fundo' },
     ],
   },
   {
