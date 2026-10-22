@@ -321,17 +321,17 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
   },
   {
     slug: 'interiores-e-areas-comuns',
-    title: 'Frederico Jacobi & Estudos de Detalhe',
-    category: 'Interiores & Áreas Comuns',
+    title: 'Frederico Jacobi',
+    category: 'Empreendimento Residencial',
     location: 'São Paulo, SP',
     year: 2024,
     description:
-      'Série de visualização focada em texturas táteis, iluminação natural rasante, marcenaria de precisão e ambientes internos de alto padrão.',
-    cover: '/renders/instagram-escritorio.webp',
+      'Visualização arquitetônica das áreas comuns e de lazer do empreendimento Frederico Jacobi: brinquedoteca setorizada com marcenaria lúdica, quiosque gourmet com churrasqueira e cobogós, e quadra de areia.',
+    cover: '/renders/brinquedoteca.webp',
     renders: [
-      { src: '/renders/instagram-escritorio.webp', label: 'Home Office Autoral — Luz Natural & Detalhe' },
-      { src: '/renders/instagram-suite.webp', label: 'Suíte Master — Atmosfera & Texturas' },
-      { src: '/renders/brinquedoteca.webp', label: 'Frederico Jacobi — Brinquedoteca & Espaço Kids' },
+      { src: '/renders/brinquedoteca.webp', label: 'Brinquedoteca & Espaço Kids Setorizado' },
+      { src: '/renders/frederico-jacobi-churrasqueira.webp', label: 'Quiosque Gourmet & Churrasqueira com Cobogós' },
+      { src: '/renders/frederico-jacobi-quadra.webp', label: 'Quadra de Areia — Vôlei de Praia & Beach Tennis' },
     ],
   },
 ]
