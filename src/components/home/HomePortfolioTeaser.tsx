@@ -13,7 +13,7 @@ const HOME_PROJECTS = [
     slug: 'delicias-da-ana',
     num: '01',
     title: 'Delícias da Ana',
-    category: 'Arquitetura Comercial · 19 Lâminas',
+    category: 'Arquitetura Comercial · 17 Lâminas',
     location: 'Retrofit, Fluxo & Cozinha Inox (2,65m × 25,00m)',
     year: '2025',
     coverUrl: '/projects/autorais/delicias-da-ana/fachada-limpa.webp',

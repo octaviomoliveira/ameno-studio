@@ -94,7 +94,7 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     chapter: '03 · Fachada & Conjunto Comercial',
   },
 
-  // Cap 04 — Salão de Atendimento & Comunicação Visual (05 lâminas)
+  // Cap 04 — Salão de Atendimento & Vitrine (03 lâminas)
   {
     id: 'atendimento-01',
     src: '/projects/autorais/delicias-da-ana/atendimento-01.webp',
@@ -102,16 +102,16 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     note: 'Perspectiva da entrada: mesas bistrô apoiadas junto às paredes liberam a circulação central de 2,65m até o balcão expositor ao fundo, com perfis lineares de LED no forro e pendentes aquecidos.',
     badge: '09 · SALÃO DE ATENDIMENTO (CAM01)',
     badgeVariant: 'after',
-    chapter: '04 · Salão de Atendimento & Cardápios',
+    chapter: '04 · Salão de Atendimento & PDV',
   },
   {
     id: 'atendimento-02',
     src: '/projects/autorais/delicias-da-ana/atendimento-02.webp',
     label: 'Balcão Ripado, PDV & Vitrine Aquecida (CAM02)',
-    note: 'Ponto focal de conversão: balcão em marcenaria ripada preta e amarela, terminal de caixa ergonômico, estufa curva com iluminação dedicada e par de telas de cardápio.',
+    note: 'Ponto focal de conversão: balcão em marcenaria ripada preta e amarela, terminal de caixa ergonômico e estufa curva com iluminação dedicada.',
     badge: '10 · BALCÃO & VITRINE (CAM02)',
     badgeVariant: 'after',
-    chapter: '04 · Salão de Atendimento & Cardápios',
+    chapter: '04 · Salão de Atendimento & PDV',
   },
   {
     id: 'atendimento-03',
@@ -120,25 +120,7 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     note: 'Visada do operador de caixa em direção à calçada: transparência da esquadria de vidro piso-teto garante iluminação natural abundante e segurança.',
     badge: '11 · CONTRA-PLANO ENTRADA (CAM03)',
     badgeVariant: 'after',
-    chapter: '04 · Salão de Atendimento & Cardápios',
-  },
-  {
-    id: 'cardapio-01',
-    src: '/projects/autorais/delicias-da-ana/cardapio-01.webp',
-    label: 'Design de Menu Board 01 — Linha de Coxinhas & Combos',
-    note: 'Comunicação visual de ponto de venda desenvolvida sob medida na paleta da marca para exibição nas telas superiores do balcão.',
-    badge: '12 · MENU BOARD 01',
-    badgeVariant: 'default',
-    chapter: '04 · Salão de Atendimento & Cardápios',
-  },
-  {
-    id: 'cardapio-02',
-    src: '/projects/autorais/delicias-da-ana/cardapio-02.webp',
-    label: 'Design de Menu Board 02 — Salgados, Bebidas & Sobremesas',
-    note: 'Segundo painel digital compondo o par de telas sobre o balcão de atendimento, organizando categorias de produtos para decisão rápida na fila.',
-    badge: '13 · MENU BOARD 02',
-    badgeVariant: 'default',
-    chapter: '04 · Salão de Atendimento & Cardápios',
+    chapter: '04 · Salão de Atendimento & PDV',
   },
 
   // Cap 05 — Cozinha Industrial, Antecâmara & Sanitário (06 lâminas)
@@ -147,7 +129,7 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     src: '/projects/autorais/delicias-da-ana/cozinha-01.webp',
     label: 'Cozinha de Produção em Inox — Coifa, Fogão & Linha Fria (CAM02)',
     note: 'Operação gastronômica em pleno funcionamento dentro de 2,65m × 5,65m: revestimentos cerâmicos laváveis até o teto, bancadas e prateleiras em aço inox escovado, coifa industrial e corredor livre.',
-    badge: '14 · COZINHA INDUSTRIAL (CAM02)',
+    badge: '12 · COZINHA INDUSTRIAL (CAM02)',
     badgeVariant: 'after',
     chapter: '05 · Cozinha Industrial & Apoio',
   },
@@ -156,7 +138,7 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     src: '/projects/autorais/delicias-da-ana/cozinha-02.webp',
     label: 'Estação de Fritura, Exaustão & Bancada em L (CAM03)',
     note: 'Posicionamento estratégico da fritadeira de alta tiragem sob a coifa principal, ao lado da bancada em L em aço inox com cuba profunda para higienização.',
-    badge: '15 · FRITURA & EXAUSTÃO (CAM03)',
+    badge: '13 · FRITURA & EXAUSTÃO (CAM03)',
     badgeVariant: 'after',
     chapter: '05 · Cozinha Industrial & Apoio',
   },
@@ -165,7 +147,7 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     src: '/projects/autorais/delicias-da-ana/cozinha-03.webp',
     label: 'Linha Fria & Transição para a Antecâmara (CAM04)',
     note: 'Bateria de refrigeração com freezer horizontal Polair de tampa dupla, refrigerador vertical LG Inverter em inox e porta de isolamento para a antecâmara.',
-    badge: '16 · LINHA FRIA (CAM04)',
+    badge: '14 · LINHA FRIA (CAM04)',
     badgeVariant: 'default',
     chapter: '05 · Cozinha Industrial & Apoio',
   },
@@ -174,7 +156,7 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     src: '/projects/autorais/delicias-da-ana/cozinha-04-eixo.webp',
     label: 'Eixo Operacional — Visada da Cozinha para a Vitrine & Salão (CAM05)',
     note: 'Conexão direta entre produção e venda: a porta de giro posiciona a saída de assadeiras e frituras a dois passos da vitrine aquecida do balcão.',
-    badge: '17 · EIXO PRODUÇÃO → VENDA (CAM05)',
+    badge: '15 · EIXO PRODUÇÃO → VENDA (CAM05)',
     badgeVariant: 'after',
     chapter: '05 · Cozinha Industrial & Apoio',
   },
@@ -183,7 +165,7 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     src: '/projects/autorais/delicias-da-ana/antecamara.webp',
     label: 'Antecâmara Sanitária & Armário Piso-Teto de Insumos (CAM01)',
     note: 'Barreira sanitária obrigatória entre a cozinha e o banheiro, aproveitada com marcenaria piso-teto para armazenamento organizado de embalagens e secos.',
-    badge: '18 · ANTECÂMARA & DEPÓSITO',
+    badge: '16 · ANTECÂMARA & DEPÓSITO',
     badgeVariant: 'default',
     chapter: '05 · Cozinha Industrial & Apoio',
   },
@@ -192,7 +174,7 @@ export const ALL_DELICIAS_SLIDES: CaseStudySlide[] = [
     src: '/projects/autorais/delicias-da-ana/banheiro.webp',
     label: 'Sanitário — Bancada Esculpida em Pedra & Luz Indireta (CAM01)',
     note: 'Fechamento do eixo posterior (2,65m × 2,75m): cuba esculpida em pedra escura, espelho retroiluminado em LED quente e revestimento marmorizado.',
-    badge: '19 · SANITÁRIO (CAM01)',
+    badge: '17 · SANITÁRIO (CAM01)',
     badgeVariant: 'default',
     chapter: '05 · Cozinha Industrial & Apoio',
   },
@@ -291,7 +273,7 @@ export default function DeliciasDaAnaCaseStudy() {
             <span aria-hidden="true">←</span> VOLTAR AO CATÁLOGO DE PORTFÓLIO
           </Link>
           <span>
-            PROJETO AUTORAL #04 · ARQUITETURA COMERCIAL & GASTRONOMIA · DOSSIÊ COMPLETO (19 LÂMINAS)
+            PROJETO AUTORAL #04 · ARQUITETURA COMERCIAL & GASTRONOMIA · DOSSIÊ COMPLETO (17 LÂMINAS)
           </span>
         </div>
 
@@ -310,7 +292,7 @@ export default function DeliciasDaAnaCaseStudy() {
 
           <div className={styles.leadBox}>
             <p className={styles.leadText}>
-              Em arquitetura comercial gastronômica, estética sem engenharia de fluxo gera fila travada e perda de vendas. Neste dossiê completo, reunimos as <strong>19 lâminas técnicas do projeto</strong>: o diagnóstico fotográfico com medidas de campo, a planta humanizada cotada via <strong>Ameno Cotas</strong>, o retrofit do conjunto de 3 pavimentos, o salão de atendimento e a cozinha industrial em aço inox.
+              Em arquitetura comercial gastronômica, estética sem engenharia de fluxo gera fila travada e perda de vendas. Neste dossiê completo, reunimos as <strong>17 lâminas técnicas do projeto</strong>: o diagnóstico fotográfico com medidas de campo, a planta humanizada cotada via <strong>Ameno Cotas</strong>, o retrofit do conjunto de 3 pavimentos, o salão de atendimento e a cozinha industrial em aço inox.
             </p>
             <div className={styles.heroActions}>
               <button
@@ -318,7 +300,7 @@ export default function DeliciasDaAnaCaseStudy() {
                 className={styles.primaryBtn}
                 onClick={() => setLightboxIndex(0)}
               >
-                <span>ABRIR ÁLBUM EM TELA CHEIA (19 LÂMINAS)</span>
+                <span>ABRIR ÁLBUM EM TELA CHEIA (17 LÂMINAS)</span>
                 <span aria-hidden="true">↗</span>
               </button>
               <a href="#cap-planta" className={styles.secondaryBtn}>
@@ -353,7 +335,7 @@ export default function DeliciasDaAnaCaseStudy() {
         <div className={styles.specItem}>
           <span className={styles.specLabel}>04 / ESCOPO DE PROJETO</span>
           <strong className={styles.specValue}>
-            Levantamento, Fachada, Interiores, Cozinha Inox & Menu Boards
+            Levantamento, Fachada, Interiores, Vitrine & Cozinha Inox
           </strong>
         </div>
         <div className={styles.specItem}>
@@ -365,7 +347,7 @@ export default function DeliciasDaAnaCaseStudy() {
         <div className={styles.specItem}>
           <span className={styles.specLabel}>06 / MATERIAL PUBLICADO</span>
           <strong className={styles.specValue}>
-            <em>19 Lâminas</em> (Antes, Levantamento, Planta Cotada & Vistas Humanizadas)
+            <em>17 Lâminas</em> (Antes, Levantamento, Planta Cotada & Vistas Humanizadas)
           </strong>
         </div>
       </section>
@@ -383,7 +365,7 @@ export default function DeliciasDaAnaCaseStudy() {
             <span>03</span> FACHADA & CONJUNTO (03)
           </a>
           <a href="#cap-atendimento" className={styles.chapterNavLink}>
-            <span>04</span> SALÃO & CARDÁPIOS (05)
+            <span>04</span> SALÃO & PDV (03)
           </a>
           <a href="#cap-cozinha" className={styles.chapterNavLink}>
             <span>05</span> COZINHA INOX & APOIO (06)
@@ -393,7 +375,7 @@ export default function DeliciasDaAnaCaseStudy() {
             className={styles.chapterNavLink}
             onClick={() => setLightboxIndex(0)}
           >
-            <span>↗</span> MODO APRESENTAÇÃO (19)
+            <span>↗</span> MODO APRESENTAÇÃO (17)
           </button>
         </nav>
       </div>
@@ -522,7 +504,7 @@ export default function DeliciasDaAnaCaseStudy() {
         </div>
       </section>
 
-      {/* CAPÍTULO 04 — SALÃO DE ATENDIMENTO & CARDÁPIOS */}
+      {/* CAPÍTULO 04 — SALÃO DE ATENDIMENTO & PDV */}
       <section id="cap-atendimento" className={styles.chapter}>
         <div className={styles.chapterHeader}>
           <div>
@@ -534,7 +516,7 @@ export default function DeliciasDaAnaCaseStudy() {
             </h2>
           </div>
           <p className={styles.chapterDesc}>
-            Três enquadramentos complementares do salão humanizado (<strong>CAM01</strong> a partir da entrada, <strong>CAM02</strong> focado no balcão ripado e vitrine aquecida, e <strong>CAM03</strong> em contra-plano para a rua), acompanhados dos dois <strong>Menu Boards digitais</strong> desenhados sob medida pelo estúdio.
+            Três enquadramentos complementares do salão humanizado: <strong>CAM01</strong> a partir da entrada evidenciando o corredor livre de 2,65m e as mesas bistrô laterais, <strong>CAM02</strong> focado no balcão ripado e vitrine aquecida, e <strong>CAM03</strong> em contra-plano para a esquadria frontal.
           </p>
         </div>
 
@@ -542,11 +524,6 @@ export default function DeliciasDaAnaCaseStudy() {
           {renderMediaCard('atendimento-01', styles.aspectPortrait)}
           {renderMediaCard('atendimento-02', styles.aspectPortrait)}
           {renderMediaCard('atendimento-03', styles.aspectPortrait)}
-        </div>
-
-        <div className={styles.mediaGrid2} style={{ marginTop: '1.5rem' }}>
-          {renderMediaCard('cardapio-01', styles.aspectWide)}
-          {renderMediaCard('cardapio-02', styles.aspectWide)}
         </div>
       </section>
 
@@ -576,7 +553,7 @@ export default function DeliciasDaAnaCaseStudy() {
         </div>
       </section>
 
-      {/* LIGHTBOX EM TELA CHEIA PARA AS 19 LÂMINAS */}
+      {/* LIGHTBOX EM TELA CHEIA PARA AS 17 LÂMINAS */}
       {currentSlide && lightboxIndex !== null && (
         <div
           className="project-album-backdrop"
@@ -652,7 +629,7 @@ export default function DeliciasDaAnaCaseStudy() {
             <div
               className="project-album-thumbs"
               role="tablist"
-              aria-label="Miniaturas das 19 lâminas de Delícias da Ana"
+              aria-label="Miniaturas das 17 lâminas de Delícias da Ana"
             >
               {ALL_DELICIAS_SLIDES.map((slide, idx) => (
                 <button
