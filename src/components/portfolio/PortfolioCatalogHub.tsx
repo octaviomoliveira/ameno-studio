@@ -234,12 +234,14 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
     location: 'Curitiba, PR',
     year: 2024,
     description:
-      'Visualização completa de lançamento residencial vertical: portaria e embasamento, apartamentos tipo e garden, terraço técnico e complexo de lazer.',
+      'Visualização completa de lançamento residencial vertical: fotomontagem aérea de implantação, portaria e embasamento, apartamentos tipo e garden, varanda gourmet, terraço técnico e complexo de lazer.',
     cover: '/projects/central-parque.webp',
     renders: [
       { src: '/projects/central-parque.webp', label: 'Portaria, Embasamento & Torres Residenciais' },
+      { src: '/renders/central-parque-fotomontagem.webp', label: 'Fotomontagem Aérea — Implantação das Torres & Inserção Urbana' },
       { src: '/renders/central-parque-piscina.webp', label: 'Piscina & Deck Solarium' },
       { src: '/renders/central-parque-living.webp', label: 'Living Integrado — Interiores' },
+      { src: '/renders/central-parque-varanda-gourmet.webp', label: 'Varanda Gourmet com Churrasqueira, Bancada & Vista Panorâmica' },
       { src: '/renders/central-parque-garden.webp', label: 'Apartamento Garden Privativo' },
       { src: '/renders/central-parque-varanda.webp', label: 'Terraço Técnico & Área de Serviço com Veneziana Ripada' },
       { src: '/renders/quadra-esportes.webp', label: 'Quadra Poliesportiva' },
@@ -253,13 +255,17 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
     location: 'Capão Bonito, SP',
     year: 2024,
     description:
-      'Narrativa lumínica em dois tempos (golden hour e noturna) para portaria e fachada de condomínio, acompanhada das áreas de convívio e lazer externo.',
+      'Narrativa lumínica em dois tempos (golden hour e noturna) para portaria e fachada de condomínio, acompanhada de áreas internas decoradas (salão de festas e brinquedoteca lúdica) e complexo de lazer externo (gourmet, beach tennis, praça e horta com redário).',
     cover: '/projects/raizes-manha.webp',
     renders: [
       { src: '/projects/raizes-manha.webp', label: 'Golden Hour — Portaria & Fachada Entardecer' },
       { src: '/renders/raizes-fachada-noite.webp', label: 'Cenografia Lumínica Noturna' },
-      { src: '/renders/raizes-gourmet.webp', label: 'Churrasqueira & Espaço Gourmet' },
+      { src: '/renders/raizes-salao-festas.webp', label: 'Salão de Festas & Espaço Gourmet Integrado' },
+      { src: '/renders/raizes-brinquedoteca.webp', label: 'Brinquedoteca Lúdica — Painel Montanhas, Árvore Escultórica & Balanço' },
+      { src: '/renders/raizes-gourmet.webp', label: 'Churrasqueira & Espaço Gourmet Externo' },
+      { src: '/renders/raizes-beach-tennis.webp', label: 'Quadra de Areia & Beach Tennis ao Entardecer' },
       { src: '/renders/praca-externa.webp', label: 'Praça Externa & Convivência' },
+      { src: '/renders/raizes-horta.webp', label: 'Horta Comunitária em Tijolo Aparente & Redário Sob Árvores' },
     ],
   },
   {
@@ -300,10 +306,13 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
     location: 'São Paulo, SP',
     year: 2023,
     description:
-      'Estudo de transparência e volumetria minimalista para flagship de mobiliário assinado em São Paulo, destacando fachada branca com aberturas circulares e showroom térreo integrado à calçada.',
+      'Estudo de transparência, volumetria minimalista e interiores para flagship de mobiliário assinado em São Paulo: fachada branca com aberturas circulares, pátio interno com passarela, showroom com forro escultórico em colmeia e lounge circular com zenital.',
     cover: '/projects/estudio-bola.webp',
     renders: [
       { src: '/projects/estudio-bola.webp', label: 'Fachada Minimalista — Janelas Circulares & Vitrine Térrea' },
+      { src: '/renders/estudio-bola-patio.webp', label: 'Pátio Interno, Passarela & Fachada Posterior com Aberturas Circulares' },
+      { src: '/renders/estudio-bola-showroom.webp', label: 'Showroom Principal — Forro Escultórico em Colmeia & Piso em Pedra Portuguesa' },
+      { src: '/renders/estudio-bola-lounge.webp', label: 'Lounge Circular — Poltronas Terracota, Parede Curva em Mármore & Zenital' },
     ],
   },
   {
