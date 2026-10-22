@@ -10,18 +10,28 @@ gsap.registerPlugin(ScrollTrigger)
 
 const HOME_PROJECTS = [
   {
-    slug: 'estudio-bola',
+    slug: 'delicias-da-ana',
     num: '01',
+    title: 'Delícias da Ana',
+    category: 'Arquitetura Comercial · 23 Lâminas',
+    location: 'Retrofit, Fluxo & Cozinha Inox (2,65m × 25,00m)',
+    year: '2025',
+    coverUrl: '/projects/autorais/delicias-da-ana/fachada-limpa.webp',
+    href: '/portfolio/delicias-da-ana',
+    featured: true,
+  },
+  {
+    slug: 'estudio-bola',
+    num: '02',
     title: 'Estúdio Bola',
     category: 'Comercial',
     location: 'São Paulo, SP',
     year: '2023',
     coverUrl: '/projects/estudio-bola.webp',
-    featured: true,
   },
   {
     slug: 'central-parque',
-    num: '02',
+    num: '03',
     title: 'Central Parque',
     category: 'Residencial',
     location: 'Curitiba, PR',
@@ -30,7 +40,7 @@ const HOME_PROJECTS = [
   },
   {
     slug: 'raizes',
-    num: '03',
+    num: '04',
     title: 'Raízes',
     category: 'Residencial',
     location: 'Capão Bonito, SP',
@@ -39,21 +49,12 @@ const HOME_PROJECTS = [
   },
   {
     slug: 'goya',
-    num: '04',
+    num: '05',
     title: 'Goya',
     category: 'Residencial',
     location: 'São Paulo, SP',
     year: '2024',
     coverUrl: '/projects/goya-gourmet.webp',
-  },
-  {
-    slug: 'moradas-do-bosque',
-    num: '05',
-    title: 'Moradas do Bosque',
-    category: 'Condomínio',
-    location: 'Campinas, SP',
-    year: '2023',
-    coverUrl: '/projects/moradas-bosque.webp',
   },
 ]
 
@@ -129,7 +130,7 @@ export default function HomePortfolioTeaser() {
     >
       <div className="home-portfolio-topline">
         <span>03 / PORTFÓLIO & ACERVO 3D</span>
-        <span>05 PROJETOS · 22 RENDERS · 29 MODELOS 3D INTERATIVOS</span>
+        <span>08 PROJETOS AUTORAIS · 07 EMPREENDIMENTOS ARCHVIZ · 29 MODELOS 3D INTERATIVOS</span>
       </div>
 
       <div className="home-showcase-wrap">
@@ -148,13 +149,13 @@ export default function HomePortfolioTeaser() {
 
           <div className="home-showcase-stats" data-portfolio-teaser-text>
             <Link href="/portfolio#projetos" className="home-stat-card">
-              <span className="home-stat-num">05</span>
-              <strong className="home-stat-label">Projetos em Cena</strong>
+              <span className="home-stat-num">08</span>
+              <strong className="home-stat-label">Projetos Autorais</strong>
               <span className="home-stat-Action">Ver projetos →</span>
             </Link>
             <Link href="/portfolio#galeria-renders" className="home-stat-card">
-              <span className="home-stat-num">22</span>
-              <strong className="home-stat-label">Renders Autorais</strong>
+              <span className="home-stat-num">07</span>
+              <strong className="home-stat-label">Empreendimentos ArchViz</strong>
               <span className="home-stat-Action">Abrir mural →</span>
             </Link>
             <Link href="/portfolio#assets-3d" className="home-stat-card home-stat-card--accent">
@@ -170,7 +171,7 @@ export default function HomePortfolioTeaser() {
           {HOME_PROJECTS.map((project, idx) => (
             <Link
               key={project.slug}
-              href={`/portfolio#${project.slug}`}
+              href={project.href ?? `/portfolio#${project.slug}`}
               className={`home-project-card${project.featured ? ' home-project-card--featured' : ''}`}
               data-portfolio-card
             >
@@ -202,7 +203,7 @@ export default function HomePortfolioTeaser() {
                     <p className="home-project-card-loc">{project.location}</p>
                   </div>
                   <span className="home-project-card-cta" aria-hidden="true">
-                    Abrir projeto ↗
+                    {project.href ? 'Ler dossiê completo ↗' : 'Abrir projeto ↗'}
                   </span>
                 </div>
               </div>

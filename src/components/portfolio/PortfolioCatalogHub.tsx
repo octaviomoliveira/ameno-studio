@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import AssetsSection from './AssetsSection'
@@ -13,7 +14,7 @@ type RenderSlide = {
   label: string
 }
 
-type AutoralCategory = 'Residencial' | 'Comercial & Gastronomia' | 'Saúde & Corporativo'
+type AutoralCategory = 'Residencial' | 'Comercial & Gastronomia'
 
 type AutoralProject = {
   slug: string
@@ -25,6 +26,7 @@ type AutoralProject = {
   scope: string[]
   description: string
   cover: string
+  caseStudyUrl?: string
   slides: RenderSlide[]
 }
 
@@ -59,16 +61,16 @@ const AUTORAIS_PROJECTS: AutoralProject[] = [
       { src: '/projects/autorais/gustavo-lira/jardim-inverno.webp', label: 'Jardim de Inverno & Luz Zenital' },
       { src: '/projects/autorais/gustavo-lira/suite.webp', label: 'Suíte Master — Cabeceira & Iluminação Indireta' },
       { src: '/projects/autorais/gustavo-lira/closet.webp', label: 'Closet Planejado — Marcenaria Sob Medida' },
-      { src: '/projects/autorais/gustavo-lira/quarto.webp', label: 'Dormitório Solteiro & Bancada de Estudos' },
+      { src: '/projects/autorais/gustavo-lira/quarto.webp', label: 'Dormitório Duplo Solteiro & Painel de TV Marmorizado' },
       { src: '/projects/autorais/gustavo-lira/banho-suite.webp', label: 'Banheiro da Suíte — Paginação & Nicho Iluminado' },
       { src: '/projects/autorais/gustavo-lira/banho-social.webp', label: 'Banheiro Social — Bancada Esculpida' },
-      { src: '/projects/autorais/gustavo-lira/fundos.webp', label: 'Área Externa Posterior & Lavanderia' },
+      { src: '/projects/autorais/gustavo-lira/fundos.webp', label: 'Varanda Lounge Posterior & Deck Amadeirado' },
     ],
   },
   {
-    slug: 'felipe-lira',
-    title: 'Residência Felipe Lira',
-    subtitle: 'Casa Lira 02 · Estudo Volumétrico & Interiores',
+    slug: 'residencia-lirban-modelo-01',
+    title: 'Residência Lirban Modelo 01',
+    subtitle: 'Linha Lirban · Estudo Volumétrico & Interiores',
     category: 'Residencial',
     location: 'São Paulo, Brasil',
     year: 2025,
@@ -91,65 +93,82 @@ const AUTORAIS_PROJECTS: AutoralProject[] = [
   {
     slug: 'bom-jesus-blindados',
     title: 'Bom Jesus Blindados',
-    subtitle: 'Cabine Técnica PPF & Totem Multimídia',
+    subtitle: 'Box Técnico PPF & Painel Multimídia',
     category: 'Comercial & Gastronomia',
     location: 'Brasil',
     year: 2025,
-    scope: ['Arquitetura Técnica', 'Forro & Iluminação Dimerizável', 'Totem Multimídia', 'Detalhamento'],
+    scope: ['Arquitetura Técnica', 'Forro Tensionado Iluminado', 'Painel Multimídia F1', 'Detalhamento'],
     description:
-      'Ambiente técnico de precisão para aplicação de PPF e estética automotiva. Projeto executivo de forro geométrico, matriz luminotécnica com circuitos dimerizáveis para inspeção de superfície e totem de vídeo integrado.',
+      'Ambiente técnico de precisão para aplicação de PPF e estética automotiva. Projeto executivo com forro tensionado iluminado, matriz luminotécnica para inspeção de pintura, bancada técnica em mármore e painel multimídia em cimento queimado.',
     cover: '/projects/autorais/bom-jesus-blindados/ig01.webp',
     slides: [
-      { src: '/projects/autorais/bom-jesus-blindados/ig01.webp', label: 'Vista Geral IG01 — Cabine PPF & Iluminação Hexagonal' },
-      { src: '/projects/autorais/bom-jesus-blindados/ig03.webp', label: 'Vista IG03 — Totem Multimídia & Bancada Técnica' },
-      { src: '/projects/autorais/bom-jesus-blindados/ig04.webp', label: 'Vista IG04 — Enquadramento Lateral & Forro Técnico' },
-      { src: '/projects/autorais/bom-jesus-blindados/ig05.webp', label: 'Vista IG05 — Perspectiva Posterior & Fechamento em Vidro' },
-      { src: '/projects/autorais/bom-jesus-blindados/ig06.webp', label: 'Vista IG06 — Estudo de Dimerização & Cenografia Lumínica' },
+      { src: '/projects/autorais/bom-jesus-blindados/ig01.webp', label: 'Vista Geral IG01 — Box de Aplicação PPF & Forro Tensionado Iluminado' },
+      { src: '/projects/autorais/bom-jesus-blindados/ig03.webp', label: 'Vista IG03 — Bancada Técnica em Mármore, Apoio Hídrico & Quadros F1' },
+      { src: '/projects/autorais/bom-jesus-blindados/ig04.webp', label: 'Vista IG04 — Painel Multimídia F1 em Cimento Queimado & Moldura Metálica' },
+      { src: '/projects/autorais/bom-jesus-blindados/ig05.webp', label: 'Vista IG05 — Enquadramento Frontal, Divisória em Vidro & Showroom' },
+      { src: '/projects/autorais/bom-jesus-blindados/ig06.webp', label: 'Vista IG06 — Perspectiva Superior Box 1 & Matriz Luminotécnica Completa' },
     ],
   },
   {
     slug: 'delicias-da-ana',
     title: 'Delícias da Ana',
-    subtitle: 'Arquitetura Comercial, Atendimento & Cozinha',
+    subtitle: 'Retrofit Comercial, Fluxo Operacional & Cozinha Industrial (2,65m × 25,00m)',
     category: 'Comercial & Gastronomia',
     location: 'Brasil',
     year: 2025,
-    scope: ['Arquitetura Comercial', 'Fluxo de Cozinha', 'Identidade Espacial', 'Planta Humanizada'],
+    scope: [
+      'Levantamento In Loco',
+      'Retrofit de Fachada (9,00m)',
+      'Planta Cotada (Ameno Cotas)',
+      'Salão & Menu Boards',
+      'Cozinha Industrial em Inox',
+    ],
     description:
-      'Projeto completo para loja gastronômica unindo fachada comercial convidativa, salão de atendimento com balcão expositor, planta humanizada e cozinha de produção dimensionada segundo normas sanitárias.',
+      'Dossiê completo de reforma comercial em lote estreito de 2,65m × 25,00m: diagnóstico de campo com cotas in loco, retrofit do edifício de 3 pavimentos, planta humanizada cotada via plugin Ameno Cotas, salão de atendimento (7,45m), cozinha em inox (5,65m) e antecâmara sanitária (2,75m).',
     cover: '/projects/autorais/delicias-da-ana/atendimento-01.webp',
+    caseStudyUrl: '/portfolio/delicias-da-ana',
     slides: [
-      { src: '/projects/autorais/delicias-da-ana/atendimento-01.webp', label: 'Salão de Atendimento & Balcão Principal' },
-      { src: '/projects/autorais/delicias-da-ana/fachada.webp', label: 'Fachada Comercial & Acesso Urbano' },
-      { src: '/projects/autorais/delicias-da-ana/atendimento-02.webp', label: 'Área de Mesas & Comunicação Visual' },
-      { src: '/projects/autorais/delicias-da-ana/atendimento-03.webp', label: 'Vista do Caixa & Vitrine Aquecida' },
-      { src: '/projects/autorais/delicias-da-ana/planta-humanizada.webp', label: 'Planta Humanizada — Fluxo Atendimento & Produção' },
-      { src: '/projects/autorais/delicias-da-ana/cozinha-01.webp', label: 'Cozinha Industrial — Bancadas em Inox & Cocção' },
-      { src: '/projects/autorais/delicias-da-ana/cozinha-02.webp', label: 'Área de Preparo & Exaustão Técnica' },
-      { src: '/projects/autorais/delicias-da-ana/cozinha-03.webp', label: 'Lavagem & Apoio Operacional' },
-      { src: '/projects/autorais/delicias-da-ana/antecamara.webp', label: 'Antecâmara & Higienização' },
-      { src: '/projects/autorais/delicias-da-ana/banheiro.webp', label: 'Sanitário Adaptado PNE' },
+      { src: '/projects/autorais/delicias-da-ana/atendimento-01.webp', label: '01 · Salão de Atendimento & Eixo Central (CAM01)' },
+      { src: '/projects/autorais/delicias-da-ana/atendimento-02.webp', label: '02 · Balcão Ripado, PDV & Vitrine Aquecida (CAM02)' },
+      { src: '/projects/autorais/delicias-da-ana/atendimento-03.webp', label: '03 · Contra-Plano do Balcão para a Esquadria de Entrada (CAM03)' },
+      { src: '/projects/autorais/delicias-da-ana/planta-humanizada.webp', label: '04 · Planta Humanizada Cotada (2,65m × 25,00m) — Plugin Ameno Cotas' },
+      { src: '/projects/autorais/delicias-da-ana/fachada-limpa.webp', label: '05 · Retrofit Integral do Edifício de 3 Pavimentos (Vista Limpa · R01)' },
+      { src: '/projects/autorais/delicias-da-ana/fachada.webp', label: '06 · Elevação Perspectivada com Cotas Executivas — Ameno Cotas (R02)' },
+      { src: '/projects/autorais/delicias-da-ana/fachada-terreo-zoom.webp', label: '07 · Close-Up Térreo Comercial — Delícias da Ana & Barbearia Pais & Filhos' },
+      { src: '/projects/autorais/delicias-da-ana/cozinha-01.webp', label: '08 · Cozinha Industrial em Inox — Coifa, Fogão & Linha Fria (CAM02)' },
+      { src: '/projects/autorais/delicias-da-ana/cozinha-02.webp', label: '09 · Estação de Fritura, Exaustão & Bancada em L (CAM03)' },
+      { src: '/projects/autorais/delicias-da-ana/cozinha-03.webp', label: '10 · Linha Fria (Freezer Duplo + Refrigerador Inox) & Acesso à Antecâmara (CAM04)' },
+      { src: '/projects/autorais/delicias-da-ana/cozinha-04-eixo.webp', label: '11 · Eixo Operacional — Visada da Cozinha para a Vitrine & Salão (CAM05)' },
+      { src: '/projects/autorais/delicias-da-ana/antecamara.webp', label: '12 · Antecâmara Sanitária & Armário Piso-Teto de Insumos (CAM01)' },
+      { src: '/projects/autorais/delicias-da-ana/banheiro.webp', label: '13 · Sanitário com Bancada Esculpida em Pedra & Luz Indireta (CAM01)' },
+      { src: '/projects/autorais/delicias-da-ana/cardapio-01.webp', label: '14 · Design de Menu Board 01 — Linha de Coxinhas & Combos' },
+      { src: '/projects/autorais/delicias-da-ana/cardapio-02.webp', label: '15 · Design de Menu Board 02 — Salgados, Bebidas & Sobremesas' },
+      { src: '/projects/autorais/delicias-da-ana/antes-fachada-geral.webp', label: '16 · Antes da Reforma — Fachada Original ("Recanto do Sabor")' },
+      { src: '/projects/autorais/delicias-da-ana/antes-fachada-levantamento.webp', label: '17 · Levantamento Métrico de Fachada In Loco (2,67m | 2,86m | 2,81m)' },
+      { src: '/projects/autorais/delicias-da-ana/antes-salao-interno.webp', label: '18 · Antes da Reforma — Corredor Interno Estreito (2,65m) com Arco' },
+      { src: '/projects/autorais/delicias-da-ana/antes-fundos-levantamento.webp', label: '19 · Antes da Reforma — Levantamento Métrico da Área Úmida de Fundos' },
     ],
   },
   {
     slug: 'barbearia-pais-e-filhos',
     title: 'Barbearia Pais & Filhos',
-    subtitle: 'Arquitetura Comercial & Interiores',
+    subtitle: 'Arquitetura Comercial, Estação Kids & Interiores',
     category: 'Comercial & Gastronomia',
     location: 'Brasil',
     year: 2025,
-    scope: ['Levantamento BIM', 'Reforma Comercial', 'Luminotécnica', 'Marcenaria'],
+    scope: ['Levantamento BIM', 'Reforma Comercial', 'Estação Kids', 'Luminotécnica & Marcenaria'],
     description:
-      'Reforma comercial com identidade masculina contemporânea. Bancadas de corte em marcenaria escura e serralheria, iluminação linear de alto IRC para precisão de corte, lounge de espera com café, lavatório e copa.',
+      'Reforma comercial com identidade contemporânea: bancadas de corte com espelhos em arco retroiluminados, luminárias anelares suspensas, estação kids temática com cadeira Porsche e videogame, setor de lavatório, copa com lounge de café e sanitário.',
     cover: '/projects/autorais/barbearia-pais-e-filhos/salao-01.webp',
     slides: [
-      { src: '/projects/autorais/barbearia-pais-e-filhos/salao-01.webp', label: 'Salão Principal — Estações de Corte & Iluminação Linear' },
-      { src: '/projects/autorais/barbearia-pais-e-filhos/salao-02.webp', label: 'Perspectiva Geral — Atendimento & Espera' },
-      { src: '/projects/autorais/barbearia-pais-e-filhos/salao-03.webp', label: 'Enquadramento Central das Cadeiras & Espelhos' },
-      { src: '/projects/autorais/barbearia-pais-e-filhos/bancadas.webp', label: 'Detalhe das Bancadas & Marcenaria Técnica' },
-      { src: '/projects/autorais/barbearia-pais-e-filhos/espera.webp', label: 'Recepção, Lounge de Espera & Café' },
-      { src: '/projects/autorais/barbearia-pais-e-filhos/lavatorio.webp', label: 'Setor de Lavatório & Apoio' },
-      { src: '/projects/autorais/barbearia-pais-e-filhos/copa.webp', label: 'Copa Interna & Apoio de Equipe' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/salao-01.webp', label: 'Salão Principal & Recepção — Vista Geral a partir da Entrada (CAM01)' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/salao-02.webp', label: 'Eixo Central de Atendimento & Nicho em Arco Ripado ao Fundo (CAM02)' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/bancadas.webp', label: 'Simetria Frontal — Estações de Corte & Espelhos em Arco Retroiluminados (CAM03)' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/salao-03.webp', label: 'Perspectiva Diagonal das Estações de Corte & Luminárias Anelares LED (CAM04)' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/estacao-kids.webp', label: 'Estação Kids — Poltrona Infantil Porsche Boxster, Console PS4 & TV Gamer (CAM05)' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/lavatorio.webp', label: 'Setor de Lavatório & Contra-Plano para o Salão Principal (CAM06)' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/copa.webp', label: 'Copa & Lounge de Café — Marcenaria, Nespresso, Purificador & Cervejeira (CAM07)' },
+      { src: '/projects/autorais/barbearia-pais-e-filhos/banheiro.webp', label: 'Sanitário — Espelho em Arco Retroiluminado, Luz Indireta & Marcenaria Piso-Teto (CAM08)' },
     ],
   },
   {
@@ -170,39 +189,41 @@ const AUTORAIS_PROJECTS: AutoralProject[] = [
   },
   {
     slug: 'clinica-dra-michelle',
-    title: 'Clínica Dra. Michelle',
-    subtitle: 'Reforma Comercial, Fachada & Consultório',
-    category: 'Saúde & Corporativo',
+    title: 'Residência Dra. Michelle',
+    subtitle: 'Retrofit de Fachada, Pórtico Iluminado & Living',
+    category: 'Residencial',
     location: 'Brasil',
     year: 2024,
-    scope: ['Projeto Executivo (R01–R13)', 'Fachada & Acessibilidade', 'Interiores de Saúde', 'Marcenaria'],
+    scope: ['Projeto Executivo (R01–R13)', 'Retrofit de Fachada', 'Painel Ripado & Cobogó', 'Living & Estante'],
     description:
-      'Reforma arquitetônica integral com renovação da fachada externa, rampa e escada de acesso, paginação externa, projeto de forro, pontos elétricos/hidráulicos e consultório com marcenaria curva e iluminação difusa.',
+      'Reforma arquitetônica residencial com requalificação da fachada frontal, pórtico de garagem com iluminação em sanca LED, elemento vazado em cobogó amarelo, painel amadeirado em espinha-de-peixe com porta mimetizada e sala de estar integrada com estante sob medida.',
     cover: '/projects/autorais/clinica-dra-michelle/fachada-01.webp',
     slides: [
-      { src: '/projects/autorais/clinica-dra-michelle/fachada-01.webp', label: 'Fachada Externa — Acesso Principal & Paisagismo' },
-      { src: '/projects/autorais/clinica-dra-michelle/fachada-02.webp', label: 'Fachada Externa — Perspectiva Urbana' },
-      { src: '/projects/autorais/clinica-dra-michelle/consultorio-01.webp', label: 'Consultório — Atendimento & Marcenaria Sob Medida' },
-      { src: '/projects/autorais/clinica-dra-michelle/consultorio-02.webp', label: 'Consultório — Bancada Clínica & Iluminação Indireta' },
-      { src: '/projects/autorais/clinica-dra-michelle/consultorio-03.webp', label: 'Consultório — Vista Geral do Ambiente' },
+      { src: '/projects/autorais/clinica-dra-michelle/fachada-01.webp', label: 'Fachada Residencial Diurna — Pórtico, Cobogó Amarelo & Paisagismo' },
+      { src: '/projects/autorais/clinica-dra-michelle/fachada-noite.webp', label: 'Fachada Noturna — Iluminação Linear em Sanca no Pórtico & Beiral' },
+      { src: '/projects/autorais/clinica-dra-michelle/fachada-portico.webp', label: 'Detalhe Noturno do Pórtico — Revestimento em Pedra, Cobogó & Sanca LED' },
+      { src: '/projects/autorais/clinica-dra-michelle/fachada-02.webp', label: 'Garagem & Acesso Social — Painel Ripado Espinha-de-Peixe & Cobogó' },
+      { src: '/projects/autorais/clinica-dra-michelle/consultorio-01.webp', label: 'Sala de Estar — Sofá em L, Poltrona Platner & Estante em Marcenaria' },
+      { src: '/projects/autorais/clinica-dra-michelle/consultorio-02.webp', label: 'Living — Estante Preta e Amadeirada Sob Medida & Iluminação Difusa' },
+      { src: '/projects/autorais/clinica-dra-michelle/consultorio-03.webp', label: 'Living — Vista Geral do Estar, Tapete Orgânico & Acesso Social' },
     ],
   },
   {
     slug: 'comedoria-banheiros',
-    title: 'Comedoria — Sanitários Corporativos',
-    subtitle: 'Arquitetura Corporativa & Detalhamento Executivo',
-    category: 'Saúde & Corporativo',
+    title: 'Comedoria — Lavabo, Hall & Adega',
+    subtitle: 'Arquitetura Comercial, Sanitários & Adega Sob Escada',
+    category: 'Comercial & Gastronomia',
     location: 'Brasil',
     year: 2024,
-    scope: ['Layout & Paginação', 'Bancadas Esculpidas', 'Detalhamento de Mobiliário'],
+    scope: ['Lavabo & Bancada Esculpida', 'Hall Neon & Iluminação', 'Adega Climatizada Sob Escada'],
     description:
-      'Projeto executivo de bateria de sanitários masculinos, femininos e hall de lavatórios para operação corporativa e comercial. Especificação de divisórias de alto desempenho, cubas esculpidas e espelhos retroiluminados.',
+      'Arquitetura de interiores para restaurante e espaço gastronômico: lavabo com cuba esculpida em pedra preta e painel ripado diagonal, hall de acesso em cimento queimado com letreiro neon "Comedoria" e adega climatizada sob escada com dupla cave e expositor de rolhas.',
     cover: '/projects/autorais/comedoria-banheiros/vista-01.webp',
     slides: [
-      { src: '/projects/autorais/comedoria-banheiros/vista-01.webp', label: 'Hall de Lavatórios — Bancada Contínua & Espelhos' },
-      { src: '/projects/autorais/comedoria-banheiros/vista-02.webp', label: 'Bateria de Cabines & Iluminação Linear' },
-      { src: '/projects/autorais/comedoria-banheiros/vista-03.webp', label: 'Detalhe das Cubas & Torneiras de Mesa' },
-      { src: '/projects/autorais/comedoria-banheiros/vista-04.webp', label: 'Circulação & Paginação de Revestimentos' },
+      { src: '/projects/autorais/comedoria-banheiros/vista-01.webp', label: 'Lavabo — Bancada Esculpida em Pedra Preta, Painel Ripado Diagonal & Espelho LED' },
+      { src: '/projects/autorais/comedoria-banheiros/vista-02.webp', label: 'Hall de Acesso — Parede em Cimento Queimado, Arandelas Industriais & Neon "Comedoria"' },
+      { src: '/projects/autorais/comedoria-banheiros/vista-03.webp', label: 'Circulação & Hall dos Sanitários — Cimento Queimado & Iluminação de Destaque' },
+      { src: '/projects/autorais/comedoria-banheiros/vista-04.webp', label: 'Adega Climatizada Sob Escada — Dupla Cave Danby, Expositor de Rolhas & Guarda-Corpo em Vidro' },
     ],
   },
 ]
@@ -215,15 +236,14 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
     location: 'Curitiba, PR',
     year: 2024,
     description:
-      'Visualização completa de lançamento residencial vertical: implantação aérea, fachada principal, apartamentos tipo e garden, varanda gourmet e complexo de lazer.',
+      'Visualização completa de lançamento residencial vertical: portaria e embasamento, apartamentos tipo e garden, terraço técnico e complexo de lazer.',
     cover: '/projects/central-parque.webp',
     renders: [
-      { src: '/projects/central-parque.webp', label: 'Implantação & Embasamento Residencial' },
-      { src: '/renders/central-parque-fachada.webp', label: 'Fachada Principal Residencial' },
-      { src: '/renders/central-parque-varanda.webp', label: 'Varanda Gourmet Integrada' },
+      { src: '/projects/central-parque.webp', label: 'Portaria, Embasamento & Torres Residenciais' },
       { src: '/renders/central-parque-piscina.webp', label: 'Piscina & Deck Solarium' },
       { src: '/renders/central-parque-living.webp', label: 'Living Integrado — Interiores' },
       { src: '/renders/central-parque-garden.webp', label: 'Apartamento Garden Privativo' },
+      { src: '/renders/central-parque-varanda.webp', label: 'Terraço Técnico & Área de Serviço com Veneziana Ripada' },
       { src: '/renders/quadra-esportes.webp', label: 'Quadra Poliesportiva' },
       { src: '/renders/bicicletario.webp', label: 'Bicicletário & Mobilidade' },
     ],
@@ -235,11 +255,10 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
     location: 'Capão Bonito, SP',
     year: 2024,
     description:
-      'Narrativa lumínica em três tempos (manhã, golden hour e noturna) para portaria e fachada de condomínio, acompanhada das áreas de convívio e lazer externo.',
+      'Narrativa lumínica em dois tempos (golden hour e noturna) para portaria e fachada de condomínio, acompanhada das áreas de convívio e lazer externo.',
     cover: '/projects/raizes-manha.webp',
     renders: [
-      { src: '/projects/raizes-manha.webp', label: 'Luz da Manhã — Fachada Principal' },
-      { src: '/renders/raizes-fachada-dia.webp', label: 'Golden Hour — Fachada Entardecer' },
+      { src: '/projects/raizes-manha.webp', label: 'Golden Hour — Portaria & Fachada Entardecer' },
       { src: '/renders/raizes-fachada-noite.webp', label: 'Cenografia Lumínica Noturna' },
       { src: '/renders/raizes-gourmet.webp', label: 'Churrasqueira & Espaço Gourmet' },
       { src: '/renders/praca-externa.webp', label: 'Praça Externa & Convivência' },
@@ -268,11 +287,10 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
     location: 'Campinas, SP',
     year: 2023,
     description:
-      'Visualização arquitetônica de condomínio fechado em meio à vegetação nativa, destacando alameda principal, clube aquático e quadras de beach tennis.',
+      'Visualização arquitetônica de condomínio fechado em meio à vegetação nativa, destacando clube aquático com deck solarium e quadras de beach tennis.',
     cover: '/projects/moradas-bosque.webp',
     renders: [
-      { src: '/projects/moradas-bosque.webp', label: 'Alameda & Implantação do Condomínio' },
-      { src: '/renders/moradas-piscina.webp', label: 'Piscina & Lazer do Condomínio' },
+      { src: '/projects/moradas-bosque.webp', label: 'Piscina, Deck Solarium & Playground ao Fundo' },
       { src: '/renders/moradas-beachtennis.webp', label: 'Complexo Esportivo Beach Tennis' },
     ],
   },
@@ -283,11 +301,10 @@ const ARCHVIZ_DEVELOPMENTS: ArchvizDevelopment[] = [
     location: 'São Paulo, SP',
     year: 2023,
     description:
-      'Atmosfera noturna e estudo de transparência para vitrine de mobiliário assinado em São Paulo, valorizando o contraste entre concreto aparente e luz quente interna.',
+      'Estudo de transparência e volumetria minimalista para flagship de mobiliário assinado em São Paulo, destacando fachada branca com aberturas circulares e showroom térreo integrado à calçada.',
     cover: '/projects/estudio-bola.webp',
     renders: [
-      { src: '/projects/estudio-bola.webp', label: 'Fachada Noturna & Vitrine Principal' },
-      { src: '/renders/estudio-bola-fachada.webp', label: 'Fachada Comercial — Vista Urbana' },
+      { src: '/projects/estudio-bola.webp', label: 'Fachada Minimalista — Janelas Circulares & Vitrine Térrea' },
     ],
   },
   {
@@ -351,7 +368,6 @@ const AUTORAL_FILTERS: ('Todos' | AutoralCategory)[] = [
   'Todos',
   'Residencial',
   'Comercial & Gastronomia',
-  'Saúde & Corporativo',
 ]
 
 type LightboxState = {
@@ -644,7 +660,29 @@ export default function PortfolioCatalogHub() {
                       ))}
                     </div>
 
-                    <div className="portfolio-arch-card-footer">
+                    <div
+                      className="portfolio-arch-card-footer"
+                      style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}
+                    >
+                      {project.caseStudyUrl && (
+                        <Link
+                          href={project.caseStudyUrl}
+                          className="portfolio-arch-open-btn"
+                          style={{
+                            background: 'var(--red)',
+                            borderColor: 'var(--red)',
+                            color: 'var(--white)',
+                            textDecoration: 'none',
+                          }}
+                        >
+                          <span>
+                            LER DOSSIÊ TÉCNICO COMPLETO ({String(project.slides.length).padStart(2, '0')} LÂMINAS)
+                          </span>
+                          <em aria-hidden="true" style={{ color: 'var(--white)' }}>
+                            ↗
+                          </em>
+                        </Link>
+                      )}
                       <button
                         type="button"
                         className="portfolio-arch-open-btn"
@@ -657,7 +695,11 @@ export default function PortfolioCatalogHub() {
                           })
                         }
                       >
-                        <span>ABRIR PROJETO COMPLETO ({String(project.slides.length).padStart(2, '0')} IMAGENS)</span>
+                        <span>
+                          {project.caseStudyUrl
+                            ? `ABRIR ÁLBUM RÁPIDO (${String(project.slides.length).padStart(2, '0')} IMAGENS)`
+                            : `ABRIR PROJETO COMPLETO (${String(project.slides.length).padStart(2, '0')} IMAGENS)`}
+                        </span>
                         <em aria-hidden="true">↗</em>
                       </button>
                     </div>
