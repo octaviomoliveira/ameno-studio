@@ -1,0 +1,10 @@
+.experience{padding-top:72px;background:#111312;width:100%;}
+.frame{display:block;width:100%;height:min(56.25vw,calc(100svh - 72px));border:0;background:#111312;color-scheme:dark;}
+.introduction{padding:clamp(2.5rem,7vw,7rem) 6vw;background:var(--black,#171918);border-top:1px solid #e8e8e020;}
+.kicker{font-family:var(--font-ibm-plex-mono),monospace;font-size:.65rem;letter-spacing:.16em;color:var(--white,#e8e8e0);margin-bottom:2rem;}
+.introduction h1{font-size:clamp(2.5rem,6vw,6.5rem);font-weight:500;line-height:1.03;letter-spacing:-.05em;margin:0;}
+.introduction em{color:#df4836;font-weight:400;}
+.caption{max-width:36rem;font-size:1rem;line-height:1.6;opacity:.7;margin:1.75rem 0;}
+.actions{display:flex;gap:12px;flex-wrap:wrap;}
+@media(max-width:700px){.frame{height:56.25vw;min-height:0}.introduction{padding:2.25rem 6vw 3rem}.kicker{margin-bottom:1.25rem;font-size:.6rem}.actions{gap:10px}.actions a{min-height:44px}.caption{font-size:.9rem}}
+@media(orientation:landscape) and (max-height:600px){.frame{height:calc(100svh - 72px)}}
