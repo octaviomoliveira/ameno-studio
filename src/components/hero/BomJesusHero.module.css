@@ -8,3 +8,21 @@
 .actions{display:flex;gap:12px;flex-wrap:wrap;}
 @media(max-width:700px){.frame{height:56.25vw;min-height:0}.introduction{padding:2.25rem 6vw 3rem}.kicker{margin-bottom:1.25rem;font-size:.6rem}.actions{gap:10px}.actions a{min-height:44px}.caption{font-size:.9rem}}
 @media(orientation:landscape) and (max-height:600px){.frame{height:calc(100svh - 72px)}}
+
+/* Intro belongs to the overview; navigation remains clickable below it. */
+.experience{position:relative}
+.introduction{position:absolute;inset:72px 0 0;padding:clamp(40px,5vw,80px) 6vw 100px;border:0;background:linear-gradient(90deg,#000b,transparent 85%);pointer-events:none;display:flex;flex-direction:column;justify-content:center;transition:opacity .25s ease,visibility .25s ease}
+.introduction[data-visible=false]{opacity:0;visibility:hidden}
+.introduction h1{font-size:clamp(30px,5.4vw,88px);color:#fff;text-shadow:0 2px 24px #0005}
+.introduction .kicker{margin:0 0 1.2rem}
+.introduction .caption{margin:1.1rem 0;color:#fff;opacity:.9}
+.introduction .actions{pointer-events:auto}
+@media(max-width:700px){
+.introduction{padding:18px 4% 58px;justify-content:center}
+.introduction h1{font-size:clamp(22px,6.3vw,40px);line-height:1.02}
+.introduction .kicker,.introduction .caption{display:none}
+.introduction .actions{gap:6px;margin-top:8px}
+.introduction .actions a{padding:7px 9px;min-height:44px;font-size:8px;letter-spacing:.04em;gap:5px}
+}
+@media(orientation:landscape) and (max-height:600px){.introduction{padding:24px 6vw 80px}.introduction h1{font-size:clamp(24px,5vw,44px)}.introduction .kicker,.introduction .caption{display:none}.introduction .actions{margin-top:10px}.introduction .actions a{min-height:44px;padding:8px 14px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){.introduction{transition:none}}
