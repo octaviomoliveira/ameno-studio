@@ -25,7 +25,7 @@ export default function BomJesusHero() {
   return (
     <>
       <section className={styles.experience} aria-label="Explore a cabine Bom Jesus">
-        <iframe ref={frame} className={styles.frame} src="/experiences/bom-jesus/index.html?v=ameno-home2"
+        <iframe ref={frame} className={styles.frame} src="/experiences/bom-jesus/index.html?v=ameno-r035"
           title="Cabine Bom Jesus — ambientes, materiais e iluminação" allow="fullscreen" allowFullScreen />
       <section className={styles.introduction} data-visible={overview} aria-hidden={!overview} inert={!overview} aria-labelledby="studio-title">
         <p className={styles.kicker}>AMENO.STUDIO / RECIFE · BRASIL</p>

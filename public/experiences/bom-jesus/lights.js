@@ -1,1 +1,11 @@
-Object.assign(clips,{"LIGHT_welcome": {"src": "Boas_Vindas_FHD24_128.mp4?v=topaz4k60v1", "poster": "LIGHT_DEMO_welcome_4k.jpg", "start": "light_welcome_start.jpg", "label": "Boas-vindas"}, "LIGHT_linear": {"src": "LIGHT_L01_FHD24_128.mp4?v=topaz4k60v1", "poster": "LIGHT_L01_4k.jpg", "start": "light_linear_start.jpg", "label": "Acender lineares"}, "LIGHT_ceiling": {"src": "LIGHT_L03_FHD24_128.mp4?v=topaz4k60v1", "poster": "LIGHT_L03_4k.jpg", "start": "light_ceiling_start.jpg", "label": "Acender telas"}, "LIGHT_dimming": {"src": "Telas_Dimerizacao_FHD24_128.mp4?v=topaz4k60v1", "poster": "LIGHT_DEMO_welcome_4k.jpg", "start": "light_dimming_start.jpg", "label": "Dimerizar telas"}, "LIGHT_boxes": {"src": "LIGHT_DEMO_cascade_FHD24_128.mp4?v=topaz4k60v1", "poster": "LIGHT_DEMO_cascade_4k.jpg", "start": "light_boxes_start.jpg", "label": "Acender box por box"}});routes.iluminacao=["LIGHT_welcome", "LIGHT_linear", "LIGHT_ceiling", "LIGHT_dimming", "LIGHT_boxes"];
+const lightingLabels = {
+  LIGHT_DEMO_welcome: 'Boas-vindas e dimerização',
+  LIGHT_L01: 'Acender lineares',
+  LIGHT_L03: 'Acender telas tensionadas',
+  LIGHT_DEMO_baseboard: 'Rodapé iluminado',
+  LIGHT_DEMO_cascade: 'Acender box por box',
+};
+Object.assign(clips, Object.fromEntries(Object.entries(lightingLabels).map(([key, label]) => [key, {
+  src: mediaRoot + key + '_4k60.mp4', poster: mediaRoot + key + '_4k.jpg', label,
+}])));
+routes.iluminacao = Object.keys(lightingLabels);

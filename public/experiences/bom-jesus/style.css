@@ -6,3 +6,6 @@
 html,body{height:100%;overflow:hidden}main{height:100%;min-height:0}#stage{width:min(100vw,177.7778dvh)}
 .brand img{display:none}.brand p{font-size:clamp(9px,1cqw,13px);margin:0}
 @container(max-width:700px){.tools .circle,#replay,#closeHelp{width:44px;height:44px}#lightPicker select{min-height:44px}#lightPicker{bottom:50px}.location{bottom:30%}.view-tools{bottom:26%}#travel button{width:44px}.brand p{font-size:9px}.hotspot-label{font-size:9px}}
+
+/* R035: decoded video-to-4K-still handoff. */
+#still,#film{transition:opacity .18s ease}#film{opacity:0}.moving nav button:disabled{opacity:.65}.moving #lightPicker{pointer-events:none}
