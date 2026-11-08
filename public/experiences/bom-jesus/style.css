@@ -9,3 +9,28 @@ html,body{height:100%;overflow:hidden}main{height:100%;min-height:0}#stage{width
 
 /* R035: decoded video-to-4K-still handoff. */
 #still,#film{transition:opacity .18s ease}#film{opacity:0}.moving nav button:disabled{opacity:.65}.moving #lightPicker{pointer-events:none}
+
+/* R036 exploration: scene anchors, clear destinations and a quiet visual hierarchy. */
+.explore-cta{position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);border:0;border-radius:40px;background:var(--coral);color:#fff;padding:16px 25px;display:flex;align-items:center;gap:36px;font-size:clamp(14px,1.2cqw,18px);box-shadow:0 8px 32px #0004}
+.explore-cta:hover{background:#c93a2c}.explore-cta span{font-size:24px}
+#targets{position:absolute;inset:0;pointer-events:none}.scene-target{position:absolute;left:var(--x);top:var(--y);display:flex;align-items:center;min-height:44px;padding:0;transform:translate(-22px,-50%);background:none!important;border:0;backdrop-filter:none;pointer-events:auto;white-space:nowrap}
+.target-dot{display:grid;place-items:center;width:36px;height:36px;border:1px solid #fff9;border-radius:50%;background:#12161499;color:white;font:300 24px/1 "Space Grotesk",sans-serif;box-shadow:0 0 0 5px #ffffff0a;flex-shrink:0;animation:invite 3.5s ease-in-out infinite}
+.target-label{font:400 clamp(11px,1cqw,14px)/1.3 "IBM Plex Mono",monospace;padding:8px 12px;background:#111714c9;border:1px solid #ffffff30;border-radius:4px;backdrop-filter:blur(8px)}
+.target-line{width:30px;height:1px;background:#ffffffa0}.box-target{gap:9px}.box-target .target-label{border-radius:22px}.scene-target:hover .target-dot,.scene-target:focus-visible .target-dot{background:var(--coral);animation:none}.scene-target:hover .target-label{border-color:#fff9}
+#material1{flex-direction:row-reverse;transform:translate(calc(-100% + 22px),-50%)}
+#allMaterials{position:absolute;right:3%;top:17%;display:flex;align-items:center;gap:12px}#allMaterials label{font:10px "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;opacity:.7}#materialSelect{max-width:240px;min-height:44px;border:1px solid #ffffff40;border-radius:24px;background:#141816db;padding:8px 14px;font-size:12px}
+#returnOverview{position:absolute;left:3%;top:15%;min-height:44px;border-radius:30px;padding:10px 16px;font:11px "IBM Plex Mono",monospace}
+#travel button{width:auto;height:auto;min-height:68px;max-width:24%;padding:12px 16px;border-radius:12px;background:linear-gradient(90deg,#1117148c,#11171420);border:1px solid #ffffff20;display:flex;gap:12px;opacity:.8}#travel button:hover{opacity:1;background:#111714bf}#travel button:disabled{visibility:hidden}#travel button svg{width:30px;height:30px}.direction-label{display:flex;flex-direction:column;text-align:left;gap:5px;font-size:13px}.direction-label small{font:9px "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;opacity:.65}#next{flex-direction:row-reverse}#next .direction-label{text-align:right}
+@keyframes invite{0%,100%{transform:translateY(0);box-shadow:0 0 0 4px #ffffff08}50%{transform:translateY(-4px);box-shadow:0 0 0 8px #ffffff08}}
+@container(max-width:700px){
+.brand p{font-size:8px}.brand{top:5%}.tools{top:0}.tools .circle{width:44px;height:44px}
+.bottom-ui{bottom:3%;width:94%;gap:0}nav button{min-height:44px;font-size:9px;flex-direction:column;gap:2px;padding:3px}nav button svg{width:15px;height:15px}
+.scene-target{min-height:44px;transform:translate(-22px,-50%)}.target-dot{width:24px;height:24px;font-size:18px;margin:10px}.target-label{font-size:9px;padding:5px 7px}.target-line{width:10px}.box-target{gap:0}
+#box0{--y:66%!important;--x:19%!important}#box1{--y:53%!important;--x:47%!important}#box2{--y:42%!important;--x:70%!important}
+#material9,#material10,#material1{display:none}#material0{--x:10%!important;--y:40%!important}#material5{--x:22%!important;--y:61%!important}#material6{--x:50%!important;--y:29%!important}
+#allMaterials{right:3%;top:47%;max-width:43%}#allMaterials label{display:none}#materialSelect{min-height:44px;font-size:9px;padding:5px 8px;width:100%}
+#travel button{top:34%;min-height:55px;padding:6px;gap:0;max-width:32%;border:0}#travel button svg{width:24px;height:24px}.direction-label{font-size:9px}.direction-label small{font-size:7px}
+#returnOverview{top:17%;left:3%;font-size:9px;padding:4px 8px;min-height:36px}.location{bottom:27%}.view-tools{bottom:26%}#counter{font-size:9px}#status{top:21%;max-width:60%}
+.explore-cta{padding:10px 16px;font-size:13px;min-height:44px;gap:20px;top:49%}
+}
+@media(prefers-reduced-motion:reduce){.target-dot{animation:none}}

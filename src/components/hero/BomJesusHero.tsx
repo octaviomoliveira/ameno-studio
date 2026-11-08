@@ -25,14 +25,17 @@ export default function BomJesusHero() {
   return (
     <>
       <section className={styles.experience} aria-label="Explore a cabine Bom Jesus">
-        <iframe ref={frame} className={styles.frame} src="/experiences/bom-jesus/index.html?v=ameno-r035"
+        <iframe ref={frame} className={styles.frame} src="/experiences/bom-jesus/index.html?v=explore-r036"
           title="Cabine Bom Jesus — ambientes, materiais e iluminação" allow="fullscreen" allowFullScreen />
       <section className={styles.introduction} data-visible={overview} aria-hidden={!overview} inert={!overview} aria-labelledby="studio-title">
         <p className={styles.kicker}>AMENO.STUDIO / RECIFE · BRASIL</p>
         <h1 id="studio-title">Arquitetura.<br /><em className="font-editorial">Visualização.</em><br />Ferramentas.</h1>
         <p className={styles.caption}>Conheça o trabalho por trás de cada espaço.</p>
         <div className={styles.actions}>
-          <Link href="/portfolio#projetos" className="ameno-button ameno-button--primary">Ver portfólio <span aria-hidden="true">→</span></Link>
+          <button type="button" className="ameno-button ameno-button--primary" onClick={() => {
+            frame.current?.contentWindow?.postMessage({ type: 'ameno:explore' }, window.location.origin)
+          }}>Explore a cabine <span aria-hidden="true">↗</span></button>
+          <Link href="/portfolio#projetos" className="ameno-button ameno-button--secondary">Portfólio <span aria-hidden="true">→</span></Link>
           <Link href="/portfolio#assets-3d" className="ameno-button ameno-button--secondary">Biblioteca 3D <span aria-hidden="true">→</span></Link>
           <Link href="/plugins" className="ameno-button ameno-button--secondary">Plugins <span aria-hidden="true">→</span></Link>
         </div>

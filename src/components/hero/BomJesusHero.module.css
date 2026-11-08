@@ -27,3 +27,6 @@
 }
 @media(orientation:landscape) and (max-height:600px){.introduction{padding:16px clamp(16px,4vw,40px) 76px}.introduction h1{font-size:clamp(22px,4vw,38px)}.introduction .kicker,.introduction .caption{display:none}.introduction .actions{margin-top:10px;gap:6px;flex-wrap:nowrap}.introduction .actions a{min-height:44px;padding:8px 9px;font-size:8px;letter-spacing:.04em;gap:6px}}
 @media(prefers-reduced-motion:reduce){.introduction{transition:none}}
+
+.actions button{cursor:pointer;font:inherit}
+@media(max-width:700px){.introduction .actions a{display:none}.introduction .actions button{min-height:44px;font-size:10px;padding:9px 14px}.introduction{padding-bottom:56px}.introduction h1{font-size:clamp(20px,5.7vw,36px)}}

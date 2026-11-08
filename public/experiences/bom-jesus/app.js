@@ -5,9 +5,10 @@
   const still = $('still');
   const fadeMs = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180;
   const posterCache = new Map();
-  let mode = 'home', index = -1, busy = false, carOutside = false;
-  let suspended = false, retryAction = null, resumeAction = null, suspendAction = null, displayedKey = null;
-  let keepOverviewPoster = generalPoster;
+  let mode = 'home', index = -1, busy = false;
+  let suspended = false, retryAction = null, resumeAction = null, suspendAction = null;
+  const keepOverviewPoster = generalPoster;
+  let currentNode = 'G_P';
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   function bounded(promise, ms = 20000) {
     return new Promise((resolve, reject) => {
@@ -28,9 +29,19 @@
     $('back').disabled = index <= 0;
     $('next').disabled = index >= route.length - 1;
     $('counter').textContent = index < 0 ? '' : String(index + 1).padStart(2, '0') + ' / ' + route.length;
-    $('enter').hidden = busy || index >= 0 || !['ambientes', 'materiais'].includes(mode);
+    $('enter').hidden = true;
+    $('explore').hidden = busy || mode !== 'home' || window.self !== window.top;
+    $('targets').hidden = busy || index >= 0 || !cameraNodes[mode];
+    $('boxTargets').hidden = mode !== 'ambientes';
+    $('materialTargets').hidden = mode !== 'materiais';
+    $('allMaterials').hidden = busy || mode !== 'materiais' || index >= 0;
+    $('returnOverview').hidden = busy || index < 0;
+    $('backText').textContent = index > 0 ? clips[route[index - 1]].label : '';
+    $('nextText').textContent = index >= 0 && index < route.length - 1 ? clips[route[index + 1]].label : '';
+    $('back').setAttribute('aria-label', 'Anterior · ' + $('backText').textContent);
+    $('next').setAttribute('aria-label', 'Próximo · ' + $('nextText').textContent);
     // Replaying an entry would make the parked car appear again before exiting.
-    $('replay').hidden = busy || index < 0 || displayedKey === 'HOME_P_Mirror';
+    $('replay').hidden = busy || mode !== 'iluminacao' || index < 0;
     $('lightPicker').hidden = mode !== 'iluminacao' || busy;
     $('effect').disabled = busy;
     $('effect').value = String(Math.max(0, index));
@@ -49,13 +60,13 @@
 
   async function showPoster(src, label) {
     await preparePoster(src);
-    if (film.getAttribute('src')) releaseVideo();
     const previous = still.getAttribute('src');
     try {
       if (previous !== src) {
         still.style.opacity = '0'; await sleep(fadeMs); still.src = src;
       }
       await bounded(still.decode());
+      if (film.getAttribute('src')) releaseVideo();
     } catch (error) {
       if (previous && previous !== src) still.src = previous;
       throw error;
@@ -110,7 +121,7 @@
           film.style.opacity = '0'; await sleep(fadeMs); releaseVideo();
           $('status').textContent = '';
         } catch { film.pause(); $('status').textContent = 'O último quadro foi mantido. A imagem em alta não carregou.'; }
-        displayedKey = key; resolve(true);
+        resolve(true);
       };
       resumeAction = async () => {
         $('retry').hidden = true; armTimeout();
@@ -124,7 +135,7 @@
 
   function categoryHint() {
     $('category').textContent = mode === 'home' ? 'CABINE PPF' : mode === 'materiais' ? 'MATERIAIS' : mode === 'iluminacao' ? 'ILUMINAÇÃO' : 'AMBIENTES';
-    $('hint').textContent = mode === 'iluminacao' ? 'Escolha um efeito ou siga pelas setas.' : index >= 0 ? 'Use as setas para explorar os detalhes.' : mode === 'materiais' ? 'Toque no espelho para explorar os materiais.' : mode === 'ambientes' ? 'Toque no ponto para explorar os boxes.' : 'Escolha uma categoria para explorar.';
+    $('hint').textContent = mode === 'iluminacao' ? 'Escolha um efeito ou siga pelas setas.' : index >= 0 ? 'Use as setas para explorar os detalhes.' : mode === 'materiais' ? 'Toque em um material para chegar mais perto.' : mode === 'ambientes' ? 'Escolha um box sobre o piso.' : 'Entre. Escolha um ponto. Explore.';
   }
 
   async function run(action, retry) {
@@ -140,14 +151,24 @@
     }
   }
 
+  async function moveTo(target) {
+    const path = cameraPath(currentNode, target);
+    if (!path) throw new Error('Unavailable route');
+    for (const edge of path) {
+      if (!await playClip(edge.key)) return false;
+      currentNode = edge.to;
+    }
+    return true;
+  }
+
   function playAt(n) {
     const route = routes[mode];
     if (busy || !route || n < 0 || n >= route.length) return;
-    const key = route[n];
     return run(async () => {
-      if (!await playClip(key)) return false;
+      if (mode === 'iluminacao') {
+        if (!await playClip(route[n])) return false;
+      } else if (!await moveTo(cameraNodes[mode][n])) return false;
       index = n;
-      if (key === 'HOME_P_Mirror') carOutside = true;
       return true;
     }, () => playAt(n));
   }
@@ -155,39 +176,36 @@
   async function switchMode(nextMode, force = false) {
     if (busy || (!force && nextMode === mode)) return;
     return run(async () => {
-      // This compact return starts at Mirror_O, regardless of the last material visited.
-      // Only crossing out of Materials performs the Porsche entry, once.
-      if (carOutside && nextMode !== 'materiais') {
-        mode = 'materiais'; index = 0;
-        await showPoster(clips.HOME_P_Mirror.poster, 'Espelho bronze'); controls();
-        if (!await playClip('MATERIALS_RETURN_HOME')) return false;
-        carOutside = false; keepOverviewPoster = clips.MATERIALS_RETURN_HOME.poster;
-      }
-      mode = nextMode; index = -1; displayedKey = null;
+      if (!await moveTo('G_P')) return false;
+      mode = nextMode; index = -1;
       await showPoster(keepOverviewPoster, 'Visão geral');
-      $('enter').querySelector('.hotspot-label').textContent = mode === 'materiais' ? 'Espelho bronze' : 'Explorar os boxes';
-      $('enter').style.left = mode === 'materiais' ? '24%' : '34%';
-      $('enter').style.top = mode === 'materiais' ? '43%' : '53%'; controls();
-      if (mode === 'iluminacao') { if (!await playClip(routes.iluminacao[0])) return false; index = 0; }
+      if (mode === 'iluminacao') {
+        if (!await playClip(routes.iluminacao[0])) return false;
+        index = 0;
+      }
       return true;
     }, () => switchMode(nextMode, true));
   }
 
   $('enter').onclick = () => playAt(0);
+  $('explore').onclick = () => switchMode('ambientes');
+  $('returnOverview').onclick = () => switchMode('home');
   $('next').onclick = () => playAt(index + 1);
-  $('back').onclick = () => {
-    if (busy || index <= 0) return;
-    if (mode === 'iluminacao') return playAt(index - 1);
-    const previous = index - 1;
-    return run(async () => {
-      releaseVideo(); const key = routes[mode][previous];
-      await showPoster(clips[key].poster, clips[key].label);
-      index = previous; displayedKey = key; return true;
-    }, () => $('back').onclick());
-  };
+  $('back').onclick = () => playAt(index - 1);
   $('home').onclick = () => switchMode('home'); $('env').onclick = () => switchMode('ambientes');
   $('mat').onclick = () => switchMode('materiais'); $('light').onclick = () => switchMode('iluminacao');
   $('replay').onclick = () => playAt(index);
+  for (let n = 0; n < 3; n++) $('box' + n).onclick = () => playAt(n);
+  for (const n of [0, 1, 5, 6, 9, 10]) $('material' + n).onclick = () => playAt(n);
+  for (const [n, key] of routes.materiais.entries()) {
+    const option = document.createElement('option'); option.value = String(n); option.textContent = clips[key].label;
+    $('materialSelect').appendChild(option);
+  }
+  $('materialSelect').onchange = () => {
+    const n = Number($('materialSelect').value);
+    if ($('materialSelect').value !== '') playAt(n);
+    $('materialSelect').value = '';
+  };
   $('retry').onclick = () => { if (suspended && resumeAction) resumeAction(); else retryAction?.(); };
   film.ontimeupdate = () => { $('progress').style.width = (film.duration ? film.currentTime / film.duration * 100 : 0) + '%'; };
   for (const [i, key] of routes.iluminacao.entries()) {
@@ -219,7 +237,9 @@
     }
   }
   window.addEventListener('message', event => {
-    if (event.origin === location.origin && event.source === parent && event.data?.type === 'ameno:experience-hidden') suspendPlayback();
+    if (event.origin !== location.origin || event.source !== parent) return;
+    if (event.data?.type === 'ameno:experience-hidden') suspendPlayback();
+    if (event.data?.type === 'ameno:explore') switchMode('ambientes');
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) suspendPlayback(); });
   controls(); categoryHint();

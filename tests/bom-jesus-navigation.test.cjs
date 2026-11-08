@@ -106,7 +106,7 @@ function browser() {
     requestAnimationFrame(callback) { queueMicrotask(callback); return 1; },
     console,
   });
-  for (const file of ['data.js', 'lights.js', 'app.js']) {
+  for (const file of ['data.js', 'lights.js', 'navigation.js', 'app.js']) {
     vm.runInContext(fs.readFileSync(path.join(experience, file), 'utf8'), context, { filename: file });
   }
 
@@ -169,8 +169,10 @@ test('materials keep the Porsche outside across lateral views without replaying 
   await ui.end();
   const count = ui.history.length;
   await ui.click('back');
+  assert.equal(ui.film.src, 'media/r036/video_M_Floor_to_Glass.mp4');
+  await ui.end();
   assert.equal(ui.element('still').src, poster('ARROW_M01_P_Mirror_Glass'));
-  assert.equal(ui.history.length, count, 'compact Back is a still-only transition');
+  assert.equal(ui.history.length, count + 1, 'Back uses a real directional take');
   assert.equal(ui.history.filter(src => src === video('HOME_P_Mirror')).length, 1);
   assert.equal(ui.history.filter(src => src === video('MATERIALS_RETURN_HOME')).length, 0);
 });
@@ -182,36 +184,35 @@ for (const destination of ['home', 'env', 'light']) {
     await ui.click('next');
     await ui.end();
     await ui.click(destination);
-    assert.equal(ui.element('still').src, poster('HOME_P_Mirror'), 'return is aligned to its Mirror_O start');
-    assert.equal(ui.film.src, video('MATERIALS_RETURN_HOME'));
+    assert.equal(ui.film.src, 'media/r036/video_DIRECT_Glass_O_TO_G_P.mp4');
     assert.equal(ui.messages.at(-1).overview, false, 'home overlay stays hidden during the return');
     await ui.end();
     if (destination === 'light') {
       assert.equal(ui.film.src, video('LIGHT_DEMO_welcome'));
       await ui.end();
     } else {
-      assert.equal(ui.element('still').src, poster('MATERIALS_RETURN_HOME'));
+      assert.equal(ui.element('still').src, root + 'General_4k.jpg');
     }
-    assert.equal(ui.history.filter(src => src === video('MATERIALS_RETURN_HOME')).length, 1);
+    assert.equal(ui.history.filter(src => src === 'media/r036/video_DIRECT_Glass_O_TO_G_P.mp4').length, 1);
     assert.equal(ui.element(destination).getAttribute('aria-pressed'), 'true');
     assert.equal(ui.element('env').disabled, false);
     assert.equal(ui.messages.at(-1).overview, destination === 'home');
     if (destination !== 'home') await ui.click('home');
-    assert.equal(ui.history.filter(src => src === video('MATERIALS_RETURN_HOME')).length, 1);
+    assert.equal(ui.history.filter(src => src === 'media/r036/video_DIRECT_Glass_O_TO_G_P.mp4').length, 1);
   });
 }
 
-test('a failed overview decode preserves the previous image and can retry the same home destination', async () => {
+test('a failed overview decode can retry the same home destination after the return', async () => {
   const ui = browser();
   await ui.click('env');
   await ui.click('enter');
   await ui.end();
-  const previous = ui.element('still').src;
   const general = root + 'General_4k.jpg';
-  ui.stillBehavior.set(general, ['reject']);
+  ui.stillBehavior.set(general, ['reject', 'reject']);
   await ui.click('home');
+  await ui.end();
   assert.equal(ui.element('retry').hidden, false);
-  assert.equal(ui.element('still').src, previous);
+  assert.equal(ui.element('still').src, general);
   assert.equal(ui.element('still').style.opacity, '1');
   await ui.click('retry');
   assert.equal(ui.element('retry').hidden, true);
@@ -273,4 +274,30 @@ test('a same-origin host hide pauses playback and Continue resumes the same take
   await ui.end();
   assert.equal(ui.element('still').src, poster('HOME_P_Box1'));
   assert.equal(ui.element('env').disabled, false);
+});
+
+
+test('all three box hotspots have a direct camera take from General', async () => {
+  for (const [n, src] of [video('HOME_P_Box1'), 'media/r036/video_DIRECT_G_P_TO_Box2_P.mp4', 'media/r036/video_DIRECT_G_P_TO_Box3_P.mp4'].entries()) {
+    const ui = browser(); await ui.click('explore'); await ui.click('box' + n);
+    assert.equal(ui.film.src, src); await ui.end();
+    assert.equal(ui.element('counter').textContent, '0' + (n + 1) + ' / 5');
+  }
+});
+
+test('material hotspot takes the direct exit and a neighboring step never returns the car', async () => {
+  const ui = browser(); await ui.click('mat'); await ui.click('material5');
+  assert.equal(ui.film.src, 'media/r036/video_DIRECT_G_P_TO_Skirting_O.mp4');
+  await ui.end(); await ui.click('next'); await ui.end(); await ui.click('back');
+  assert.equal(ui.film.src, 'media/r036/video_M_Ceiling_to_Skirting.mp4');
+  await ui.end(); await ui.click('home');
+  assert.equal(ui.film.src, 'media/r036/video_DIRECT_Skirting_O_TO_G_P.mp4');
+});
+
+
+test('reselecting Materials never replays the Porsche return', async () => {
+  const ui = browser(); await enterMaterials(ui); const count = ui.history.length;
+  await ui.click('mat');
+  assert.equal(ui.history.length, count);
+  assert.equal(ui.element('counter').textContent, '01 / 15');
 });
