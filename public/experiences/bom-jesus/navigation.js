@@ -231,10 +231,65 @@ const extraTakes = [
     "id": "DIRECT_G_P_TO_Counter_O",
     "from": "G_P",
     "to": "Counter_O"
+  },
+  {
+    "id": "DIRECT_Counter_O_TO_G_P",
+    "from": "Counter_O",
+    "to": "G_P"
+  },
+  {
+    "id": "DIRECT_G_P_TO_Artwork_O",
+    "from": "G_P",
+    "to": "Artwork_O"
+  },
+  {
+    "id": "DIRECT_Artwork_O_TO_G_P",
+    "from": "Artwork_O",
+    "to": "G_P"
+  },
+  {
+    "id": "DIRECT_G_P_TO_DarkFinish_O",
+    "from": "G_P",
+    "to": "DarkFinish_O"
+  },
+  {
+    "id": "DIRECT_DarkFinish_O_TO_G_P",
+    "from": "DarkFinish_O",
+    "to": "G_P"
+  },
+  {
+    "id": "DIRECT_G_P_TO_Totem_O",
+    "from": "G_P",
+    "to": "Totem_O"
+  },
+  {
+    "id": "DIRECT_Totem_O_TO_G_P",
+    "from": "Totem_O",
+    "to": "G_P"
+  },
+  {
+    "id": "DIRECT_G_P_TO_Mineral_O",
+    "from": "G_P",
+    "to": "Mineral_O"
+  },
+  {
+    "id": "DIRECT_Mineral_O_TO_G_P",
+    "from": "Mineral_O",
+    "to": "G_P"
+  },
+  {
+    "id": "DIRECT_G_P_TO_Cabinet_O",
+    "from": "G_P",
+    "to": "Cabinet_O"
+  },
+  {
+    "id": "DIRECT_Cabinet_O_TO_G_P",
+    "from": "Cabinet_O",
+    "to": "G_P"
   }
 ];
 for (const take of extraTakes) {
-  clips[take.id] = {...nodeClips[take.to], src: 'media/r036/video_' + take.id + '.mp4'};
+  clips[take.id] = {...nodeClips[take.to], src: 'media/r036-topaz/video_' + take.id + '.mp4'};
   cameraEdges.push({from: take.from, to: take.to, key: take.id});
 }
 // Never return through General (and re-enter the car) between material views.

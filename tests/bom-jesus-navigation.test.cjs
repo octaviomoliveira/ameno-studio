@@ -169,7 +169,7 @@ test('materials keep the Porsche outside across lateral views without replaying 
   await ui.end();
   const count = ui.history.length;
   await ui.click('back');
-  assert.equal(ui.film.src, 'media/r036/video_M_Floor_to_Glass.mp4');
+  assert.equal(ui.film.src, 'media/r036-topaz/video_M_Floor_to_Glass.mp4');
   await ui.end();
   assert.equal(ui.element('still').src, poster('ARROW_M01_P_Mirror_Glass'));
   assert.equal(ui.history.length, count + 1, 'Back uses a real directional take');
@@ -184,7 +184,7 @@ for (const destination of ['home', 'env', 'light']) {
     await ui.click('next');
     await ui.end();
     await ui.click(destination);
-    assert.equal(ui.film.src, 'media/r036/video_DIRECT_Glass_O_TO_G_P.mp4');
+    assert.equal(ui.film.src, 'media/r036-topaz/video_DIRECT_Glass_O_TO_G_P.mp4');
     assert.equal(ui.messages.at(-1).overview, false, 'home overlay stays hidden during the return');
     await ui.end();
     if (destination === 'light') {
@@ -193,12 +193,12 @@ for (const destination of ['home', 'env', 'light']) {
     } else {
       assert.equal(ui.element('still').src, root + 'General_4k.jpg');
     }
-    assert.equal(ui.history.filter(src => src === 'media/r036/video_DIRECT_Glass_O_TO_G_P.mp4').length, 1);
+    assert.equal(ui.history.filter(src => src === 'media/r036-topaz/video_DIRECT_Glass_O_TO_G_P.mp4').length, 1);
     assert.equal(ui.element(destination).getAttribute('aria-pressed'), 'true');
     assert.equal(ui.element('env').disabled, false);
     assert.equal(ui.messages.at(-1).overview, destination === 'home');
     if (destination !== 'home') await ui.click('home');
-    assert.equal(ui.history.filter(src => src === 'media/r036/video_DIRECT_Glass_O_TO_G_P.mp4').length, 1);
+    assert.equal(ui.history.filter(src => src === 'media/r036-topaz/video_DIRECT_Glass_O_TO_G_P.mp4').length, 1);
   });
 }
 
@@ -278,7 +278,7 @@ test('a same-origin host hide pauses playback and Continue resumes the same take
 
 
 test('all three box hotspots have a direct camera take from General', async () => {
-  for (const [n, src] of [video('HOME_P_Box1'), 'media/r036/video_DIRECT_G_P_TO_Box2_P.mp4', 'media/r036/video_DIRECT_G_P_TO_Box3_P.mp4'].entries()) {
+  for (const [n, src] of [video('HOME_P_Box1'), 'media/r036-topaz/video_DIRECT_G_P_TO_Box2_P.mp4', 'media/r036-topaz/video_DIRECT_G_P_TO_Box3_P.mp4'].entries()) {
     const ui = browser(); await ui.click('explore'); await ui.click('box' + n);
     assert.equal(ui.film.src, src); await ui.end();
     assert.equal(ui.element('counter').textContent, '0' + (n + 1) + ' / 5');
@@ -287,11 +287,11 @@ test('all three box hotspots have a direct camera take from General', async () =
 
 test('material hotspot takes the direct exit and a neighboring step never returns the car', async () => {
   const ui = browser(); await ui.click('mat'); await ui.click('material5');
-  assert.equal(ui.film.src, 'media/r036/video_DIRECT_G_P_TO_Skirting_O.mp4');
+  assert.equal(ui.film.src, 'media/r036-topaz/video_DIRECT_G_P_TO_Skirting_O.mp4');
   await ui.end(); await ui.click('next'); await ui.end(); await ui.click('back');
-  assert.equal(ui.film.src, 'media/r036/video_M_Ceiling_to_Skirting.mp4');
+  assert.equal(ui.film.src, 'media/r036-topaz/video_M_Ceiling_to_Skirting.mp4');
   await ui.end(); await ui.click('home');
-  assert.equal(ui.film.src, 'media/r036/video_DIRECT_Skirting_O_TO_G_P.mp4');
+  assert.equal(ui.film.src, 'media/r036-topaz/video_DIRECT_Skirting_O_TO_G_P.mp4');
 });
 
 
@@ -300,4 +300,27 @@ test('reselecting Materials never replays the Porsche return', async () => {
   await ui.click('mat');
   assert.equal(ui.history.length, count);
   assert.equal(ui.element('counter').textContent, '01 / 15');
+});
+
+// Every published complementary route must have its actual 4K60 delivery.
+test('all 55 complementary takes are published with their Topaz media', () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(experience, 'r036-topaz-manifest.json'), 'utf8'));
+  assert.equal(manifest.length, 55);
+  const sandbox = {};
+  vm.createContext(sandbox);
+  for (const name of ['data.js', 'navigation.js']) vm.runInContext(fs.readFileSync(path.join(experience, name), 'utf8'), sandbox);
+  assert.equal(vm.runInContext('extraTakes.length', sandbox), 55);
+  for (const take of manifest) {
+    assert.equal(take.width, 3840); assert.equal(take.height, 2160);
+    assert.equal(take.avg_frame_rate, '60/1');
+    const src = vm.runInContext(`clips[${JSON.stringify(take.id)}].src`, sandbox);
+    assert.equal(src, take.src);
+    assert.equal(fs.statSync(path.join(experience, src)).size, take.bytes);
+  }
+  for (const node of ['Artwork_O', 'DarkFinish_O', 'Totem_O', 'Mineral_O', 'Cabinet_O']) {
+    for (const [from, to] of [['G_P', node], [node, 'G_P']]) {
+      const route = vm.runInContext(`cameraPath(${JSON.stringify(from)}, ${JSON.stringify(to)})`, sandbox);
+      assert.equal(route.length, 1, `${from} -> ${to} should use the completed direct take`);
+    }
+  }
 });
