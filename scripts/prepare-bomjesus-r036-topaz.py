@@ -25,8 +25,8 @@ def main():
   rows.append(dict(id=t['id'],src='media/r036-topaz/'+name,bytes=out.stat().st_size,sourceBytes=src.stat().st_size,**result))
   print(f'{i+1}/{len(takes)} {name} {out.stat().st_size/1e6:.1f} MB',flush=True)
  (BASE/'r036-topaz-manifest.json').write_text(json.dumps(rows,indent=2)+'\n')
- nav=BASE/'navigation.js';text=nav.read_text();start=text.index('const extraTakes = ');end=text.index(';\nfor (const take of extraTakes)',start)
+ nav=BASE/'navigation.js';text=nav.read_text(encoding="utf-8");start=text.index('const extraTakes = ');end=text.index(';\nfor (const take of extraTakes)',start)
  text=text[:start]+'const extraTakes = '+json.dumps([{k:t[k] for k in ['id','from','to']} for t in takes],indent=2)+text[end:]
- nav.write_text(text.replace("src: 'media/r036/video_'","src: 'media/r036-topaz/video_'"))
+ nav.write_text(text.replace("src: 'media/r036/video_'","src: 'media/r036-topaz/video_'"), encoding="utf-8")
  print('DONE',sum(r['bytes'] for r in rows),flush=True)
 if __name__=='__main__':main()
