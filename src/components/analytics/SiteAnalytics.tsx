@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import Script from 'next/script'
 
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim() || '2876378722756045'
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || ''
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || 'G-414SSY6B7V'
 
 declare global {
   interface Window {
