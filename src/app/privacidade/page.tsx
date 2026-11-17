@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
 }
 
-const COMPANY_CNPJ = process.env.NEXT_PUBLIC_COMPANY_CNPJ?.trim()
+const COMPANY_CNPJ = process.env.NEXT_PUBLIC_COMPANY_CNPJ?.trim() || '54.457.188/0001-20'
 
 export default function PrivacidadePage() {
   return (

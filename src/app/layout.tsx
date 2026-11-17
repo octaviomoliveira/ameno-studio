@@ -73,6 +73,7 @@ const structuredData = {
       description:
         'Estúdio de arquitetura autoral, visualização arquitetônica 3D (ArchViz), modelagem 3D e ferramentas profissionais para Autodesk 3ds Max.',
       email: 'contato@ameno.studio',
+      taxID: '54.457.188/0001-20',
       founder: {
         '@type': 'Person',
         name: 'Octávio Oliveira',

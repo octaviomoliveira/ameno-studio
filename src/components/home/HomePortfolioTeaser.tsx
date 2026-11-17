@@ -167,7 +167,7 @@ export default function HomePortfolioTeaser() {
 
         {/* Grid com os 5 Projetos Reais */}
         <div className="home-projects-grid" data-portfolio-grid>
-          {HOME_PROJECTS.map((project, idx) => (
+          {HOME_PROJECTS.map((project) => (
             <Link
               key={project.slug}
               href={project.href ?? `/portfolio#${project.slug}`}
@@ -181,11 +181,12 @@ export default function HomePortfolioTeaser() {
                   fill
                   sizes={
                     project.featured
-                      ? '(max-width: 1024px) 100vw, 60vw'
-                      : '(max-width: 768px) 100vw, 38vw'
+                      ? '(max-width: 768px) 90vw, (max-width: 1024px) 92vw, 56vw'
+                      : '(max-width: 768px) 90vw, 36vw'
                   }
+                  quality={68}
+                  loading="lazy"
                   className="object-cover"
-                  preload={idx === 0}
                 />
                 <div className="home-project-card-wash" aria-hidden="true" />
                 <div className="home-project-card-top">
@@ -238,7 +239,9 @@ export default function HomePortfolioTeaser() {
                     src={asset.img}
                     alt={asset.name}
                     fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                    sizes="(max-width: 640px) 44vw, (max-width: 1024px) 30vw, 15vw"
+                    quality={68}
+                    loading="lazy"
                     className="object-cover"
                   />
                   <span className="home-asset-mini-badge">

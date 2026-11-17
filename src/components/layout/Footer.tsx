@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 const CONTACT_EMAIL = 'contato@ameno.studio'
-const COMPANY_CNPJ = process.env.NEXT_PUBLIC_COMPANY_CNPJ?.trim()
+const COMPANY_CNPJ = process.env.NEXT_PUBLIC_COMPANY_CNPJ?.trim() || '54.457.188/0001-20'
 
 export default function Footer() {
   const [copied, setCopied] = useState(false)

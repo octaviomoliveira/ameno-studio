@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ['192.168.1.125'],
   experimental: {
     cpus: 4,
+    inlineCss: true,
   },
   async headers() {
     return [

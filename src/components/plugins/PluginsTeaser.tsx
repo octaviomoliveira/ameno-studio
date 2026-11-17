@@ -88,7 +88,9 @@ export default function PluginsTeaser() {
                 alt="Interface real do plugin Ameno Cotas aberto no 3ds Max 2026 cotando marcenaria em 3 cliques"
                 width={1600}
                 height={1020}
-                sizes="(max-width: 1024px) 100vw, 52vw"
+                sizes="(max-width: 1024px) 92vw, 48vw"
+                quality={68}
+                loading="lazy"
                 className="plugins-teaser-visual-img"
               />
             </div>

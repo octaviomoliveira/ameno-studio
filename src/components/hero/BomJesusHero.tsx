@@ -7,7 +7,9 @@ import styles from './BomJesusHero.module.css'
 const DESKTOP_SCRUB_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-desktop.mp4'
 const MOBILE_SCRUB_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-mobile.mp4'
 const START_POSTER_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-start.webp'
+const START_POSTER_AVIF_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-start.avif'
 const START_POSTER_MOBILE_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-start-mobile.webp'
+const START_POSTER_MOBILE_AVIF_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-start-mobile.avif'
 const CABIN_IFRAME_SRC = '/experiences/bom-jesus/index.html?v=topaz-r036-20261109'
 
 const CHAPTERS = [
@@ -27,6 +29,7 @@ export default function BomJesusHero() {
   const [introVisible, setIntroVisible] = useState(true)
   const [handoffActive, setHandoffActive] = useState(false)
   const [iframeActive, setIframeActive] = useState(false)
+  const [videoReady, setVideoReady] = useState(false)
   const [atStart, setAtStart] = useState(true)
   const [chapterIdx, setChapterIdx] = useState(0)
 
@@ -235,6 +238,7 @@ export default function BomJesusHero() {
     }
 
     const onLoadedMetadata = () => {
+      setVideoReady(true)
       measureScroll()
       smoothFilmP = targetFilmP
       commitSeek(Math.max(0.001, smoothFilmP * video.duration))
@@ -306,20 +310,32 @@ export default function BomJesusHero() {
               data-handoff={handoffActive}
               aria-hidden="true"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element -- Instant responsive WebP LCP poster before scrub video loads */}
-              <img
-                src={START_POSTER_SRC}
-                srcSet={`${START_POSTER_MOBILE_SRC} 800w, ${START_POSTER_SRC} 1920w`}
-                sizes="100vw"
-                alt=""
-                fetchPriority="high"
-                decoding="sync"
-                className={styles.posterImage}
-              />
+              <picture>
+                <source
+                  media="(max-width: 768px)"
+                  type="image/avif"
+                  srcSet={START_POSTER_MOBILE_AVIF_SRC}
+                />
+                <source
+                  media="(max-width: 768px)"
+                  type="image/webp"
+                  srcSet={START_POSTER_MOBILE_SRC}
+                />
+                <source type="image/avif" srcSet={START_POSTER_AVIF_SRC} />
+                <img
+                  src={START_POSTER_SRC}
+                  alt=""
+                  width={1280}
+                  height={720}
+                  fetchPriority="high"
+                  decoding="sync"
+                  className={styles.posterImage}
+                />
+              </picture>
               <video
                 ref={videoRef}
                 className={styles.scrollVideo}
-                poster={START_POSTER_SRC}
+                data-ready={videoReady}
                 muted
                 playsInline
                 preload="none"

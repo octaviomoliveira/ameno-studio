@@ -82,6 +82,12 @@
   object-fit: contain;
   background: transparent;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.scrollVideo[data-ready='true'] {
+  opacity: 1;
 }
 
 .filmVignette {
