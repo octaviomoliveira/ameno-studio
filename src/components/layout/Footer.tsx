@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 const CONTACT_EMAIL = 'contato@ameno.studio'
+const COMPANY_CNPJ = process.env.NEXT_PUBLIC_COMPANY_CNPJ?.trim()
 
 export default function Footer() {
   const [copied, setCopied] = useState(false)
@@ -67,11 +69,23 @@ export default function Footer() {
       </div>
 
       <div className="site-footer-bottom">
-        <div>
-          <span>AMENO.STUDIO</span>
-          <small>© {new Date().getFullYear()} Octávio Oliveira</small>
+        <div className="site-footer-identity">
+          <span>AMENO.STUDIO · OCTÁVIO OLIVEIRA</span>
+          <small>
+            © {new Date().getFullYear()} Octávio Oliveira · Recife, PE — Brasil
+            {COMPANY_CNPJ ? ` · CNPJ ${COMPANY_CNPJ}` : ''}
+          </small>
         </div>
-        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+
+        <a href={`mailto:${CONTACT_EMAIL}`} className="site-footer-email">
+          {CONTACT_EMAIL}
+        </a>
+
+        <nav className="site-footer-legal" aria-label="Links institucionais e legais">
+          <Link href="/privacidade">Política de privacidade</Link>
+          <Link href="/termos">Termos de uso</Link>
+        </nav>
+
         <div className="site-footer-social" role="group" aria-label="Redes sociais">
           <a href="https://www.instagram.com/arq.octaviooliveira/" target="_blank" rel="noreferrer">Instagram</a>
           <a href="https://www.linkedin.com/in/octavio-m-oliveira/" target="_blank" rel="noreferrer">LinkedIn</a>
@@ -80,4 +94,3 @@ export default function Footer() {
     </footer>
   )
 }
-

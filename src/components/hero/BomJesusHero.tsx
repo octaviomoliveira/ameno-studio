@@ -6,7 +6,9 @@ import styles from './BomJesusHero.module.css'
 
 const DESKTOP_SCRUB_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-desktop.mp4'
 const MOBILE_SCRUB_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-mobile.mp4'
-const START_POSTER_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-start.jpg'
+const START_POSTER_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-start.webp'
+const START_POSTER_MOBILE_SRC = '/experiences/bom-jesus/media/scroll-v9/bom-jesus-scroll-v9-start-mobile.webp'
+const CABIN_IFRAME_SRC = '/experiences/bom-jesus/index.html?v=topaz-r036-20261109'
 
 const CHAPTERS = [
   { step: '01 / 04 · CABINE PPF', title: 'Chegada · Porsche Taycan no Box 03' },
@@ -24,10 +26,12 @@ export default function BomJesusHero() {
   const [reducedMotion, setReducedMotion] = useState(false)
   const [introVisible, setIntroVisible] = useState(true)
   const [handoffActive, setHandoffActive] = useState(false)
+  const [iframeActive, setIframeActive] = useState(false)
   const [atStart, setAtStart] = useState(true)
   const [chapterIdx, setChapterIdx] = useState(0)
 
   const jumpToInteractive = useCallback((triggerExplore: boolean) => {
+    setIframeActive(true)
     const track = trackRef.current
     if (track && !reducedMotion) {
       const rect = track.getBoundingClientRect()
@@ -94,6 +98,7 @@ export default function BomJesusHero() {
       isReduced = reduced
       setReducedMotion(reduced)
       if (reduced) {
+        setIframeActive(true)
         setHandoffActive(true)
         setIntroVisible(true)
         track.style.setProperty('--film-layer-opacity', '0')
@@ -103,10 +108,15 @@ export default function BomJesusHero() {
       }
     }
 
-    const desiredSrc = mobileQuery.matches ? MOBILE_SCRUB_SRC : DESKTOP_SCRUB_SRC
-    if (!video.getAttribute('src')) {
-      video.src = desiredSrc
-      video.load()
+    let videoInitialized = false
+    const ensureVideoLoaded = () => {
+      if (videoInitialized || isReduced) return
+      videoInitialized = true
+      const desiredSrc = mobileQuery.matches ? MOBILE_SCRUB_SRC : DESKTOP_SCRUB_SRC
+      if (!video.getAttribute('src')) {
+        video.src = desiredSrc
+        video.load()
+      }
     }
 
     const commitSeek = (timeSec: number) => {
@@ -182,10 +192,15 @@ export default function BomJesusHero() {
         setIntroVisible(nextIntro)
       }
 
+      if (targetRawP >= 0.35) {
+        setIframeActive(true)
+      }
+
       const nextHandoff = targetRawP >= 0.905
       if (nextHandoff !== prevHandoff) {
         prevHandoff = nextHandoff
         setHandoffActive(nextHandoff)
+        if (nextHandoff) setIframeActive(true)
         if (!nextHandoff) {
           frameRef.current?.contentWindow?.postMessage({ type: 'ameno:experience-hidden' }, window.location.origin)
         }
@@ -207,9 +222,16 @@ export default function BomJesusHero() {
     const scheduleUpdate = () => {
       if (isReduced) return
       measureScroll()
+      if (targetRawP > 0.002) {
+        ensureVideoLoaded()
+      }
       if (!rafId) {
         rafId = window.requestAnimationFrame(renderTick)
       }
+    }
+
+    const onFirstIntent = () => {
+      ensureVideoLoaded()
     }
 
     const onLoadedMetadata = () => {
@@ -227,6 +249,8 @@ export default function BomJesusHero() {
     video.addEventListener('seeked', onSeeked)
     video.addEventListener('loadedmetadata', onLoadedMetadata)
     window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('wheel', onFirstIntent, { passive: true, once: true })
+    window.addEventListener('touchstart', onFirstIntent, { passive: true, once: true })
     window.addEventListener('resize', scheduleUpdate, { passive: true })
     motionQuery.addEventListener('change', onMotionChange)
 
@@ -234,6 +258,7 @@ export default function BomJesusHero() {
       applyReducedState(motionQuery.matches)
       if (!motionQuery.matches) {
         measureScroll()
+        if (targetRawP > 0.002) ensureVideoLoaded()
         smoothFilmP = targetFilmP
         renderTick()
       }
@@ -245,6 +270,8 @@ export default function BomJesusHero() {
       video.removeEventListener('seeked', onSeeked)
       video.removeEventListener('loadedmetadata', onLoadedMetadata)
       window.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('wheel', onFirstIntent)
+      window.removeEventListener('touchstart', onFirstIntent)
       window.removeEventListener('resize', scheduleUpdate)
       motionQuery.removeEventListener('change', onMotionChange)
     }
@@ -266,8 +293,9 @@ export default function BomJesusHero() {
             ref={frameRef}
             className={styles.frame}
             data-interactive={handoffActive || reducedMotion}
-            src="/experiences/bom-jesus/index.html?v=topaz-r036-20261109"
+            src={iframeActive ? CABIN_IFRAME_SRC : undefined}
             title="Cabine Bom Jesus — ambientes, materiais e iluminação"
+            loading="lazy"
             allow="fullscreen"
             allowFullScreen
           />
@@ -278,13 +306,23 @@ export default function BomJesusHero() {
               data-handoff={handoffActive}
               aria-hidden="true"
             >
+              {/* eslint-disable-next-line @next/next/no-img-element -- Instant responsive WebP LCP poster before scrub video loads */}
+              <img
+                src={START_POSTER_SRC}
+                srcSet={`${START_POSTER_MOBILE_SRC} 800w, ${START_POSTER_SRC} 1920w`}
+                sizes="100vw"
+                alt=""
+                fetchPriority="high"
+                decoding="sync"
+                className={styles.posterImage}
+              />
               <video
                 ref={videoRef}
                 className={styles.scrollVideo}
                 poster={START_POSTER_SRC}
                 muted
                 playsInline
-                preload="auto"
+                preload="none"
               />
               <div className={styles.filmVignette} />
             </div>

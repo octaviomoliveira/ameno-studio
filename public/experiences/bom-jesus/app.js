@@ -63,7 +63,13 @@
     const previous = still.getAttribute('src');
     try {
       if (previous !== src) {
-        still.style.opacity = '0'; await sleep(fadeMs); still.src = src;
+        still.style.opacity = '0'; await sleep(fadeMs);
+        if (src === generalPoster) {
+          still.setAttribute('srcset', 'media/r035/General_800w.webp 800w, media/r035/General_1920w.webp 1920w, media/r035/General_4k.webp 3840w');
+        } else {
+          still.removeAttribute('srcset');
+        }
+        still.src = src;
       }
       await bounded(still.decode());
       if (film.getAttribute('src')) releaseVideo();
