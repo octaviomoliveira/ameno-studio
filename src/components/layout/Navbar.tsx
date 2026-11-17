@@ -51,6 +51,13 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
+    document.documentElement.dataset.navHidden = hidden && !menuOpen ? 'true' : 'false'
+    return () => {
+      delete document.documentElement.dataset.navHidden
+    }
+  }, [hidden, menuOpen])
+
+  useEffect(() => {
     if (!menuOpen) return
 
     const navigation = navigationRef.current

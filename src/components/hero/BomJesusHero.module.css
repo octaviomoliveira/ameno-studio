@@ -121,21 +121,20 @@
 }
 
 .kicker {
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.16em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
   color: var(--white, #e8e8e0);
-  margin: 0 0 1.2rem;
+  margin: 0 0 1rem;
 }
 
 .introduction h1 {
-  font-size: clamp(30px, 5.4vw, 88px);
-  font-weight: 500;
-  line-height: 1.03;
-  letter-spacing: -0.05em;
+  max-width: 14ch;
+  font-size: clamp(32px, 4.8vw, 76px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
   margin: 0;
   color: #fff;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
 }
 
 .introduction em {
@@ -144,12 +143,11 @@
 }
 
 .caption {
-  max-width: 36rem;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin: 1.1rem 0;
-  color: #fff;
-  opacity: 0.9;
+  max-width: 44ch;
+  font-size: clamp(1rem, 1.15vw, 1.125rem);
+  line-height: 1.55;
+  margin: 1.1rem 0 1.35rem;
+  color: #e8e8e0;
 }
 
 .actions {
@@ -191,22 +189,17 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85);
 }
 
 .chapterStep {
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(232, 232, 224, 0.68);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  color: rgba(232, 232, 224, 0.82);
 }
 
 .chapterTitle {
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: clamp(0.68rem, 0.85vw, 0.8rem);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: clamp(0.8125rem, 0.95vw, 0.92rem);
+  letter-spacing: 0.02em;
   color: #fff;
 }
 
@@ -218,11 +211,9 @@
 }
 
 .scrollPrompt {
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 0.64rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(232, 232, 224, 0.86);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: rgba(232, 232, 224, 0.9);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -234,30 +225,25 @@
   height: 6px;
   border-radius: 50%;
   background: #df4836;
-  box-shadow: 0 0 10px rgba(223, 72, 54, 0.85);
   animation: pulseDot 2s ease-in-out infinite;
 }
 
 .skipInteractiveBtn {
   cursor: pointer;
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 0.64rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
   color: #e8e8e0;
-  background: rgba(18, 20, 19, 0.72);
+  background: #141615;
   border: 1px solid rgba(232, 232, 224, 0.28);
   border-radius: 999px;
-  padding: 8px 14px;
-  min-height: 36px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 16px;
+  min-height: 38px;
   transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
 }
 
 .skipInteractiveBtn:hover {
   border-color: #fff;
-  background: rgba(34, 38, 36, 0.88);
+  background: #222624;
   color: #fff;
 }
 
@@ -281,50 +267,6 @@
   will-change: transform;
 }
 
-/* Interactive handoff CTA when film finishes on Overview (100%) */
-.handoffCtaWrap {
-  position: absolute;
-  left: 50%;
-  top: 56%;
-  transform: translate(-50%, -50%);
-  z-index: 6;
-  pointer-events: auto;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.handoffCtaWrap[data-visible='false'] {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translate(-50%, -44%);
-}
-
-.handoffExploreBtn {
-  cursor: pointer;
-  border: 0;
-  border-radius: 40px;
-  background: #df4836;
-  color: #fff;
-  padding: 15px 26px;
-  display: inline-flex;
-  align-items: center;
-  gap: 28px;
-  font-size: clamp(14px, 1.15vw, 18px);
-  font-weight: 500;
-  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.45);
-  transition: background 0.18s ease, transform 0.18s ease;
-}
-
-.handoffExploreBtn:hover {
-  background: #c93a2c;
-  transform: translateY(-1px);
-}
-
-.handoffExploreBtn span {
-  font-size: 22px;
-  line-height: 1;
-}
-
 @keyframes pulseDot {
   0%, 100% { opacity: 0.45; transform: scale(0.9); }
   50% { opacity: 1; transform: scale(1.2); }
@@ -332,44 +274,51 @@
 
 @media (max-width: 700px) {
   .scrollTrack {
-    height: 280svh;
+    height: 250svh;
   }
 
   .stickyViewport {
-    justify-content: flex-start;
+    justify-content: space-between;
   }
 
   .stageContainer {
     height: 56.25vw;
-    min-height: 0;
+    min-height: 220px;
     flex-shrink: 0;
   }
 
-  .introduction {
+  /* No mobile, o bloco de introdução fica abaixo do vídeo 16:9 e permanece visível durante todo o scroll,
+     eliminando o buraco vazio de ~550px na metade inferior da tela. */
+  .introduction,
+  .introduction[data-visible='false'] {
     position: relative;
     inset: auto;
     width: 100%;
     height: auto;
+    flex: 1;
     margin: 0;
-    padding: 22px 5vw 16px;
-    background: transparent;
-    justify-content: flex-start;
+    padding: 20px 1.25rem 24px;
+    background: #0d0f0e;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
   }
 
   .introduction h1 {
-    font-size: clamp(26px, 8.2vw, 40px);
-    line-height: 1.03;
+    font-size: clamp(26px, 7.6vw, 36px);
+    line-height: 1.05;
   }
 
   .introduction .kicker {
-    margin-bottom: 0.7rem;
-    font-size: 0.58rem;
+    margin-bottom: 0.55rem;
+    font-size: 0.8125rem;
   }
 
   .introduction .caption {
-    font-size: 0.88rem;
-    margin: 0.75rem 0 1rem;
-    opacity: 0.78;
+    font-size: 0.92rem;
+    margin: 0.65rem 0 1rem;
   }
 
   .introduction .actions {
@@ -378,13 +327,13 @@
 
   .introduction .actions button,
   .introduction .actions a {
-    min-height: 44px;
-    font-size: 11px;
-    padding: 10px 14px;
+    min-height: 42px;
+    font-size: 0.8125rem;
+    padding: 9px 14px;
   }
 
   .scrollHud {
-    padding: 0 4vw 10px;
+    padding: 0 1.25rem 10px;
   }
 
   .scrollPrompt {
@@ -392,20 +341,9 @@
   }
 
   .skipInteractiveBtn {
-    font-size: 0.56rem;
-    padding: 6px 11px;
-    min-height: 32px;
-  }
-
-  .handoffCtaWrap {
-    top: 48%;
-  }
-
-  .handoffExploreBtn {
-    padding: 10px 18px;
-    font-size: 13px;
-    min-height: 44px;
-    gap: 16px;
+    font-size: 0.8125rem;
+    padding: 6px 12px;
+    min-height: 34px;
   }
 }
 

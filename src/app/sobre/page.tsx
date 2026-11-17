@@ -17,10 +17,9 @@ export default function SobrePage() {
         </div>
         <div className={styles.hero}>
           <div className={styles.heading}>
-            <p className={styles.label}>Estúdio independente</p>
+            <p className={styles.label}>Estúdio independente · Recife, Brasil</p>
             <h1 id="about-title" className={styles.title}>
-              <span>Arquitetura,</span>
-              <span>visualização</span>
+              <span>Arquitetura, visualização</span>
               <span>e <em className="font-editorial">ferramentas.</em></span>
             </h1>
           </div>
@@ -54,11 +53,37 @@ export default function SobrePage() {
           </div>
         </div>
         <div className={styles.storyContent}>
-          <h2 id="about-approach" className={styles.statement}>Visualizar é uma forma de <em className="font-editorial">pensar.</em></h2>
+          <h2 id="about-approach" className={styles.statement}>Visualizar é uma forma de pensar.</h2>
           <p className={styles.statementCopy}>Para mim, visualizar não é apenas apresentar um projeto pronto. É uma forma de pensar: testar atmosferas, perceber relações, antecipar decisões e comunicar com precisão aquilo que ainda não existe.</p>
           <div className={styles.bodyCopy}>
             <p>A mesma inquietação que conduz os projetos também dá origem aos plugins. Quando uma tarefa consome tempo demais ou interrompe o raciocínio, procuro convertê-la em uma ferramenta simples, direta e útil para quem trabalha criando.</p>
             <p>A partir de Recife, colaboro com pessoas, escritórios e empresas que procuram unir intenção, técnica e uma imagem capaz de contar a história certa.</p>
+          </div>
+          <div className={styles.storyGallery} aria-label="Registros de projetos e processos do estúdio">
+            <figure className={styles.storyFigure}>
+              <div className={styles.storyFigureMedia}>
+                <Image
+                  src="/projects/autorais/bom-jesus-blindados/ig01.webp"
+                  alt="Cabine técnica PPF e iluminação — Bom Jesus Blindados"
+                  fill
+                  sizes="(max-width: 760px) 100vw, 32vw"
+                  className={styles.portraitImage}
+                />
+              </div>
+              <figcaption>Bom Jesus Blindados · Arquitetura Técnica & Luminotécnica</figcaption>
+            </figure>
+            <figure className={styles.storyFigure}>
+              <div className={styles.storyFigureMedia}>
+                <Image
+                  src="/projects/autorais/delicias-da-ana/atendimento-01.webp"
+                  alt="Salão de atendimento — Delícias da Ana"
+                  fill
+                  sizes="(max-width: 760px) 100vw, 32vw"
+                  className={styles.portraitImage}
+                />
+              </div>
+              <figcaption>Delícias da Ana · Retrofit Comercial & Fluxo Operacional</figcaption>
+            </figure>
           </div>
           <div className={styles.contact}>
             <p className={styles.label}>Disponível para colaborações</p>

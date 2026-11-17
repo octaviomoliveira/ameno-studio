@@ -48,7 +48,7 @@ export default function PluginsTeaser() {
           <div className="plugins-teaser-copy">
             <h2 id="plugins-teaser-title" className="plugins-teaser-title">
               <span data-tool-line>Ferramentas que</span>
-              <span data-tool-line>devolvem <em className="font-editorial">tempo.</em></span>
+              <span data-tool-line>devolvem tempo.</span>
             </h2>
 
             <div data-tool-rule className="plugins-teaser-rule" />
@@ -84,7 +84,7 @@ export default function PluginsTeaser() {
             </div>
             <div className="plugins-teaser-visual-frame">
               <Image
-                src="/images/plugins/cotas/tutorial_01_cotar_uma_medida.png"
+                src="/images/plugins/cotas/tutorial_01_cotar_single.png"
                 alt="Interface real do plugin Ameno Cotas aberto no 3ds Max 2026 cotando marcenaria em 3 cliques"
                 width={1600}
                 height={1020}

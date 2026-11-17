@@ -142,7 +142,7 @@ export default function PluginsPage() {
         <div className="plugin-section-inner">
           <div className="plugin-section-header">
             <span className="plugin-section-tag">RECURSOS COMPLETOS</span>
-            <h2 id="features-title">Um sistema completo de cotagem dentro do 3ds Max.</h2>
+            <h2 id="features-title">Cotagem técnica completa no 3ds Max.</h2>
             <p>
               Cotar desenhos técnicos e marcenaria no 3ds Max sempre foi um processo manual e frágil.
               O Ameno Cotas reúne criação individual e contínua, âncoras inteligentes em vértices,

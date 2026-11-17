@@ -138,27 +138,26 @@ export default function HomePortfolioTeaser() {
         <div className="home-showcase-header">
           <div className="home-portfolio-teaser-copy">
             <h2 id="home-portfolio-title" data-portfolio-teaser-text>
-              <span>Arquitetura.</span>
-              <em className="font-editorial">Visualização.</em>
-              <span>Assets 3D.</span>
+              Arquitetura, visualização<br />
+              e ativos 3D.
             </h2>
             <p data-portfolio-teaser-text>
-              Do estudo de luz à marcenaria em close-up — explore os projetos completos do estúdio, o mural de renders e a biblioteca de blocos 3D interativos.
+              Do estudo de luz à marcenaria executiva — explore os projetos completos do estúdio, os empreendimentos de ArchViz e a biblioteca de blocos 3D interativos.
             </p>
           </div>
 
           <div className="home-showcase-stats" data-portfolio-teaser-text>
-            <Link href="/portfolio#projetos" className="home-stat-card">
+            <Link href="/portfolio#arquitetura" className="home-stat-card">
               <span className="home-stat-num">08</span>
               <strong className="home-stat-label">Projetos Autorais</strong>
               <span className="home-stat-Action">Ver projetos →</span>
             </Link>
-            <Link href="/portfolio#galeria-renders" className="home-stat-card">
+            <Link href="/portfolio#archviz" className="home-stat-card">
               <span className="home-stat-num">07</span>
               <strong className="home-stat-label">Empreendimentos ArchViz</strong>
-              <span className="home-stat-Action">Abrir mural →</span>
+              <span className="home-stat-Action">Ver empreendimentos →</span>
             </Link>
-            <Link href="/portfolio#assets-3d" className="home-stat-card home-stat-card--accent">
+            <Link href="/portfolio#modelagem-3d" className="home-stat-card home-stat-card--accent">
               <span className="home-stat-num">29</span>
               <strong className="home-stat-label">Modelos 3D (.GLB)</strong>
               <span className="home-stat-Action">Girar em 3D →</span>
@@ -219,10 +218,10 @@ export default function HomePortfolioTeaser() {
                 BIBLIOTECA 3D INTERATIVA · 3DS MAX, SKETCHUP & ENSCAPE
               </span>
               <h3 className="home-assets-band-title">
-                29 modelos 3D prontos para girar <em className="font-editorial">direto no navegador.</em>
+                29 modelos 3D prontos para girar direto no navegador.
               </h3>
             </div>
-            <Link href="/portfolio#assets-3d" className="ameno-button ameno-button--primary">
+            <Link href="/portfolio#modelagem-3d" className="ameno-button ameno-button--primary">
               Explorar os 29 Modelos 3D <span aria-hidden="true">→</span>
             </Link>
           </div>
@@ -231,7 +230,7 @@ export default function HomePortfolioTeaser() {
             {HOME_ASSETS_PREVIEW.map((asset, index) => (
               <Link
                 key={asset.name}
-                href="/portfolio#assets-3d"
+                href="/portfolio#modelagem-3d"
                 className="home-asset-mini-card"
               >
                 <div className="home-asset-mini-media">

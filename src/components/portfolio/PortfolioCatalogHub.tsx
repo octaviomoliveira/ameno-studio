@@ -553,12 +553,9 @@ export default function PortfolioCatalogHub() {
         {activeTab === 'arquitetura' && (
           <section className="portfolio-arch-section" aria-label="Projetos Autorais de Arquitetura">
             <div className="portfolio-section-bar">
-              <div>
-                <span className="section-tag">01 · ARQUITETURA AUTORAL & EXECUTIVO</span>
-                <h2 className="portfolio-section-heading">
-                  Projetos assinados do <em className="font-editorial">estudo preliminar à obra.</em>
-                </h2>
-              </div>
+              <h2 className="portfolio-section-heading">
+                Projetos assinados do estudo preliminar à obra.
+              </h2>
 
               <div className="portfolio-filter-group" role="group" aria-label="Filtrar projetos de arquitetura por tipologia">
                 {AUTORAL_FILTERS.map((filter) => {
@@ -575,7 +572,7 @@ export default function PortfolioCatalogHub() {
                       aria-pressed={autoralFilter === filter}
                     >
                       <span>{filter}</span>
-                      <small>{String(count).padStart(2, '0')}</small>
+                      <small>({count})</small>
                     </button>
                   )
                 })}
@@ -589,21 +586,12 @@ export default function PortfolioCatalogHub() {
                   id={`project-${project.slug}`}
                   className="portfolio-arch-card"
                 >
-                  <div className="portfolio-arch-card-top">
-                    <span className="portfolio-arch-card-index">
-                      <strong>#{String(index + 1).padStart(2, '0')}</strong> · {project.category.toUpperCase()}
-                    </span>
-                    <span className="portfolio-arch-card-year">
-                      {project.location} · <em>{project.year}</em>
-                    </span>
-                  </div>
-
                   <button
                     type="button"
                     className="portfolio-arch-card-media"
                     onClick={() =>
                       setLightbox({
-                        kicker: `PROJETO DE ARQUITETURA · ${project.category.toUpperCase()} · ${project.year}`,
+                        kicker: `${project.category} · ${project.location} · ${project.year}`,
                         title: project.title,
                         slides: project.slides,
                         index: 0,
@@ -621,96 +609,98 @@ export default function PortfolioCatalogHub() {
                     />
                     <div className="portfolio-arch-card-wash" aria-hidden="true" />
                     <span className="portfolio-arch-card-count">
-                      {String(project.slides.length).padStart(2, '0')} LÂMINAS ↗
+                      {project.slides.length} lâminas ↗
                     </span>
                   </button>
 
+                  {/* Miniaturas rápidas integradas à base da imagem */}
+                  <div className="portfolio-card-thumbs" aria-label={`Vistas de ${project.title}`}>
+                    {project.slides.slice(0, 5).map((slide, sIdx) => (
+                      <button
+                        key={slide.src}
+                        type="button"
+                        className="portfolio-card-thumb"
+                        onClick={() =>
+                          setLightbox({
+                            kicker: `${project.category} · ${project.location} · ${project.year}`,
+                            title: project.title,
+                            slides: project.slides,
+                            index: sIdx,
+                          })
+                        }
+                        aria-label={`Ver ${slide.label}`}
+                        title={slide.label}
+                      >
+                        <Image src={slide.src} alt={slide.label} fill sizes="96px" className="object-cover" />
+                        {sIdx === 4 && project.slides.length > 5 && (
+                          <span className="portfolio-card-thumb-more">
+                            +{project.slides.length - 5}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
                   <div className="portfolio-arch-card-body">
                     <div className="portfolio-arch-card-titles">
-                      <span className="portfolio-arch-card-subtitle">{project.subtitle}</span>
+                      <div className="portfolio-arch-card-meta-row">
+                        <span className="portfolio-arch-card-subtitle">{project.subtitle}</span>
+                        <span className="portfolio-arch-card-year">
+                          {project.location} · <em>{project.year}</em>
+                        </span>
+                      </div>
                       <h3 className="portfolio-arch-card-title">{project.title}</h3>
                     </div>
 
                     <p className="portfolio-arch-card-desc">{project.description}</p>
 
-                    <div className="portfolio-arch-scope" aria-label="Escopo desenvolvido">
-                      {project.scope.map((item) => (
-                        <span key={item} className="portfolio-arch-scope-tag">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
+                    <p className="portfolio-arch-scope-line">
+                      {project.scope.join(' · ')}
+                    </p>
 
-                    {/* Miniaturas rápidas das lâminas do projeto */}
-                    <div className="portfolio-card-thumbs" aria-label={`Vistas de ${project.title}`}>
-                      {project.slides.slice(0, 5).map((slide, sIdx) => (
+                    <div className="portfolio-arch-card-footer">
+                      {project.caseStudyUrl ? (
+                        <div className="portfolio-arch-card-actions-row">
+                          <Link
+                            href={project.caseStudyUrl}
+                            className="portfolio-arch-open-btn portfolio-arch-open-btn--primary"
+                          >
+                            <span>Ler dossiê técnico completo ({project.slides.length} lâminas)</span>
+                            <em aria-hidden="true">↗</em>
+                          </Link>
+                          <button
+                            type="button"
+                            className="portfolio-arch-open-btn"
+                            onClick={() =>
+                              setLightbox({
+                                kicker: `${project.category} · ${project.location} · ${project.year}`,
+                                title: project.title,
+                                slides: project.slides,
+                                index: 0,
+                              })
+                            }
+                          >
+                            <span>Ver álbum rápido</span>
+                            <em aria-hidden="true">↗</em>
+                          </button>
+                        </div>
+                      ) : (
                         <button
-                          key={slide.src}
                           type="button"
-                          className="portfolio-card-thumb"
+                          className="portfolio-arch-open-btn"
                           onClick={() =>
                             setLightbox({
-                              kicker: `PROJETO DE ARQUITETURA · ${project.category.toUpperCase()} · ${project.year}`,
+                              kicker: `${project.category} · ${project.location} · ${project.year}`,
                               title: project.title,
                               slides: project.slides,
-                              index: sIdx,
+                              index: 0,
                             })
                           }
-                          aria-label={`Ver ${slide.label}`}
-                          title={slide.label}
                         >
-                          <Image src={slide.src} alt={slide.label} fill sizes="96px" className="object-cover" />
-                          {sIdx === 4 && project.slides.length > 5 && (
-                            <span className="portfolio-card-thumb-more">
-                              +{project.slides.length - 5}
-                            </span>
-                          )}
+                          <span>Abrir projeto completo ({project.slides.length} imagens)</span>
+                          <em aria-hidden="true">↗</em>
                         </button>
-                      ))}
-                    </div>
-
-                    <div
-                      className="portfolio-arch-card-footer"
-                      style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}
-                    >
-                      {project.caseStudyUrl && (
-                        <Link
-                          href={project.caseStudyUrl}
-                          className="portfolio-arch-open-btn"
-                          style={{
-                            background: 'var(--red)',
-                            borderColor: 'var(--red)',
-                            color: 'var(--white)',
-                            textDecoration: 'none',
-                          }}
-                        >
-                          <span>
-                            LER DOSSIÊ TÉCNICO COMPLETO ({String(project.slides.length).padStart(2, '0')} LÂMINAS)
-                          </span>
-                          <em aria-hidden="true" style={{ color: 'var(--white)' }}>
-                            ↗
-                          </em>
-                        </Link>
                       )}
-                      <button
-                        type="button"
-                        className="portfolio-arch-open-btn"
-                        onClick={() =>
-                          setLightbox({
-                            kicker: `PROJETO DE ARQUITETURA · ${project.category.toUpperCase()} · ${project.year}`,
-                            title: project.title,
-                            slides: project.slides,
-                            index: 0,
-                          })
-                        }
-                      >
-                        <span>
-                          {project.caseStudyUrl
-                            ? `ABRIR ÁLBUM RÁPIDO (${String(project.slides.length).padStart(2, '0')} IMAGENS)`
-                            : `ABRIR PROJETO COMPLETO (${String(project.slides.length).padStart(2, '0')} IMAGENS)`}
-                        </span>
-                        <em aria-hidden="true">↗</em>
-                      </button>
                     </div>
                   </div>
                 </article>
@@ -731,14 +721,11 @@ export default function PortfolioCatalogHub() {
         {activeTab === 'archviz' && (
           <section className="portfolio-arch-section" aria-label="Catálogo de Empreendimentos ArchViz">
             <div className="portfolio-section-bar">
-              <div>
-                <span className="section-tag">02 · VISUALIZAÇÃO ARQUITETÔNICA (ARCHVIZ)</span>
-                <h2 className="portfolio-section-heading">
-                  Empreendimentos em cena para <em className="font-editorial">incorporadoras e estúdios.</em>
-                </h2>
-              </div>
+              <h2 className="portfolio-section-heading">
+                Empreendimentos em cena para incorporadoras e estúdios.
+              </h2>
               <p className="portfolio-section-note">
-                Selecione qualquer empreendimento abaixo para abrir o álbum completo de renders em alta resolução.
+                Selecione qualquer empreendimento para abrir o álbum completo em alta resolução.
               </p>
             </div>
 
@@ -749,21 +736,12 @@ export default function PortfolioCatalogHub() {
                   id={`dev-${dev.slug}`}
                   className="portfolio-arch-card"
                 >
-                  <div className="portfolio-arch-card-top">
-                    <span className="portfolio-arch-card-index">
-                      <strong>#{String(index + 1).padStart(2, '0')}</strong> · {dev.category.toUpperCase()}
-                    </span>
-                    <span className="portfolio-arch-card-year">
-                      {dev.location} · <em>{dev.year}</em>
-                    </span>
-                  </div>
-
                   <button
                     type="button"
                     className="portfolio-arch-card-media"
                     onClick={() =>
                       setLightbox({
-                        kicker: `ARCHVIZ · ${dev.category.toUpperCase()} · ${dev.location.toUpperCase()}`,
+                        kicker: `${dev.category} · ${dev.location} · ${dev.year}`,
                         title: dev.title,
                         slides: dev.renders,
                         index: 0,
@@ -781,46 +759,49 @@ export default function PortfolioCatalogHub() {
                     />
                     <div className="portfolio-arch-card-wash" aria-hidden="true" />
                     <span className="portfolio-arch-card-count">
-                      {String(dev.renders.length).padStart(2, '0')} RENDERS ↗
+                      {dev.renders.length} renders ↗
                     </span>
                   </button>
 
+                  <div className="portfolio-card-thumbs" aria-label={`Renders de ${dev.title}`}>
+                    {dev.renders.slice(0, 5).map((render, rIdx) => (
+                      <button
+                        key={render.src}
+                        type="button"
+                        className="portfolio-card-thumb"
+                        onClick={() =>
+                          setLightbox({
+                            kicker: `${dev.category} · ${dev.location} · ${dev.year}`,
+                            title: dev.title,
+                            slides: dev.renders,
+                            index: rIdx,
+                          })
+                        }
+                        aria-label={`Ver ${render.label}`}
+                        title={render.label}
+                      >
+                        <Image src={render.src} alt={render.label} fill sizes="96px" className="object-cover" />
+                        {rIdx === 4 && dev.renders.length > 5 && (
+                          <span className="portfolio-card-thumb-more">
+                            +{dev.renders.length - 5}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
                   <div className="portfolio-arch-card-body">
                     <div className="portfolio-arch-card-titles">
-                      <span className="portfolio-arch-card-subtitle">
-                        {dev.location} · {dev.category}
-                      </span>
+                      <div className="portfolio-arch-card-meta-row">
+                        <span className="portfolio-arch-card-subtitle">{dev.category}</span>
+                        <span className="portfolio-arch-card-year">
+                          {dev.location} · <em>{dev.year}</em>
+                        </span>
+                      </div>
                       <h3 className="portfolio-arch-card-title">{dev.title}</h3>
                     </div>
 
                     <p className="portfolio-arch-card-desc">{dev.description}</p>
-
-                    <div className="portfolio-card-thumbs" aria-label={`Renders de ${dev.title}`}>
-                      {dev.renders.slice(0, 5).map((render, rIdx) => (
-                        <button
-                          key={render.src}
-                          type="button"
-                          className="portfolio-card-thumb"
-                          onClick={() =>
-                            setLightbox({
-                              kicker: `ARCHVIZ · ${dev.category.toUpperCase()} · ${dev.location.toUpperCase()}`,
-                              title: dev.title,
-                              slides: dev.renders,
-                              index: rIdx,
-                            })
-                          }
-                          aria-label={`Ver ${render.label}`}
-                          title={render.label}
-                        >
-                          <Image src={render.src} alt={render.label} fill sizes="96px" className="object-cover" />
-                          {rIdx === 4 && dev.renders.length > 5 && (
-                            <span className="portfolio-card-thumb-more">
-                              +{dev.renders.length - 5}
-                            </span>
-                          )}
-                        </button>
-                      ))}
-                    </div>
 
                     <div className="portfolio-arch-card-footer">
                       <button
@@ -828,14 +809,14 @@ export default function PortfolioCatalogHub() {
                         className="portfolio-arch-open-btn"
                         onClick={() =>
                           setLightbox({
-                            kicker: `ARCHVIZ · ${dev.category.toUpperCase()} · ${dev.location.toUpperCase()}`,
+                            kicker: `${dev.category} · ${dev.location} · ${dev.year}`,
                             title: dev.title,
                             slides: dev.renders,
                             index: 0,
                           })
                         }
                       >
-                        <span>VER ÁLBUM DO EMPREENDIMENTO · {String(dev.renders.length).padStart(2, '0')} RENDERS</span>
+                        <span>Ver álbum do empreendimento ({dev.renders.length} renders)</span>
                         <em aria-hidden="true">↗</em>
                       </button>
                     </div>

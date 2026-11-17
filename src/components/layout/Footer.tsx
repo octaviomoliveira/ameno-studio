@@ -33,7 +33,7 @@ export default function Footer() {
             className={`site-footer-action-btn${copied ? ' is-copied' : ''}`}
           >
             <span className="site-footer-action-kicker">{copied ? 'COPIADO PARA A ÁREA DE TRANSFERÊNCIA' : 'COPIAR E-MAIL COM 1 CLIQUE'}</span>
-            <strong>{copied ? '✓ contato@ameno.studio copiado!' : 'contato@ameno.studio ⎘'}</strong>
+            <strong>{copied ? 'Copiado: contato@ameno.studio' : 'contato@ameno.studio'}</strong>
           </button>
 
           <a

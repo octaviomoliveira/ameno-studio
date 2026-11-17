@@ -182,7 +182,6 @@
 .showcasePanel {
   border: 1px solid #282a32;
   background: #111318;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -249,9 +248,9 @@
   border: 1px solid #292c36;
   color: #a3a8b3;
   font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 0.68rem;
+  font-size: 0.8125rem;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
 }
 
 .captureTabBtn:hover {

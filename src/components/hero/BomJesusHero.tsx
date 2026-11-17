@@ -251,7 +251,6 @@ export default function BomJesusHero() {
   }, [])
 
   const showIntro = reducedMotion ? overview : introVisible
-  const showHandoffExplore = !reducedMotion && handoffActive && overview
   const currentChapter = CHAPTERS[chapterIdx] ?? CHAPTERS[0]
 
   return (
@@ -313,7 +312,7 @@ export default function BomJesusHero() {
                     className={styles.skipInteractiveBtn}
                     onClick={() => jumpToInteractive(false)}
                   >
-                    Ir p/ cabine interativa ↓
+                    Ir para cabine interativa ↓
                   </button>
                 )}
               </div>
@@ -323,37 +322,21 @@ export default function BomJesusHero() {
               </div>
             </div>
           )}
-
-          <div
-            className={styles.handoffCtaWrap}
-            data-visible={showHandoffExplore}
-            aria-hidden={!showHandoffExplore}
-            inert={!showHandoffExplore}
-          >
-            <button
-              type="button"
-              className={styles.handoffExploreBtn}
-              onClick={() => jumpToInteractive(true)}
-            >
-              Explore a cabine <span aria-hidden="true">↗</span>
-            </button>
-          </div>
         </div>
 
         <section
           className={styles.introduction}
           data-visible={showIntro}
-          aria-hidden={!showIntro}
-          inert={!showIntro}
           aria-labelledby="studio-title"
         >
-          <p className={styles.kicker}>AMENO.STUDIO / RECIFE · BRASIL</p>
+          <p className={styles.kicker}>Ameno Studio · Recife, Brasil</p>
           <h1 id="studio-title">
-            Arquitetura.<br />
-            <em className="font-editorial">Visualização.</em><br />
-            Ferramentas.
+            Arquitetura, visualização<br />
+            e <em className="font-editorial">ferramentas.</em>
           </h1>
-          <p className={styles.caption}>Conheça o trabalho por trás de cada espaço.</p>
+          <p className={styles.caption}>
+            Projetos executivos em BIM, visualização para incorporadoras e plugins para 3ds Max.
+          </p>
           <div className={styles.actions}>
             <button
               type="button"
@@ -362,10 +345,10 @@ export default function BomJesusHero() {
             >
               Explore a cabine <span aria-hidden="true">↗</span>
             </button>
-            <Link href="/portfolio#projetos" className="ameno-button ameno-button--secondary">
+            <Link href="/portfolio#arquitetura" className="ameno-button ameno-button--secondary">
               Portfólio <span aria-hidden="true">→</span>
             </Link>
-            <Link href="/portfolio#assets-3d" className="ameno-button ameno-button--secondary">
+            <Link href="/portfolio#modelagem-3d" className="ameno-button ameno-button--secondary">
               Biblioteca 3D <span aria-hidden="true">→</span>
             </Link>
             <Link href="/plugins" className="ameno-button ameno-button--secondary">

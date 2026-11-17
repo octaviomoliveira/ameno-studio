@@ -629,13 +629,10 @@ export default function PluginTutorial() {
         <div className={styles.headerGrid}>
           <div>
             <span className={styles.eyebrow}>
-              TUTORIAL RÁPIDO · DIRETO AO PONTO
+              TUTORIAL INTERATIVO · PASSO A PASSO
             </span>
             <h2 id="tutorial-heading" className={styles.title}>
-              Sem textão técnico.<br />
-              <span className={styles.titleAccent}>
-                Aprenda olhando as fotos em 1 minuto.
-              </span>
+              Aprenda olhando as fotos.
             </h2>
           </div>
           <p className={styles.lead}>
@@ -759,7 +756,7 @@ export default function PluginTutorial() {
                   className={styles.stageImage}
                 />
                 <span className={styles.zoomHintPill}>
-                  🔍 Clique na foto pra abrir bem grande na tela
+                  Clique na foto para ampliar em tela cheia ↗
                 </span>
               </button>
             </div>
@@ -845,83 +842,6 @@ export default function PluginTutorial() {
           </div>
         </div>
 
-        {/* ── TODAS AS 7 FOTOS GRANDES EM SEQUÊNCIA (PRA QUEM SÓ QUER ROLAR A PÁGINA) ── */}
-        <div className={styles.allBoardsSection}>
-          <div className={styles.allBoardsHeader}>
-            <div>
-              <span className={styles.eyebrow}>PREFERE SÓ ROLAR A PÁGINA E VER AS FOTOS?</span>
-              <h3 className={styles.allBoardsTitle}>
-                O resumo visual completo em 7 imagens
-              </h3>
-            </div>
-            <p className={styles.allBoardsLead}>
-              Clique em qualquer imagem abaixo para abrir em tela cheia e ler os passos direto na foto.
-            </p>
-          </div>
-
-          <div className={styles.boardsGrid}>
-            {TUTORIAL_STEPS.map((step) => {
-              const board = step.captures[0]
-              const isCurrent = step.id === activeStepId
-              return (
-                <article
-                  key={step.id}
-                  className={`${styles.boardCard} ${
-                    isCurrent ? styles.boardCardActive : ''
-                  }`}
-                >
-                  <button
-                    type="button"
-                    className={styles.boardImageBtn}
-                    onClick={() => setLightboxAsset(board)}
-                    aria-label={`Ampliar ${step.code}: ${step.label}`}
-                  >
-                    <Image
-                      src={board.src}
-                      alt={board.caption}
-                      width={board.width}
-                      height={board.height}
-                      unoptimized
-                      className={styles.boardImage}
-                    />
-                  </button>
-                  <div className={styles.boardMeta}>
-                    <div className={styles.boardMetaTop}>
-                      <span className={styles.boardCode}>{step.code}</span>
-                      <span className={styles.boardCapturesCount}>
-                        Clique na foto pra ampliar
-                      </span>
-                    </div>
-                    <h4 className={styles.boardCardTitle}>{step.label}</h4>
-                    <p className={styles.boardCardDesc}>{step.title}</p>
-                    <div className={styles.boardCardActions}>
-                      <button
-                        type="button"
-                        className={styles.boardActionBtn}
-                        onClick={() => setLightboxAsset(board)}
-                      >
-                        🔍 Abrir foto grande
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.boardZoomBtn}
-                        onClick={() => {
-                          handleSelectStep(step.id, 0)
-                          document
-                            .getElementById('tutorial')
-                            ?.scrollIntoView({ behavior: 'smooth' })
-                        }}
-                      >
-                        Ver lá em cima ↑
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              )
-            })}
-          </div>
-        </div>
-
         {/* ── 4 BOTÕES DO TECLADO QUE SALVAM SUA VIDA ────────── */}
         <div className={styles.shortcutsStrip}>
           <div className={styles.shortcutsHeader}>
@@ -986,7 +906,7 @@ export default function PluginTutorial() {
                 className={styles.lightboxCloseBtn}
                 onClick={() => setLightboxAsset(null)}
               >
-                Fechar [ESC] ✕
+                Fechar [ESC]
               </button>
             </div>
             <div
