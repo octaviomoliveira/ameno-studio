@@ -55,6 +55,9 @@ export const metadata: Metadata = {
     description: 'Arquitetura. Visualização. Ferramentas.',
     images: ['/projects/central-parque.webp'],
   },
+  verification: {
+    google: '3L2dpjFAo1732HJ8msVci27vBDk2noUtTMOOB0B22Lk',
+  },
 }
 
 const structuredData = {
